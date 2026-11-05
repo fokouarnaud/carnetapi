@@ -1,0 +1,13 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h2>{% translate "Quarantine the copy" %}</h2>
+<p>{% translate "Preparation UUID" %} : {{ preparation.id }}</p>
+<p>{% translate "This creates another private copy with archived accounts, privileges and sessions suspended. The prepared source is preserved." %}</p>
+<p>{% translate "This copy cannot yet be activated." %}</p>
+<form method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% translate "Quarantine the copy" %}</button>
+</form>
+<a href="{% url 'admin:backups_importpreparation_result' preparation.id %}">{% translate "Preparation result" %}</a>
+{% endblock %}

@@ -1,0 +1,6 @@
+{% extends "admin/change_list.html" %}
+{% load i18n %}
+{% block content %}
+<div role="note"><p>{% translate "These archived observations do not confirm device recovery or current rights." %}</p></div>
+{{ block.super }}
+{% endblock %}

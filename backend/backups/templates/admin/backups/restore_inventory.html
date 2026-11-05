@@ -1,0 +1,31 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h2>{% translate "Import inventory" %}</h2>
+<dl>
+  <dt>{% translate "Backup UUID" %}</dt><dd>{{ batch.backup_id }}</dd>
+  <dt>{% translate "Import UUID" %}</dt><dd>{{ batch.id }}</dd>
+  <dt>{% translate "Recorded parts" %}</dt><dd>{{ received_count }} / {{ batch.part_count }}</dd>
+  <dt>{% translate "Missing parts" %}</dt><dd>{{ missing_count }}</dd>
+  <dt>{% translate "Created at (UTC)" %}</dt><dd>{{ batch.created_at }}</dd>
+  <dt>{% translate "Checked at (UTC)" %}</dt><dd>{{ checked_at }}</dd>
+</dl>
+<p>{% translate "Full archive verification still required" %}</p>
+<p>{% translate "Collection does not verify the complete archive or replace the active database." %}</p>
+<h3>{% translate "Recorded parts" %}</h3>
+<ul>{% for number in received %}<li>{{ number }} / {{ batch.part_count }}</li>{% empty %}<li>—</li>{% endfor %}</ul>
+<h3>{% translate "Missing parts" %}</h3>
+<ul>{% for number in missing %}<li>{{ number }} / {{ batch.part_count }}</li>{% empty %}<li>—</li>{% endfor %}</ul>
+<nav aria-label="{% translate 'Import inventory' %}">
+  {% if page > 1 %}<a href="?page={{ page|add:'-1' }}">{% translate "Previous" %}</a>{% endif %}
+  <span>{{ page }} / {{ page_count }}</span>
+  {% if page < page_count %}<a href="?page={{ page|add:'1' }}">{% translate "Next" %}</a>{% endif %}
+</nav>
+<a href="{% url 'admin:backups_restoreimport_receive' batch.id %}">{% translate "Collect another part" %}</a>
+{% if collection_complete %}<a href="{% url 'admin:backups_restoreimport_prepare' batch.id %}">{% translate "Prepare a restore copy" %}</a>{% endif %}
+<h3>{% translate "Latest preparation records" %}</h3>
+<ul>{% for item in preparations %}
+  <li><a href="{% url 'admin:backups_importpreparation_result' item.id %}">{{ item.created_at }} — {{ item.get_state_display }}</a></li>
+{% empty %}<li>—</li>{% endfor %}</ul>
+<a href="{% url 'admin:backups_importpreparation_changelist' %}?batch__id__exact={{ batch.id }}">{% translate "All preparation records" %}</a>
+{% endblock %}

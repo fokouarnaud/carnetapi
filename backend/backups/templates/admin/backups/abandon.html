@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<p>{{ backup.id }} — {{ backup.recipient }} — {{ backup.created_at }}</p>
+<p>{% translate "Abandonment stops new sends. An SMTP submission already in progress may still be accepted." %}</p>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% translate "Abandon this backup" %}</button>
+</form>
+{% endblock %}

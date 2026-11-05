@@ -1,0 +1,30 @@
+{% load i18n %}
+<section class="mb-6 border border-base-200 rounded-default p-4 dark:border-base-700" aria-labelledby="backup-health-title">
+  <h2 id="backup-health-title" class="font-semibold mb-3">{% translate "Server backup health" %}</h2>
+  {% if backup_health.blocked %}
+    <p><strong>{% translate "New automatic backups blocked" %}</strong></p>
+    <p>{% blocktranslate with count=backup_health.blocked_count %}Incomplete archives: {{ count }}{% endblocktranslate %}</p>
+    <p>{% translate "Oldest blocking archive" %} :
+      <a href="{% url 'admin:backups_backupjob_change' backup_health.blocking_job.id %}">{{ backup_health.blocking_job.id }}</a>
+      — {{ backup_health.blocking_job.get_state_display }} — {{ backup_health.blocking_job.reason }}
+    </p>
+    <p>{% translate "Resume sending or explicitly abandon an incomplete archive. Sales and synchronization can continue." %}</p>
+  {% else %}
+    <p>{% translate "No incomplete archive is blocking new automatic backups." %}</p>
+  {% endif %}
+  {% if backup_health.last_accepted_at %}
+    <p>{% translate "Last complete SMTP acceptance" %} :
+      <a href="{% url 'admin:backups_backupjob_change' backup_health.last_accepted_job.id %}">{{ backup_health.last_accepted_job.id }}</a>
+      — <time datetime="{{ backup_health.last_accepted_at|date:'c' }}">{{ backup_health.last_accepted_at|date:"c" }}</time>
+    </p>
+    {% if backup_health.clock_inconsistent %}
+      <p>{% translate "This acceptance is dated in the future. Check the server clock; its age is unknown." %}</p>
+    {% else %}
+      <p>{% translate "Age at this check" %} : {{ backup_health.last_accepted_at|timesince:backup_health.checked_at }}</p>
+    {% endif %}
+  {% else %}
+    <p>{% translate "No complete SMTP acceptance is known." %}</p>
+  {% endif %}
+  <p>{% translate "SMTP acceptance does not confirm delivery." %}</p>
+  <p>{% translate "Checked at (UTC)" %} : <time datetime="{{ backup_health.checked_at|date:'c' }}">{{ backup_health.checked_at|date:"c" }}</time></p>
+</section>

@@ -1,0 +1,1004 @@
+[
+  [
+    "api/v1/^shops/$",
+    "shop-list",
+    "ShopViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/^shops/(?P<pk>[^/.]+)/$",
+    "shop-detail",
+    "ShopViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/^shops/(?P<pk>[^/.]+)/discount-policy/$",
+    "shop-discount-policy",
+    "ShopViewSet",
+    {
+      "get": "discount_policy",
+      "post": "discount_policy"
+    }
+  ],
+  [
+    "api/v1/^shops/(?P<pk>[^/.]+)/revoke-device/$",
+    "shop-revoke-device-access",
+    "ShopViewSet",
+    {
+      "post": "revoke_device_access"
+    }
+  ],
+  [
+    "api/v1/^shops/(?P<pk>[^/.]+)/verify-access/$",
+    "shop-verify-device-access",
+    "ShopViewSet",
+    {
+      "post": "verify_device_access"
+    }
+  ],
+  [
+    "api/v1/account/language/",
+    "account-language",
+    "LanguagePreferenceViewSet",
+    {
+      "get": "retrieve",
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/auth/refresh/",
+    "token-refresh",
+    "DeviceTokenRefreshView",
+    {}
+  ],
+  [
+    "api/v1/docs/",
+    "swagger",
+    "SpectacularSwaggerView",
+    {}
+  ],
+  [
+    "api/v1/redoc/",
+    "redoc",
+    "SpectacularRedocView",
+    {}
+  ],
+  [
+    "api/v1/schema/",
+    "schema",
+    "SpectacularAPIView",
+    {}
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/barcode-lookup/",
+    "barcode-lookup",
+    "BarcodeLookupViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/cash-counts/",
+    "cash-count-list",
+    "CashCountViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/cash-counts/<uuid:pk>/",
+    "cash-count-detail",
+    "CashCountViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/cash/",
+    "cash-list",
+    "CashViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/catalogue-imports/",
+    "catalogue-import-list",
+    "CatalogueImportViewSet",
+    {
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/catalogue-imports/<uuid:pk>/",
+    "catalogue-import-detail",
+    "CatalogueImportViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/catalogue-imports/<uuid:pk>/confirm/",
+    "catalogue-import-confirm",
+    "CatalogueImportViewSet",
+    {
+      "post": "confirm"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/catalogue-imports/template/",
+    "catalogue-import-template",
+    "CatalogueImportViewSet",
+    {
+      "get": "template"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/categories/",
+    "category-list",
+    "CategoryViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/categories/<uuid:pk>/",
+    "category-detail",
+    "CategoryViewSet",
+    {
+      "get": "retrieve",
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/",
+    "client-list",
+    "ClientViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/credits/",
+    "customer-credit-list",
+    "CustomerCreditViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/credits/<uuid:payment_id>/allocate/",
+    "customer-credit-allocate",
+    "CreditRegularizationViewSet",
+    {
+      "post": "allocate"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/credits/<uuid:payment_id>/refund/",
+    "customer-credit-refund",
+    "CreditRegularizationViewSet",
+    {
+      "post": "refund"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/credits/<uuid:payment_id>/regularizations/",
+    "customer-credit-regularizations",
+    "CreditRegularizationViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/debts/",
+    "customer-debt-list",
+    "CustomerDebtViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/debts/<uuid:pk>/due-date/",
+    "customer-debt-due-date",
+    "CustomerDebtViewSet",
+    {
+      "post": "due_date"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/debts/<uuid:pk>/history/",
+    "customer-debt-history",
+    "CustomerDebtViewSet",
+    {
+      "get": "history"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/payment-preview/",
+    "customer-payment-preview",
+    "CustomerPaymentViewSet",
+    {
+      "get": "preview"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/payments/",
+    "customer-payment-list",
+    "CustomerPaymentViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/payments/<uuid:payment_id>/allocate/",
+    "customer-payment-allocate",
+    "PaymentRegularizationViewSet",
+    {
+      "post": "allocate"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/payments/<uuid:payment_id>/refund/",
+    "customer-payment-refund",
+    "PaymentRegularizationViewSet",
+    {
+      "post": "refund"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/payments/<uuid:payment_id>/regularizations/",
+    "customer-payment-regularizations",
+    "PaymentRegularizationViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/return-credits/",
+    "client-return-credits",
+    "ClientReturnCreditViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:client_id>/statement/",
+    "customer-statement",
+    "CustomerStatementViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:pk>/",
+    "client-detail",
+    "ClientViewSet",
+    {
+      "get": "retrieve",
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:pk>/history/",
+    "client-history",
+    "ClientViewSet",
+    {
+      "get": "history"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/clients/<uuid:pk>/report-correction/",
+    "client-report-correction",
+    "ClientViewSet",
+    {
+      "post": "report_correction"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/customer-imports/",
+    "customer-imports-create",
+    "CatalogueImportViewSet",
+    {
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/customer-imports/<uuid:pk>/",
+    "customer-imports-retrieve",
+    "CatalogueImportViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/customer-imports/<uuid:pk>/confirm/",
+    "customer-imports-confirm",
+    "CatalogueImportViewSet",
+    {
+      "post": "confirm"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/customer-imports/template/",
+    "customer-imports-template",
+    "CatalogueImportViewSet",
+    {
+      "get": "template"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/",
+    "product-list",
+    "ProductViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:pk>/",
+    "product-detail",
+    "ProductViewSet",
+    {
+      "get": "retrieve",
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:pk>/history/",
+    "product-history",
+    "ProductViewSet",
+    {
+      "get": "history"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/barcode/",
+    "product-barcode",
+    "BarcodeAssignmentViewSet",
+    {
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/cost-revaluations/",
+    "cost-revaluations",
+    "CostRevaluationViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/cost-revaluations/<uuid:pk>/",
+    "cost-revaluation",
+    "CostRevaluationViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/cost-revaluations/<uuid:pk>/items/",
+    "cost-revaluation-items",
+    "CostRevaluationViewSet",
+    {
+      "get": "items"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/cost-revaluations/<uuid:pk>/returns/",
+    "cost-revaluation-returns",
+    "CostRevaluationViewSet",
+    {
+      "get": "returns"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/cost-revaluations/preview/",
+    "cost-revaluation-preview",
+    "CostRevaluationViewSet",
+    {
+      "get": "preview"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/losses/",
+    "stock-loss-list",
+    "StockLossViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/losses/<uuid:pk>/",
+    "stock-loss-detail",
+    "StockLossViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/packs/",
+    "pack-list",
+    "PackViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/packs/<uuid:pack_id>/barcode/",
+    "pack-barcode",
+    "BarcodeAssignmentViewSet",
+    {
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/packs/<uuid:pk>/",
+    "pack-detail",
+    "PackViewSet",
+    {
+      "get": "retrieve",
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/packs/<uuid:pk>/history/",
+    "pack-history",
+    "PackViewSet",
+    {
+      "get": "history"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/photo/",
+    "product-photo",
+    "ProductPhotoViewSet",
+    {
+      "get": "retrieve",
+      "post": "create",
+      "delete": "destroy"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/sale-cost-issues/",
+    "sale-cost-issues",
+    "SaleCostIssueViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-counts/",
+    "stock-count-list",
+    "StockCountViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-counts/<uuid:pk>/",
+    "stock-count-detail",
+    "StockCountViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-counts/<uuid:pk>/adjustments/",
+    "stock-count-adjustments",
+    "StockCountViewSet",
+    {
+      "get": "adjustments"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-counts/<uuid:pk>/confirm/",
+    "stock-count-confirm",
+    "StockCountViewSet",
+    {
+      "post": "confirm"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-counts/<uuid:pk>/history/",
+    "stock-count-history",
+    "StockCountViewSet",
+    {
+      "get": "history"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-shortage-reviews/",
+    "stock-shortage-reviews",
+    "StockShortageReviewViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-shortage-reviews/<uuid:pk>/",
+    "stock-shortage-review-detail",
+    "StockShortageReviewViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-shortage-reviews/movements/",
+    "stock-shortage-movements",
+    "StockShortageReviewViewSet",
+    {
+      "get": "movements"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-shortage-reviews/preview/",
+    "stock-shortage-review-preview",
+    "StockShortageReviewViewSet",
+    {
+      "post": "preview"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-valuations/",
+    "stock-valuations",
+    "StockValuationViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-valuations/<uuid:pk>/",
+    "stock-valuation-detail",
+    "StockValuationViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-valuations/current/",
+    "stock-valuation-current",
+    "StockValuationViewSet",
+    {
+      "get": "current"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/products/<uuid:product_id>/stock-valuations/preview/",
+    "stock-valuation-preview",
+    "StockValuationViewSet",
+    {
+      "post": "preview"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sale-cost-issues/",
+    "shop-sale-cost-issues",
+    "SaleCostIssueViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/",
+    "sale-list",
+    "SaleViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:pk>/",
+    "sale-detail",
+    "SaleViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:pk>/history/",
+    "sale-history",
+    "SaleViewSet",
+    {
+      "get": "history"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/cancellation/",
+    "sale-cancellation",
+    "SaleCancellationViewSet",
+    {
+      "get": "retrieve",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/",
+    "sale-returns",
+    "SaleReturnViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:pk>/",
+    "sale-return",
+    "SaleReturnViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:return_id>/allocations/",
+    "return-credit-allocations",
+    "ReturnCreditSettlementViewSet",
+    {
+      "get": "list",
+      "post": "allocate"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:return_id>/allocations/<uuid:pk>/",
+    "return-credit-allocation",
+    "ReturnCreditSettlementViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:return_id>/lines/<uuid:line_id>/receipts/",
+    "return-receipts",
+    "ReturnReceiptViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:return_id>/lines/<uuid:line_id>/receipts/<uuid:pk>/",
+    "return-receipt",
+    "ReturnReceiptViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:return_id>/lines/<uuid:line_id>/receipts/<uuid:receipt_id>/decisions/",
+    "unsellable-decisions",
+    "NonSellableDecisionViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:return_id>/lines/<uuid:line_id>/receipts/<uuid:receipt_id>/decisions/<uuid:pk>/",
+    "unsellable-decision",
+    "NonSellableDecisionViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:return_id>/refunds/",
+    "return-credit-refunds",
+    "ReturnCreditSettlementViewSet",
+    {
+      "get": "list",
+      "post": "refund"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/sales/<uuid:sale_id>/returns/<uuid:return_id>/refunds/<uuid:pk>/",
+    "return-credit-refund",
+    "ReturnCreditSettlementViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/stock-alert-events/",
+    "stock-alert-event-list",
+    "StockAlertEventViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/stock-alerts/",
+    "stock-alert-list",
+    "StockAlertViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/stock-notification-preference/",
+    "stock-notification-preference",
+    "StockNotificationPreferenceViewSet",
+    {
+      "get": "retrieve",
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/supplier-imports/",
+    "supplier-imports-create",
+    "CatalogueImportViewSet",
+    {
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/supplier-imports/<uuid:pk>/",
+    "supplier-imports-retrieve",
+    "CatalogueImportViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/supplier-imports/<uuid:pk>/confirm/",
+    "supplier-imports-confirm",
+    "CatalogueImportViewSet",
+    {
+      "post": "confirm"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/supplier-imports/template/",
+    "supplier-imports-template",
+    "CatalogueImportViewSet",
+    {
+      "get": "template"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/",
+    "supplier-list",
+    "SupplierViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:pk>/",
+    "supplier-detail",
+    "SupplierViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/credits/",
+    "supplier-credit-list",
+    "SupplierCreditViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/credits/<uuid:pk>/",
+    "supplier-credit-detail",
+    "SupplierCreditViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/credits/<uuid:pk>/allocate/",
+    "supplier-credit-allocate",
+    "SupplierCreditViewSet",
+    {
+      "post": "allocate"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/credits/<uuid:pk>/history/",
+    "supplier-credit-history",
+    "SupplierCreditViewSet",
+    {
+      "get": "history"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/credits/<uuid:pk>/refund/",
+    "supplier-credit-refund",
+    "SupplierCreditViewSet",
+    {
+      "post": "refund"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/debts/",
+    "supplier-debt-list",
+    "SupplierDebtViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/",
+    "purchase-invoice-list",
+    "PurchaseViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/charges/",
+    "purchase-charges",
+    "PurchaseChargeViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/charges/<uuid:charge_id>/revisions/",
+    "purchase-charge-revisions",
+    "PurchaseChargeRevisionViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/charges/<uuid:pk>/",
+    "purchase-charge",
+    "PurchaseChargeViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/charges/preview/",
+    "purchase-charge-preview",
+    "PurchaseChargeViewSet",
+    {
+      "post": "preview"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/receipts/",
+    "purchase-receipt-list",
+    "PurchaseReceiptViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/returns/",
+    "supplier-return-list",
+    "SupplierReturnViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:pk>/",
+    "purchase-invoice-detail",
+    "PurchaseViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/opening-balances/",
+    "supplier-opening-balances",
+    "SupplierCreditViewSet",
+    {
+      "get": "list_openings",
+      "post": "create_opening"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/orders/",
+    "purchase-order-list",
+    "PurchaseViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/orders/<uuid:pk>/",
+    "purchase-order-detail",
+    "PurchaseViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/payments/",
+    "supplier-payment-list",
+    "SupplierPaymentViewSet",
+    {
+      "get": "list",
+      "post": "create"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/payments/<uuid:pk>/",
+    "supplier-payment-detail",
+    "SupplierPaymentViewSet",
+    {
+      "get": "retrieve"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/payments/<uuid:pk>/allocate/",
+    "supplier-payment-allocate",
+    "SupplierPaymentViewSet",
+    {
+      "post": "allocate"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/statement/",
+    "supplier-statement",
+    "SupplierStatementViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/team/",
+    "team-list",
+    "TeamViewSet",
+    {
+      "get": "list"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/team/<uuid:pk>/",
+    "team-detail",
+    "TeamViewSet",
+    {
+      "get": "retrieve",
+      "patch": "partial_update"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/team/<uuid:pk>/history/",
+    "team-history",
+    "TeamViewSet",
+    {
+      "get": "history"
+    }
+  ],
+  [
+    "api/v1/shops/<uuid:shop_id>/unsellable-stock/",
+    "unsellable-stock",
+    "NonSellableStockViewSet",
+    {
+      "get": "list"
+    }
+  ]
+]

@@ -1,0 +1,41 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h2>{% translate "Close recovery partially" %}</h2>
+<p>{% translate "Restoration recovery session" %} : {{ registry.id }}</p>
+<p>{% translate "Restoration access generation" %} : {{ registry.generation_id }}</p>
+<p>{% translate "This declaration preserves missing data warnings. It does not recover lost operations, restore rights or change stock and cash." %}</p>
+<p>{% translate "Complete closure remains unavailable until a reliable recovery balance is established." %}</p>
+{% if receipt %}
+<section aria-label="{% translate 'Recorded partial closure' %}">
+  <h3>{% translate "Recorded partial closure" %}</h3>
+  <p>{{ receipt.id }} · {{ receipt.state }} · {{ receipt.closed_at }}</p>
+  <p>{{ receipt.reason }}</p>
+  <ul>{% for device in receipt.missing_devices %}<li>{{ device.shop_id }} · {{ device.origin_installation_id }} · {{ device.id }}</li>{% endfor %}</ul>
+</section>
+{% elif confirmation_form %}
+  {% if preview %}
+  <h3>{% translate "Review partial closure" %}</h3>
+  <p>{% translate "Reason" %} : {{ reason }}</p>
+  <p>{% translate "Known device observations" %} : {{ preview.snapshot.known_devices }}</p>
+  <p>{% translate "Captured operations" %} : {{ preview.snapshot.captured_operations.count }} · {% translate "Recovery integration decisions" %} : {{ preview.snapshot.integration_decisions.count }}</p>
+  <p>{% translate "Recovered sales awaiting review" %} : {{ preview.snapshot.sale_reviews.pending }} · {% translate "Refused" %} : {{ preview.snapshot.sale_reviews.refused }}</p>
+  <p>{% translate "Recovered collections awaiting review" %} : {{ preview.snapshot.collection_reviews.pending }} · {% translate "Refused" %} : {{ preview.snapshot.collection_reviews.refused }}</p>
+  <p>{% translate "These counts do not prove exhaustive recovery or completion of business reviews." %}</p>
+  <ul>{% for device in selected %}<li>{{ device.shop.name }} · {{ device.label }} · {{ device.origin_installation_id }} · {{ device.id }}</li>{% endfor %}</ul>
+  {% endif %}
+  <form method="post">{% csrf_token %}
+    <input type="hidden" name="stage" value="confirm">
+    {{ confirmation_form.as_p }}
+    <button type="submit">{% translate "Confirm partial closure" %}</button>
+  </form>
+  <p><a href="{% url 'admin:backups_restoresession_close' registry.id %}">{% translate "Prepare a new preview" %}</a></p>
+{% else %}
+  <form method="post">{% csrf_token %}
+    <input type="hidden" name="stage" value="preview">
+    {{ form.as_p }}
+    <button type="submit">{% translate "Preview partial closure" %}</button>
+  </form>
+{% endif %}
+<p><a href="{% url 'admin:backups_restoresession_changelist' %}">{% translate "Restoration recovery sessions" %}</a></p>
+{% endblock %}

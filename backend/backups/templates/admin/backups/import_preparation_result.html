@@ -1,0 +1,47 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h2>{% translate "Preparation result" %}</h2>
+<dl>
+  <dt>{% translate "Import UUID" %}</dt><dd>{{ preparation.batch_id }}</dd>
+  <dt>{% translate "Backup UUID" %}</dt><dd>{{ preparation.batch.backup_id }}</dd>
+  <dt>{% translate "Recorded state" %}</dt><dd>{{ preparation.get_state_display }}</dd>
+  <dt>{% translate "Requested by" %}</dt><dd>{{ preparation.requested_by }}</dd>
+  <dt>{% translate "Created at (UTC)" %}</dt><dd>{{ preparation.created_at }}</dd>
+  <dt>{% translate "Finished at (UTC)" %}</dt><dd>{{ preparation.finished_at|default:"—" }}</dd>
+</dl>
+<p>{% translate "This copy cannot yet be activated." %}</p>
+{% if inspection %}
+  <p role="status">{% translate "Private copy integrity checked" %} — {{ inspection.checked_at }}</p>
+  <p>{% translate "This check compares the surviving copy with its recorded preparation. It does not confirm current access rights or compatibility with changed code." %}</p>
+{% elif inspection_failed %}
+  <p role="alert">{% translate "The private copy integrity check failed." %}</p>
+{% endif %}
+{% if preparation.state == 'prepared' %}
+  <dl>
+    <dt>{% translate "Prepared copy bytes" %}</dt><dd>{{ preparation.candidate_bytes }}</dd>
+    <dt>{% translate "Prepared copy SHA-256" %}</dt><dd>{{ preparation.candidate_sha256 }}</dd>
+  </dl>
+  {% if not inspection and not inspection_failed %}
+    {% if copy_available %}<p>{% translate "The private copy is present. This does not recheck its integrity or current permissions." %}</p>
+    {% else %}<p>{% translate "The private copy is missing or its size has changed. Prepare a new copy." %}</p>{% endif %}
+  {% endif %}
+  <form method="post">{% csrf_token %}
+    <button type="submit">{% translate "Check private copy integrity" %}</button>
+  </form>
+  <a href="{% url 'admin:backups_importquarantine_start' preparation.id %}">{% translate "Quarantine the copy" %}</a>
+{% elif preparation.state == 'failed' %}
+  <p>{% translate "Preparation failed." %} {{ preparation.failure_code }}</p>
+{% else %}
+  <p>{% translate "Preparation was recorded as running. This page does not prove that its worker is still alive." %}</p>
+{% endif %}
+<a href="{% url 'admin:backups_restoreimport_inventory' preparation.batch_id %}">{% translate "Import inventory" %}</a>
+{% if preparation.state != 'preparing' %}
+  <a href="{% url 'admin:backups_restoreimport_prepare' preparation.batch_id %}">{% translate "Prepare another copy" %}</a>
+{% endif %}
+{% if quarantines %}
+<h3>{% translate "Latest quarantine records" %}</h3>
+<ul>{% for record in quarantines %}<li><a href="{% url 'admin:backups_importquarantine_result' record.id %}">{{ record.created_at }} — {{ record.get_state_display }}</a></li>{% endfor %}</ul>
+<a href="{% url 'admin:backups_importquarantine_changelist' %}?preparation__id__exact={{ preparation.id }}">{% translate "All quarantine records" %}</a>
+{% endif %}
+{% endblock %}

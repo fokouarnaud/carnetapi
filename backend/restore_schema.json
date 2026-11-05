@@ -1,0 +1,4773 @@
+{
+  "format": "app-x-sqlite-schema-reference",
+  "format_version": 1,
+  "migration_code_sha256": "573623b2fba8db51b51c3aaf181709f54fc52c3a80a772b6ed960124ede41aae",
+  "migrations": [
+    [
+      "admin",
+      "0001_initial"
+    ],
+    [
+      "admin",
+      "0002_logentry_remove_auto_add"
+    ],
+    [
+      "admin",
+      "0003_logentry_add_action_flag_choices"
+    ],
+    [
+      "auth",
+      "0001_initial"
+    ],
+    [
+      "auth",
+      "0002_alter_permission_name_max_length"
+    ],
+    [
+      "auth",
+      "0003_alter_user_email_max_length"
+    ],
+    [
+      "auth",
+      "0004_alter_user_username_opts"
+    ],
+    [
+      "auth",
+      "0005_alter_user_last_login_null"
+    ],
+    [
+      "auth",
+      "0006_require_contenttypes_0002"
+    ],
+    [
+      "auth",
+      "0007_alter_validators_add_error_messages"
+    ],
+    [
+      "auth",
+      "0008_alter_user_username_max_length"
+    ],
+    [
+      "auth",
+      "0009_alter_user_last_name_max_length"
+    ],
+    [
+      "auth",
+      "0010_alter_group_name_max_length"
+    ],
+    [
+      "auth",
+      "0011_update_proxy_permissions"
+    ],
+    [
+      "auth",
+      "0012_alter_user_first_name_max_length"
+    ],
+    [
+      "backups",
+      "0001_initial"
+    ],
+    [
+      "backups",
+      "0002_alter_backupjob_options_and_more"
+    ],
+    [
+      "backups",
+      "0003_alter_backupjob_installation_id"
+    ],
+    [
+      "backups",
+      "0004_sendattempt"
+    ],
+    [
+      "backups",
+      "0005_remove_sendattempt_backup_send_one_acceptance_and_more"
+    ],
+    [
+      "backups",
+      "0006_alter_sendattempt_options_alter_backupjob_state_and_more"
+    ],
+    [
+      "backups",
+      "0007_backupjob_cleaned_at_backupjob_cleanup_error_code_and_more"
+    ],
+    [
+      "backups",
+      "0008_backupjob_abandon_operation_id_and_more"
+    ],
+    [
+      "backups",
+      "0009_backupdispatch_sendattempt_dispatch_and_more"
+    ],
+    [
+      "backups",
+      "0010_backupconfiguration_backupconfigurationchange_and_more"
+    ],
+    [
+      "backups",
+      "0011_backupschedulerstate_backupschedulerun"
+    ],
+    [
+      "backups",
+      "0012_backupschedulerun_failure_code"
+    ],
+    [
+      "backups",
+      "0013_restore_import_inventory"
+    ],
+    [
+      "backups",
+      "0014_imported_archive_preparation"
+    ],
+    [
+      "backups",
+      "0015_deterministic_preparation_receipt"
+    ],
+    [
+      "backups",
+      "0016_imported_archive_quarantine_updated"
+    ],
+    [
+      "backups",
+      "0017_restore_access_reviews"
+    ],
+    [
+      "backups",
+      "0018_restoration_recovery_inventory"
+    ],
+    [
+      "backups",
+      "0019_recovery_journal_capture"
+    ],
+    [
+      "backups",
+      "0020_recovery_integration_decisions"
+    ],
+    [
+      "backups",
+      "0021_recovery_sale_holds"
+    ],
+    [
+      "backups",
+      "0022_recovery_sale_hold_identity"
+    ],
+    [
+      "backups",
+      "0023_hosting_expiration_reminders"
+    ],
+    [
+      "backups",
+      "0024_hosting_exact_observations"
+    ],
+    [
+      "backups",
+      "0025_hosting_reminder_interruption_review"
+    ],
+    [
+      "backups",
+      "0026_recovery_source_operation_index"
+    ],
+    [
+      "backups",
+      "0027_recovery_collection_reviews"
+    ],
+    [
+      "backups",
+      "0028_recovery_partial_closure"
+    ],
+    [
+      "cash",
+      "0001_domain_state"
+    ],
+    [
+      "cash",
+      "0002_cashcount_cash_count_integral_physical_and_more"
+    ],
+    [
+      "catalogue",
+      "0001_domain_state"
+    ],
+    [
+      "catalogue",
+      "0002_product_product_integer_prices"
+    ],
+    [
+      "catalogue",
+      "0003_category_category_integral_version_and_more"
+    ],
+    [
+      "catalogue",
+      "0004_product_price_conflicts"
+    ],
+    [
+      "contenttypes",
+      "0001_initial"
+    ],
+    [
+      "contenttypes",
+      "0002_remove_content_type_name"
+    ],
+    [
+      "core",
+      "0001_initial"
+    ],
+    [
+      "core",
+      "0002_activity_installation_devicesession_shopdeviceaccess"
+    ],
+    [
+      "core",
+      "0003_devicesession_refresh_jti"
+    ],
+    [
+      "core",
+      "0004_product_stockmovement_and_more"
+    ],
+    [
+      "core",
+      "0005_exact_opening_cost"
+    ],
+    [
+      "core",
+      "0006_productpack"
+    ],
+    [
+      "core",
+      "0007_customer"
+    ],
+    [
+      "core",
+      "0008_membership_can_read_cash_balance_membership_version"
+    ],
+    [
+      "core",
+      "0009_membership_membership_supported_role_and_more"
+    ],
+    [
+      "core",
+      "0010_product_version_product_product_positive_version"
+    ],
+    [
+      "core",
+      "0011_cashmovement_sale_saleline_salepayment_and_more"
+    ],
+    [
+      "core",
+      "0012_shop_discount_policy_version_and_more"
+    ],
+    [
+      "core",
+      "0013_sale_sale_discount_within_total_and_more"
+    ],
+    [
+      "core",
+      "0014_sale_customer_sale_mode_customerdebt"
+    ],
+    [
+      "core",
+      "0015_alter_cashmovement_sale_payment_customerpayment_and_more"
+    ],
+    [
+      "core",
+      "0016_paymentregularization_cashmovement_customer_refund_and_more"
+    ],
+    [
+      "core",
+      "0017_customerdebt_due_version_and_more"
+    ],
+    [
+      "core",
+      "0018_customerledgerentry"
+    ],
+    [
+      "core",
+      "0019_backfill_customer_ledger"
+    ],
+    [
+      "core",
+      "0020_customerpaymentpart_possible_duplicate_reference_and_more"
+    ],
+    [
+      "core",
+      "0021_customerpaymentpart_customer_payment_change_exact_and_more"
+    ],
+    [
+      "core",
+      "0022_paymentregularization_credit_and_more"
+    ],
+    [
+      "core",
+      "0023_customerpaymentpart_core_custom_externa_c2f99d_idx_and_more"
+    ],
+    [
+      "core",
+      "0024_cashmovement_external_reference_and_more"
+    ],
+    [
+      "core",
+      "0025_cashmovement_cash_event_source_sign"
+    ],
+    [
+      "core",
+      "0026_cashcount"
+    ],
+    [
+      "core",
+      "0027_cashcount_cash_count_expected_integer"
+    ],
+    [
+      "core",
+      "0028_supplier"
+    ],
+    [
+      "core",
+      "0029_purchasedocument_purchaseline_supplierdebt_and_more"
+    ],
+    [
+      "core",
+      "0030_purchaseline_purchase_line_exact_base_and_more"
+    ],
+    [
+      "core",
+      "0031_alter_stockmovement_kind_purchasereceipt_and_more"
+    ],
+    [
+      "core",
+      "0032_purchaseline_purchase_line_base_precision"
+    ],
+    [
+      "core",
+      "0033_supplierpayment_supplierpaymentallocation_and_more"
+    ],
+    [
+      "core",
+      "0034_supplierpaymentpart_supplier_payment_named_method"
+    ],
+    [
+      "core",
+      "0035_category_product_category_and_more"
+    ],
+    [
+      "core",
+      "0036_alter_stockmovement_kind_supplierreturn_and_more"
+    ],
+    [
+      "core",
+      "0037_suppliercredit_supplierrefund_and_more"
+    ],
+    [
+      "core",
+      "0038_suppliercredit_supplier_credit_integer_amounts_and_more"
+    ],
+    [
+      "core",
+      "0039_suppliercreditallocation"
+    ],
+    [
+      "core",
+      "0040_category_version_category_category_positive_version"
+    ],
+    [
+      "core",
+      "0041_alter_stockmovement_kind_stockloss"
+    ],
+    [
+      "core",
+      "0042_stockloss_stock_loss_unit_precision_and_more"
+    ],
+    [
+      "core",
+      "0043_stockcount"
+    ],
+    [
+      "core",
+      "0044_alter_stockmovement_kind_stockcountadjustment"
+    ],
+    [
+      "core",
+      "0045_product_stock_threshold_milli_and_more"
+    ],
+    [
+      "core",
+      "0046_stockreservation"
+    ],
+    [
+      "core",
+      "0047_stockalertstate_stockalertevent"
+    ],
+    [
+      "core",
+      "0048_stocknotificationpreference"
+    ],
+    [
+      "core",
+      "0049_stockalertstate_stock_alert_state_integer_episode"
+    ],
+    [
+      "core",
+      "0050_barcode"
+    ],
+    [
+      "core",
+      "0051_barcode_barcode_bounded_code"
+    ],
+    [
+      "core",
+      "0052_productphoto"
+    ],
+    [
+      "core",
+      "0053_languagepreferencechange_user_language_version_and_more"
+    ],
+    [
+      "core",
+      "0054_productpack_version_and_more"
+    ],
+    [
+      "core",
+      "0055_productpack_pack_integer_values"
+    ],
+    [
+      "core",
+      "0056_catalogueimport"
+    ],
+    [
+      "core",
+      "0057_catalogueimport_kind_and_more"
+    ],
+    [
+      "core",
+      "0058_remove_suppliercredit_supplier_credit_integer_amounts_and_more"
+    ],
+    [
+      "core",
+      "0059_supplierledgerentry"
+    ],
+    [
+      "core",
+      "0060_remove_supplierledgerentry_supplier_ledger_exact_balance_and_more"
+    ],
+    [
+      "core",
+      "0061_populate_supplier_ledger"
+    ],
+    [
+      "core",
+      "0062_salereturn_salereturnline_returnreceipt_and_more"
+    ],
+    [
+      "core",
+      "0063_salereturn_amount_fcfa_salereturn_credit_fcfa_and_more"
+    ],
+    [
+      "core",
+      "0064_alter_stockmovement_kind"
+    ],
+    [
+      "core",
+      "0065_returncreditallocation_returncreditsettlement_and_more"
+    ],
+    [
+      "core",
+      "0066_alter_cashmovement_reason"
+    ],
+    [
+      "core",
+      "0067_nonsellabledecision"
+    ],
+    [
+      "core",
+      "0068_alter_stockmovement_kind"
+    ],
+    [
+      "core",
+      "0069_salecancellation"
+    ],
+    [
+      "core",
+      "0070_stockcostsnapshot"
+    ],
+    [
+      "core",
+      "0071_returncostsnapshot"
+    ],
+    [
+      "core",
+      "0072_purchasecharge_purchasechargerevision_and_more"
+    ],
+    [
+      "core",
+      "0073_costrevaluation_costrevaluationitem_and_more"
+    ],
+    [
+      "core",
+      "0074_costrevaluation_core_costre_product_97e46b_idx_and_more"
+    ],
+    [
+      "core",
+      "0075_returncostreconstruction"
+    ],
+    [
+      "core",
+      "0076_stockcostsnapshot_valuation_gap_nanos_fcfa_and_more"
+    ],
+    [
+      "core",
+      "0077_stockvaluationadjustment"
+    ],
+    [
+      "core",
+      "0078_remove_stockvaluationadjustment_stock_valuation_exact_values_and_more"
+    ],
+    [
+      "core",
+      "0079_stockshortagereview"
+    ],
+    [
+      "core",
+      "0080_alter_membership_options_alter_shop_options_and_more"
+    ],
+    [
+      "core",
+      "0081_domain_apps"
+    ],
+    [
+      "customers",
+      "0001_domain_state"
+    ],
+    [
+      "customers",
+      "0002_customer_customer_shop_name_match_and_more"
+    ],
+    [
+      "customers",
+      "0003_integral_collection_values"
+    ],
+    [
+      "customers",
+      "0004_customer_customer_positive_integer_version_and_more"
+    ],
+    [
+      "identity",
+      "0001_domain_state"
+    ],
+    [
+      "identity",
+      "0002_membership_membership_integral_version_and_more"
+    ],
+    [
+      "purchasing",
+      "0001_domain_state"
+    ],
+    [
+      "purchasing",
+      "0002_purchasedocument_purchase_document_integral_total_and_more"
+    ],
+    [
+      "sales",
+      "0001_domain_state"
+    ],
+    [
+      "sales",
+      "0002_sale_sale_integral_totals_and_more"
+    ],
+    [
+      "sales",
+      "0003_sale_sale_identified_credit_customer_and_more"
+    ],
+    [
+      "sessions",
+      "0001_initial"
+    ],
+    [
+      "stock",
+      "0001_domain_state"
+    ],
+    [
+      "stock",
+      "0002_stockmovement_stock_movement_integer_quantity_and_more"
+    ],
+    [
+      "stock",
+      "0003_reservation_reconciliation"
+    ],
+    [
+      "stock",
+      "0004_physical_transfers"
+    ],
+    [
+      "stock",
+      "0005_transfer_movement_kinds"
+    ],
+    [
+      "token_blacklist",
+      "0001_initial"
+    ],
+    [
+      "token_blacklist",
+      "0002_outstandingtoken_jti_hex"
+    ],
+    [
+      "token_blacklist",
+      "0003_auto_20171017_2007"
+    ],
+    [
+      "token_blacklist",
+      "0004_auto_20171017_2013"
+    ],
+    [
+      "token_blacklist",
+      "0005_remove_outstandingtoken_jti"
+    ],
+    [
+      "token_blacklist",
+      "0006_auto_20171017_2113"
+    ],
+    [
+      "token_blacklist",
+      "0007_auto_20171017_2214"
+    ],
+    [
+      "token_blacklist",
+      "0008_migrate_to_bigautofield"
+    ],
+    [
+      "token_blacklist",
+      "0010_fix_migrate_to_bigautofield"
+    ],
+    [
+      "token_blacklist",
+      "0011_linearizes_history"
+    ],
+    [
+      "token_blacklist",
+      "0012_alter_outstandingtoken_user"
+    ],
+    [
+      "token_blacklist",
+      "0013_alter_blacklistedtoken_options_and_more"
+    ]
+  ],
+  "normalizer_sha256": "aa60ac0473f7f63a0616a5e24ad854ae0809ab8795d6a2d9d14b28090e6e4da3",
+  "runtime": {
+    "django": "5.2.18",
+    "sqlite": "3.50.4",
+    "sqlparse": "0.6.0"
+  },
+  "schema": {
+    "objects": [
+      {
+        "name": "auth_group_permissions_group_id_b120cbf9",
+        "sql_sha256": "e07cc679f9b8d7090d2c363851a5ecfda16f390e7357008b86f6a035a5a3bcae",
+        "table": "auth_group_permissions",
+        "type": "index"
+      },
+      {
+        "name": "auth_group_permissions_group_id_permission_id_0cd325b0_uniq",
+        "sql_sha256": "9ef7fbe408c8adaeb6c28a4be57e7e7fc2c761e747fd6e2e7d3ff023b58697aa",
+        "table": "auth_group_permissions",
+        "type": "index"
+      },
+      {
+        "name": "auth_group_permissions_permission_id_84c5c92e",
+        "sql_sha256": "23492b2d0c9d29fd8cf5f2fb24d7c058c66a14e1c19d1cdecc6ae6d8492dd9fb",
+        "table": "auth_group_permissions",
+        "type": "index"
+      },
+      {
+        "name": "auth_permission_content_type_id_2f476e4b",
+        "sql_sha256": "a86d40822c53a1ca184f4ad822ca04ccbe0642b138df42aaf5f0c88d666ba416",
+        "table": "auth_permission",
+        "type": "index"
+      },
+      {
+        "name": "auth_permission_content_type_id_codename_01ab375a_uniq",
+        "sql_sha256": "4bf8d61df3040121ab2d05820db8e1d479fcca88738be98b03b42e67fbbb40c6",
+        "table": "auth_permission",
+        "type": "index"
+      },
+      {
+        "name": "backup_dispatch_one_active",
+        "sql_sha256": "e172967df7624ea06226c4f62c5706622574a5b69fc93edfe9396d6ba01abba9",
+        "table": "backups_backupdispatch",
+        "type": "index"
+      },
+      {
+        "name": "backup_one_snapshot_preparing",
+        "sql_sha256": "ecdf4f5a2899a0bbf202513b9df7a7c47bbd02f66630512499c528bc6a69f2f4",
+        "table": "backups_backupjob",
+        "type": "index"
+      },
+      {
+        "name": "backup_send_one_inflight",
+        "sql_sha256": "702a0c18f67e42590d317fc30d3186031f31f2a35908d437e252e84b45ddfdb9",
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "backup_send_one_retry_child",
+        "sql_sha256": "d472b19f57817bd95e3141481864cb191a57e534333adc405d37324d0471b765",
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupconfiguration_updated_by_id_976bd68c",
+        "sql_sha256": "8d735d03123e56e98d9e351864777d2e9f34fe23c2dc50f68c8353651de6bf4e",
+        "table": "backups_backupconfiguration",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupconfigurationchange_actor_id_41d52707",
+        "sql_sha256": "24063e3163749380b598738a401add7d3a7eb8196de8aa63b260d3a5e1d64c83",
+        "table": "backups_backupconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupconfigurationchange_configuration_id_e068f09d",
+        "sql_sha256": "98c30b7c56df2a9c2f81fd19cf893a36d7cab59be3388e530f5bfbab7bd80961",
+        "table": "backups_backupconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupdispatch_job_id_ee80ae5c",
+        "sql_sha256": "ca2c2aee5dcaf6c1baff0052fc32f70e740cf8be401838275cecbd5305a090d5",
+        "table": "backups_backupdispatch",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupdispatch_requested_by_id_80716732",
+        "sql_sha256": "e393c509820836950966d7aba67b107964512029ba1c39bf134e23604a0a4d6e",
+        "table": "backups_backupdispatch",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupevent_job_id_1c1be205",
+        "sql_sha256": "8ab1a084f0a86f270efb3ccaf73e5a265fcb7e62c36f1bf2c6a78ccdb4ac53f9",
+        "table": "backups_backupevent",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupjob_abandoned_by_id_37d8aa49",
+        "sql_sha256": "843e78583913e0e5fabea89fc58348d12d06abc68e2943e0cac0a4fffa246b0f",
+        "table": "backups_backupjob",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupjob_requested_by_id_0756ab55",
+        "sql_sha256": "6647dc674ea1c0fca2cca90164d9fa209fb1ab65c139cb77e4d0374d0cc811ab",
+        "table": "backups_backupjob",
+        "type": "index"
+      },
+      {
+        "name": "backups_backuppart_job_id_992ff3f2",
+        "sql_sha256": "de1a7a4ca55bde1ff1771f98e55b3377a809eb8f0f516cda349c8173c0424463",
+        "table": "backups_backuppart",
+        "type": "index"
+      },
+      {
+        "name": "backups_backupschedulerun_actor_id_b3c96e03",
+        "sql_sha256": "811b47e75c8d829c5603cccddd0045d14b834de592bbe35aaa31e92bc984cd72",
+        "table": "backups_backupschedulerun",
+        "type": "index"
+      },
+      {
+        "name": "backups_hostingconfiguration_updated_by_id_ea46b658",
+        "sql_sha256": "218b7d6ef24d8ff6cefe04dc8acb3e4bd60640c5b23b33dfee16f72dcc88c628",
+        "table": "backups_hostingconfiguration",
+        "type": "index"
+      },
+      {
+        "name": "backups_hostingconfigurationchange_actor_id_35a311cd",
+        "sql_sha256": "51c5febe3c14d21a9864864b6e286de02732333c276061e863f275a5fc75a454",
+        "table": "backups_hostingconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "backups_hostingconfigurationchange_configuration_id_4af01891",
+        "sql_sha256": "a7450bbfbca9ffa3717dae59f1967382c91677239f111b90564134f797a675f0",
+        "table": "backups_hostingconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "backups_hostingobservation_actor_id_5a01b5b1",
+        "sql_sha256": "c2f0e04db62cffbfb70285f49040e8a1c27fea6bd8ec879fca9b351e7137d66d",
+        "table": "backups_hostingobservation",
+        "type": "index"
+      },
+      {
+        "name": "backups_hostingreminder_current_attempt_id_1a7d695a",
+        "sql_sha256": "351b28583f728e158b9c00c257e5b1c00d929dfa4df074af93a0d45a413303f7",
+        "table": "backups_hostingreminder",
+        "type": "index"
+      },
+      {
+        "name": "backups_hostingreminderattempt_actor_id_98f3424a",
+        "sql_sha256": "fbab3e1cbcfa5cc2eafafb5c7217f7c95769771106bb326d05ca7f9540da1d19",
+        "table": "backups_hostingreminderattempt",
+        "type": "index"
+      },
+      {
+        "name": "backups_hostingreminderattempt_reminder_id_647cedfb",
+        "sql_sha256": "f6a0a293d68c7fc76a296e60cf37a29a7c894727cdd94d58e967617517196db0",
+        "table": "backups_hostingreminderattempt",
+        "type": "index"
+      },
+      {
+        "name": "backups_hostingreminderrepair_actor_id_8035c998",
+        "sql_sha256": "0c7e9ce384870aa6a1cbaa165c3959adcfb3069297546921bc4a4f14e58a3d1b",
+        "table": "backups_hostingreminderrepair",
+        "type": "index"
+      },
+      {
+        "name": "backups_importpreparation_batch_id_078f0474",
+        "sql_sha256": "6bc27d0b916b37ad9de3a47cb99acf5d5fbd99fab58ff7b1f7bd9f8c5e0fd39c",
+        "table": "backups_importpreparation",
+        "type": "index"
+      },
+      {
+        "name": "backups_importpreparation_requested_by_id_a4d292d1",
+        "sql_sha256": "8e493e01d25338108258ec46c0281ba80c488ab42199d911d02d4307389ab97b",
+        "table": "backups_importpreparation",
+        "type": "index"
+      },
+      {
+        "name": "backups_importquarantine_preparation_id_377b9d1a",
+        "sql_sha256": "193b9c7c0182b4ec8385a31cc9bc071cd0aa38bd90a1df827a6cbbfffaa9d5c9",
+        "table": "backups_importquarantine",
+        "type": "index"
+      },
+      {
+        "name": "backups_importquarantine_requested_by_id_c267d920",
+        "sql_sha256": "f23d6869b07a50337d2ab71f7a6bfa4d0f3b20333aaa873d8bf8c15c88c0599c",
+        "table": "backups_importquarantine",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryclosure_closed_by_id_15b521d1",
+        "sql_sha256": "4148796ae04a366bab9ceb2d4798683282dbacb93621fb7c917267b573038fa6",
+        "table": "backups_recoveryclosure",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryclosure_closed_installation_id_bd576d81",
+        "sql_sha256": "effe9a37f8f389cb507069a8883edfff37f284befa6574fee2fd006256833132",
+        "table": "backups_recoveryclosure",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverycollectionreviewdecision_capture_id_68a5428e",
+        "sql_sha256": "eb66ab5756a91da144cd853c06df993d9d47f25a266379544c55efbf905d8ad2",
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverycollectionreviewdecision_review_id_f90f4b04",
+        "sql_sha256": "bd8897d6f45dae02393ce4b318b7df1a58fd7e28b6f2e32664ad817e7072f8ec",
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverycollectionreviewdecision_reviewed_by_id_87d1b7b1",
+        "sql_sha256": "b255da89e9f2b9db1f7b844c30c381fea62887b64e4ad824823da9c99cd11144",
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverycollectionreviewdecision_reviewed_installation_id_169839ea",
+        "sql_sha256": "06c57ceb9990eb6ca898b85052d21f0d4ee67b0c00119c467a3ed3054859346c",
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverydevice_session_id_c7d8e649",
+        "sql_sha256": "bd70adb4e0e13b333ffbddf2aea0c213b19af72dcaa9be5f06caa4b76eebd7ec",
+        "table": "backups_recoverydevice",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverydevice_shop_id_05f8b8cd",
+        "sql_sha256": "71e8eec01f4a6bdc8f24b44d72a50f6ec0e52e2da65a40b8cd33e718cfa43aa2",
+        "table": "backups_recoverydevice",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryintegrationdecision_business_operation_id_8de7ae0a",
+        "sql_sha256": "7858cb29a43f9c533238eef198a05cdf8540d4ba2eabfbab9c2884a75b088760",
+        "table": "backups_recoveryintegrationdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryintegrationdecision_capture_id_5c5f74c0",
+        "sql_sha256": "12018ccdd9896dde91c59de5d9122bcad8dcc295c9e18061a259c6e1f02a3025",
+        "table": "backups_recoveryintegrationdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryintegrationdecision_reviewed_by_id_4ae460f6",
+        "sql_sha256": "6385089a1e6da761ab3ac10022f4b46f29fd0e9e8e5e6ae24de75e26622e34f5",
+        "table": "backups_recoveryintegrationdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryintegrationdecision_reviewed_installation_id_9d607673",
+        "sql_sha256": "3b3d80d50c1237cd7cc9bfbbfe7b27cf434f6dff46dcfa165d6ade4406a39ffd",
+        "table": "backups_recoveryintegrationdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryjournaldeposit_session_id_dadfa642",
+        "sql_sha256": "34e92dd5cbec00aab0b6f380534d79412107c2defa05cc3a17888aec00d8da7b",
+        "table": "backups_recoveryjournaldeposit",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryjournaldeposit_shop_id_edfac8dd",
+        "sql_sha256": "076e4626bad21aa0f2ad199f988593fb8935f42446a42a1da0206230d2583fb4",
+        "table": "backups_recoveryjournaldeposit",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryjournaldeposit_submitted_by_id_eaa2120a",
+        "sql_sha256": "f20133985ce7508d076d5464859e06030d3a2b02ac1634e85b32891ffc4896cc",
+        "table": "backups_recoveryjournaldeposit",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryjournaldeposit_submitted_installation_id_c0ed3943",
+        "sql_sha256": "24f5cd742decca3e90c29703f55ab98b6a3fc90e7aa5eb85cf0e731f87407d78",
+        "table": "backups_recoveryjournaldeposit",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryjournaloperation_first_deposit_id_34d26ebc",
+        "sql_sha256": "65190eedd6bab482d242b78e9e9540ab96288fef185658f3b69cc5d48379903b",
+        "table": "backups_recoveryjournaloperation",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryjournaloperation_session_id_4d34fc38",
+        "sql_sha256": "3f03b0bf3dc6e23ec71f2ca401d5ef152913fbc07d84c4c21747ceb240d13371",
+        "table": "backups_recoveryjournaloperation",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoveryjournaloperation_shop_id_3b6b2d47",
+        "sql_sha256": "2237ad521641171d70b95929ce59252d8214c2c3303eabb132b010aacb76de2c",
+        "table": "backups_recoveryjournaloperation",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverysaleholddecision_capture_id_54af01d5",
+        "sql_sha256": "17ca4065276be33a9b538325eec941e4c3d15e98d3634e26a336ba5eb3e8468c",
+        "table": "backups_recoverysaleholddecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverysaleholddecision_hold_id_3a0ac9a8",
+        "sql_sha256": "5ecc5bd2af278ad90fdf9708bccc9c265e8955118fba4ab46499ff88fd042c7d",
+        "table": "backups_recoverysaleholddecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverysaleholddecision_reviewed_by_id_75441dbf",
+        "sql_sha256": "e0462095c3ef20af19571d523b33bbca4ea40be894f82046e0659cfff3ba4b7b",
+        "table": "backups_recoverysaleholddecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_recoverysaleholddecision_reviewed_installation_id_0fa21d63",
+        "sql_sha256": "affbc53a97ae98631b472452472d37308ddb40eca758eee9fbfd387433e5977c",
+        "table": "backups_recoverysaleholddecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreaccessdecision_requested_by_id_44cd31e6",
+        "sql_sha256": "40d4bbe1ee0a82f8549769c2ee11d19d534284ea7deccfc09047aa90a73c095a",
+        "table": "backups_restoreaccessdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreaccessdecision_review_id_dabb35f2",
+        "sql_sha256": "f0bb3c79538e40eed30354431d5d681277e9a838091daac30308348e75e9d5fc",
+        "table": "backups_restoreaccessdecision",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreaccessreview_generation_id_6afeb465",
+        "sql_sha256": "4226c9befffeda3ef72c9defcd11059a620422a3efe1b5afc92d287e7dfc940f",
+        "table": "backups_restoreaccessreview",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreaccessreview_membership_id_692a2891",
+        "sql_sha256": "53e7a336448871d36926c184ff6ad3c9ac0b1c6d5d090fd415d52333f4be52aa",
+        "table": "backups_restoreaccessreview",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreaccessreview_shop_id_b345f491",
+        "sql_sha256": "6e1fc2f0b5ef8a7a5da8a0268c1ee7ae5493f02a0331fa7db029f2534fc47836",
+        "table": "backups_restoreaccessreview",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreaccessreview_user_id_92e54a58",
+        "sql_sha256": "c88ea2cf976eb2916389718a87f60049d0d0326ec873ed1a59314959220737c9",
+        "table": "backups_restoreaccessreview",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreimport_requested_by_id_e51cbbaf",
+        "sql_sha256": "3c8461b2e6afd3761653c7a8da9bd8690d9dcac6dc85fee5f7c3fc8d87532f34",
+        "table": "backups_restoreimport",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreimportpart_batch_id_f9ff775f",
+        "sql_sha256": "a63ec8861e4379d14fab55c525b61db005dc77291cec89d91a1e4ca082c8a9c4",
+        "table": "backups_restoreimportpart",
+        "type": "index"
+      },
+      {
+        "name": "backups_restoreimportpart_uploaded_by_id_10cd2ae6",
+        "sql_sha256": "d0e29ac51b497313dd2b0c87d5e2a11d573dea164975fe024842b0f61e99ccbb",
+        "table": "backups_restoreimportpart",
+        "type": "index"
+      },
+      {
+        "name": "backups_sendattempt_dispatch_id_f4954dcb",
+        "sql_sha256": "ca0385f4a30393fd5d8daa2d065696cf37aac9bcee846fffe8aebcd5b3a5628b",
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "backups_sendattempt_part_id_0aba2276",
+        "sql_sha256": "7381d90f0fb51278dba05ec30b97318fd46183ba8e1294b0b6855eb15eb7925b",
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "backups_sendattempt_previous_id_4111646b",
+        "sql_sha256": "c772c76d2a0f35d0b487a328dcf47f7532eb1d665a21ef29df637b2409cbe7bd",
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "backups_sendattempt_requested_by_id_21063771",
+        "sql_sha256": "01172359e47d52fce03119a8b73bc80e11f07ffe9aab6095c418a5b1aaf67a24",
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "barcode_unit_once",
+        "sql_sha256": "50f79ba2021246d53d515dc5700a408ca2c3f0a9b7eb89431beca007c05af7de",
+        "table": "core_barcode",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_productpriceconflict_product_id_e1a7307c",
+        "sql_sha256": "d49ccf393ab061f97678524141a57d25b266f16896c3d69538125f9640196407",
+        "table": "catalogue_productpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_productpriceconflict_shop_id_2fcf68ef",
+        "sql_sha256": "6a2747ddd1b7c6e74200dbcada966ec5688ba80baad69e2db2b2c814c795f1f6",
+        "table": "catalogue_productpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_productpriceproposal_conflict_id_e1daf48e",
+        "sql_sha256": "d46ead3b501135875b2d0b687349a8ea46473e4b8eea25d167b555bd4dd715c4",
+        "table": "catalogue_productpriceproposal",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_productpriceresolution_proposal_id_6e6ba201",
+        "sql_sha256": "e090fdaf3ef1f3e3c05d7d3c16c7caa947f8ea2a79eef176cf7deca6c7275099",
+        "table": "catalogue_productpriceresolution",
+        "type": "index"
+      },
+      {
+        "name": "core_activity_actor_id_b1bb0ae3",
+        "sql_sha256": "54d06d4d2c85265f21ced23a19812bbcd3e6af4d5d8952eea2b0dfdc2d870dcf",
+        "table": "core_activity",
+        "type": "index"
+      },
+      {
+        "name": "core_activity_shop_id_5094ef99",
+        "sql_sha256": "09de9c3d61dbb6c58b16445c171c41dcd6f8467c4ceee323d33a69dc8942c48f",
+        "table": "core_activity",
+        "type": "index"
+      },
+      {
+        "name": "core_barcode_product_id_ef441df5",
+        "sql_sha256": "3fc7269f1e5d8c659afb971d456d19c39802e517e129fd1222a8b1d7d95c3c67",
+        "table": "core_barcode",
+        "type": "index"
+      },
+      {
+        "name": "core_barcode_shop_id_8f15b46f",
+        "sql_sha256": "5721e262bf35886c84721e864e07667246e203f85cd5ce8600f8a0ba3f61a90f",
+        "table": "core_barcode",
+        "type": "index"
+      },
+      {
+        "name": "core_cashco_shop_id_7d1ff0_idx",
+        "sql_sha256": "e5540c60bb33f342f725e8bf40f54a6e637dbe78d8570a3dbcd4bbc33097c8c7",
+        "table": "core_cashcount",
+        "type": "index"
+      },
+      {
+        "name": "core_cashcount_actor_id_eb34a5d2",
+        "sql_sha256": "2b9a50d219f907bb28c8a28532e23e0b37ec2724e757ded5e05550aece0b4996",
+        "table": "core_cashcount",
+        "type": "index"
+      },
+      {
+        "name": "core_cashcount_installation_id_50a72a14",
+        "sql_sha256": "c1ce77fb4c4624d9104acea80168c90900318337d456cd7478f4c2a2d738c543",
+        "table": "core_cashcount",
+        "type": "index"
+      },
+      {
+        "name": "core_cashcount_shop_id_1b0fdcbd",
+        "sql_sha256": "d6da45b01bf3d6c4ccfff4842f589e379269a2539e6bcca2c9d0af3f68bb887e",
+        "table": "core_cashcount",
+        "type": "index"
+      },
+      {
+        "name": "core_cashmo_shop_id_0d33dc_idx",
+        "sql_sha256": "f1b6351c89ccf1d4ebb7a520f72fddc1eb0ac039d6689f276cac06fed4b5f48a",
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_cashmovement_actor_id_55855a9b",
+        "sql_sha256": "c02014fcec4269be467af58f324e1dde59a4af0f7cf2a1a48f870eff4a5aad3d",
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_cashmovement_installation_id_8b4aa58c",
+        "sql_sha256": "e8b73949d267ed7cb6d624d00f98cd7fe534fd4622a2cae75a9e8400b8234bb5",
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_cashmovement_operation_id_5b22f527",
+        "sql_sha256": "74e7f0c76de316becf9db3a55cf9719fa308c6041ee05ea429f6c7e6f00cee5d",
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_cashmovement_shop_id_37dfeb9c",
+        "sql_sha256": "4acdb3cc4b906443a37be1ded9699cb41d143faceb8bc29940cde492cd6736e7",
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_catalo_shop_id_48a255_idx",
+        "sql_sha256": "3b1078adfc2e02315774e034710f0cfe7e6e425fe39584a346cca1c130debd3f",
+        "table": "core_catalogueimport",
+        "type": "index"
+      },
+      {
+        "name": "core_catalogueimport_actor_id_cea32318",
+        "sql_sha256": "d27f64b7e7d858b6f1af1d1c25bedf69deecbe4bea50f9b788cf4a946b021fe8",
+        "table": "core_catalogueimport",
+        "type": "index"
+      },
+      {
+        "name": "core_catalogueimport_installation_id_b90df3a0",
+        "sql_sha256": "90f6d687995965b857e77c031fd5bfec617a5642e93aa34c3da4c463390ce0c9",
+        "table": "core_catalogueimport",
+        "type": "index"
+      },
+      {
+        "name": "core_catalogueimport_shop_id_27078bbf",
+        "sql_sha256": "410b68f2f2a342bae52b79bf2aa88bd14f3243372568957532bd0313dcd781f2",
+        "table": "core_catalogueimport",
+        "type": "index"
+      },
+      {
+        "name": "core_catego_shop_id_d3067b_idx",
+        "sql_sha256": "bf0f0f7e3d951d17934f9dd069f93d7d1cfefac3feff1c13e45dec87f2d497cc",
+        "table": "core_category",
+        "type": "index"
+      },
+      {
+        "name": "core_category_shop_id_8b9ccab4",
+        "sql_sha256": "e214928c894e80e3c2a5b4634cfc44c036dc4cda69482422c2dc5b62a20e95e6",
+        "table": "core_category",
+        "type": "index"
+      },
+      {
+        "name": "core_costre_product_97e46b_idx",
+        "sql_sha256": "5aecd2de574229d0dc56bb390df43175498c4c1e2d4433e18c2fe7846b2c2e2a",
+        "table": "core_costrevaluation",
+        "type": "index"
+      },
+      {
+        "name": "core_costrevaluation_installation_id_7f0d9bca",
+        "sql_sha256": "dfe4995b0150c5cbb8ca091a691a2e57f3810d29a14c7f7c1223271212ddbceb",
+        "table": "core_costrevaluation",
+        "type": "index"
+      },
+      {
+        "name": "core_costrevaluation_product_id_bf6acfe8",
+        "sql_sha256": "0e9376335f977fcec04a03258015d0ae1a788ce7bad222def72f1b0821171914",
+        "table": "core_costrevaluation",
+        "type": "index"
+      },
+      {
+        "name": "core_costrevaluationitem_batch_id_f7f9d4ae",
+        "sql_sha256": "fe87e93a16c6aace87c842e20ff7332682f36d68d825d56ba49fb379667e88cf",
+        "table": "core_costrevaluationitem",
+        "type": "index"
+      },
+      {
+        "name": "core_costrevaluationitem_movement_id_efb2af3a",
+        "sql_sha256": "23c7ec94d3140a50e81121516a2c53b4fc5f69e601de957e6a8f289d6af168e0",
+        "table": "core_costrevaluationitem",
+        "type": "index"
+      },
+      {
+        "name": "core_costrevaluationitem_previous_id_750fe8ca",
+        "sql_sha256": "c232a550e15170b6566adcf086cb542aab898707ff01aca7fe8487c876a73b0f",
+        "table": "core_costrevaluationitem",
+        "type": "index"
+      },
+      {
+        "name": "core_costrevaluationitem_revised_id_5245b635",
+        "sql_sha256": "34471361a4223b881c29cd7a8538851bc26796237699cbacc38c9a63d81a2a7b",
+        "table": "core_costrevaluationitem",
+        "type": "index"
+      },
+      {
+        "name": "core_custom_externa_c2f99d_idx",
+        "sql_sha256": "6ceec2523574ba75cee76a5eb86cbd71a0fc94b9772c98b5bd5557907c7a6cf0",
+        "table": "core_customerpaymentpart",
+        "type": "index"
+      },
+      {
+        "name": "core_custom_shop_id_545c88_idx",
+        "sql_sha256": "a49f377138104c883f903c9e5c8618bd6570cccbaedbd96a7bb2f1322080d36d",
+        "table": "core_customerpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_custom_shop_id_6f4c80_idx",
+        "sql_sha256": "eb0491ae59ff1d5c7c06191c6a0bd5cefa28cef94cc4ec8c4a0900916a68a176",
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_custom_shop_id_71994d_idx",
+        "sql_sha256": "88617f6c892fc50d03a6897b5989ed58d9b86628ed0dd2e49200e7a16639fe4a",
+        "table": "core_customer",
+        "type": "index"
+      },
+      {
+        "name": "core_custom_shop_id_c03b07_idx",
+        "sql_sha256": "4b092c8bf054ab97f813080b6b7ce4d2b813be5ec9ecbe14541a2afcb4a0e258",
+        "table": "core_customercredit",
+        "type": "index"
+      },
+      {
+        "name": "core_custom_shop_id_c21381_idx",
+        "sql_sha256": "dc9d6317ff158ef4acdef1d81e63d1bf4acb4c0706faaf37026bd1d850b5ae52",
+        "table": "core_customerledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "core_customer_shop_id_bb24bb5a",
+        "sql_sha256": "dfd7d57843f28ec58b434c0a16bf23818ca6aba7efb703d0568d58b25b35a6e7",
+        "table": "core_customer",
+        "type": "index"
+      },
+      {
+        "name": "core_customercredit_customer_id_b9f6169b",
+        "sql_sha256": "374665ff5b176980105515dd4744946e90d3ec01524108dea144d5c5f560cb5d",
+        "table": "core_customercredit",
+        "type": "index"
+      },
+      {
+        "name": "core_customercredit_operation_id_89500c4f",
+        "sql_sha256": "485133489c67cffd62424fc4edd6d8e825351ab0aa76523be19bb10cb2c84ab8",
+        "table": "core_customercredit",
+        "type": "index"
+      },
+      {
+        "name": "core_customercredit_shop_id_f64de309",
+        "sql_sha256": "f85262ee503f971fa7cca4e5d4f69ec6fc5706cbb7fc3e5239f4745097c3fd10",
+        "table": "core_customercredit",
+        "type": "index"
+      },
+      {
+        "name": "core_customerdebt_actor_id_97df46c3",
+        "sql_sha256": "c8e7471383ae33e4ea636c3eea0e466c46983e8345060fa7b7d1c9da16429c1c",
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_customerdebt_customer_id_e4f61ec4",
+        "sql_sha256": "cc8167cab4cd37c11fc91e171f3258a4f65c3ca5b862f8263d0be08da7865bb2",
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_customerdebt_installation_id_caadab3a",
+        "sql_sha256": "0093a3471f112f262488cee34b6f36598ad79c08697739a76e09334c0e88e869",
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_customerdebt_operation_id_25143fd0",
+        "sql_sha256": "01a7b0191c248fe4cadc018e6f19e7e6ff6d8c034e6f699f1ec5b7816eb7ab06",
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_customerdebt_shop_id_dd6517be",
+        "sql_sha256": "4165fa72e2e12439e604ea42f7fb776a4f18d5df0f93e3c67ac4a8c448933785",
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_customerledgerentry_customer_id_62a2a5d5",
+        "sql_sha256": "03fcd53f4b373ed0a9c019a4a52248ff192dbd5f8c42a10cd8f7a24b34f07d91",
+        "table": "core_customerledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "core_customerledgerentry_operation_id_e3d0b0e5",
+        "sql_sha256": "a4bedf0a6b97c05b7f3f078b4d37a810bbd3286214bc7c79f70ad840f365e8be",
+        "table": "core_customerledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "core_customerledgerentry_shop_id_84b9a059",
+        "sql_sha256": "79e21e99e68b455386f837aa4234151a6ea2309f0fcbac6ce36a52c7f8388704",
+        "table": "core_customerledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "core_customerpayment_actor_id_fdd2a96a",
+        "sql_sha256": "11fa63711d9d11369ec9f3adba2eb4c710923c58a98e8f3ff8c29e2bfbdc2847",
+        "table": "core_customerpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_customerpayment_customer_id_46ed6860",
+        "sql_sha256": "0ec69f8501f449a68cd901d992db6d7fb2af72c37473f68a656fddd6fdb5d02f",
+        "table": "core_customerpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_customerpayment_installation_id_b1cd7533",
+        "sql_sha256": "e3a82a3eeee609a42e5af1a240d920b6c6ba08383f881ba6a29b89cf5cad780d",
+        "table": "core_customerpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_customerpayment_shop_id_bd548683",
+        "sql_sha256": "ea2a21fb4e3956b1493e244f9345a2fba33d92f29a9eb6e61976e83b2da77aa8",
+        "table": "core_customerpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_customerpaymentpart_payment_id_9e1caaa5",
+        "sql_sha256": "942bd30e42d7935c761301ca2bb818d11180f4f5880a2ddc6607a10f49f91a10",
+        "table": "core_customerpaymentpart",
+        "type": "index"
+      },
+      {
+        "name": "core_debtallocation_debt_id_0a41fd54",
+        "sql_sha256": "10f01dfc480f36893ab618cae3ed6888c658c79ff87c7f0e717fbaf2316ed281",
+        "table": "core_debtallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_debtallocation_payment_id_caca7817",
+        "sql_sha256": "5cdb0f8c9c5a1f5f632d2e11568ba8e9b2c05aa44d50f4aa8b4166f8e1a8fc28",
+        "table": "core_debtallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_devicesession_installation_id_9f8bf59b",
+        "sql_sha256": "c2655377fbec9aa23572aaae0c91661b6bfd2a752f8917ae823063d88f78e916",
+        "table": "core_devicesession",
+        "type": "index"
+      },
+      {
+        "name": "core_installation_user_id_4c9295e4",
+        "sql_sha256": "f3f6e0831db294b545e6c96d4d1d3fa21e55de2e56b6c8c82afd456b3925e9f4",
+        "table": "core_installation",
+        "type": "index"
+      },
+      {
+        "name": "core_languagepreferencechange_user_id_4aed3f9a",
+        "sql_sha256": "ee4a382049f47feec48d6683a3853037ae356d341f9a6c068d123dbe2bebf8d1",
+        "table": "core_languagepreferencechange",
+        "type": "index"
+      },
+      {
+        "name": "core_member_user_id_f362ea_idx",
+        "sql_sha256": "84eb7bdbb569857464e5aed5f613ae065d1f0ab6871221cd28c1d7eae6b98dc5",
+        "table": "core_membership",
+        "type": "index"
+      },
+      {
+        "name": "core_membership_shop_id_080f3766",
+        "sql_sha256": "1069371082f9aafe68932339e9bf84a0540301da7ec1c6107f5e85ef6d06679f",
+        "table": "core_membership",
+        "type": "index"
+      },
+      {
+        "name": "core_membership_user_id_f9b5780b",
+        "sql_sha256": "fd69801059ed87dd8916497d6ee4be0abdd158a39c95d4657a99d60d45de4eef",
+        "table": "core_membership",
+        "type": "index"
+      },
+      {
+        "name": "core_nonsel_receipt_fe57a8_idx",
+        "sql_sha256": "3d460528947bf559db2b00e57318694b6d2998bad04e84aeecf9da7addf43a58",
+        "table": "core_nonsellabledecision",
+        "type": "index"
+      },
+      {
+        "name": "core_nonsellabledecision_installation_id_602db6d8",
+        "sql_sha256": "e67fb842e7170afdf794dabdf86da743b9a7efa248b38a56876834f83471ef24",
+        "table": "core_nonsellabledecision",
+        "type": "index"
+      },
+      {
+        "name": "core_nonsellabledecision_receipt_id_f2b0cd1f",
+        "sql_sha256": "31fc6849ff68b399378eaa8c36b6cd2afc7e057e495f9024960cd3a6813a25d1",
+        "table": "core_nonsellabledecision",
+        "type": "index"
+      },
+      {
+        "name": "core_nonsellabledecision_supplier_id_cc630e7b",
+        "sql_sha256": "7fa6a7bbafc43bd6da0ab92bce3d9ec29918564e3bd4fd5ee4acab9a3e442775",
+        "table": "core_nonsellabledecision",
+        "type": "index"
+      },
+      {
+        "name": "core_paymentregularization_credit_id_dd1dbb8a",
+        "sql_sha256": "408dd0d7f81ee04f90fc26045662ada2d5de34e4bd7222d92024c6ad47072f1b",
+        "table": "core_paymentregularization",
+        "type": "index"
+      },
+      {
+        "name": "core_paymentregularization_installation_id_474a7a54",
+        "sql_sha256": "33809f609d753f88905433d53e23e4c033b7d0b167c85f5dd715a818b1d3f12d",
+        "table": "core_paymentregularization",
+        "type": "index"
+      },
+      {
+        "name": "core_paymentregularization_payment_id_a10414a4",
+        "sql_sha256": "2939f5b311a543a623459d043365fff53a5cc3ad387a99aecf86fca0b8c5b2ce",
+        "table": "core_paymentregularization",
+        "type": "index"
+      },
+      {
+        "name": "core_produc_product_2ac09a_idx",
+        "sql_sha256": "eae978362bad5038741a351b1ae0436a15065b9a6053e205b2a04c1d67d3c535",
+        "table": "core_productpack",
+        "type": "index"
+      },
+      {
+        "name": "core_produc_shop_id_aeb8a2_idx",
+        "sql_sha256": "2eaef944b003a62cc8046031f03f4bc4422dc9a40fb4af8f261f7d5ba4f61b0f",
+        "table": "core_product",
+        "type": "index"
+      },
+      {
+        "name": "core_product_category_id_b9d8ff9f",
+        "sql_sha256": "9df9a4bdcd715d7eea5d8b4228dc843fc993726b962d1b2f0bb177b437e6f966",
+        "table": "core_product",
+        "type": "index"
+      },
+      {
+        "name": "core_product_shop_id_0b3af7b2",
+        "sql_sha256": "fa81430e529761620b4b34a5355fc4b0ffddb8c267a7a6741c2187b0ca8b4827",
+        "table": "core_product",
+        "type": "index"
+      },
+      {
+        "name": "core_productpack_product_id_fbfa7dda",
+        "sql_sha256": "babfaf567f90366a79ac8bbeb40d828f57df28f0a81d94b3fbe3621ed17e03e5",
+        "table": "core_productpack",
+        "type": "index"
+      },
+      {
+        "name": "core_purcha_shop_id_272369_idx",
+        "sql_sha256": "e5e1ef49c26e3dc4f52b68e4e82be01f3bf9f660dd13babce66a2dbfbc13d44c",
+        "table": "core_purchasedocument",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasecharge_document_id_0c1694a7",
+        "sql_sha256": "5739abd626a76535827a9beb9a420ec7cbdd799fd924ceed96d31c252863af14",
+        "table": "core_purchasecharge",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasecharge_installation_id_7b6f8aee",
+        "sql_sha256": "538841df88e0be3341970758a7aed6aa879b2fd9ea9b90932587fc292530000a",
+        "table": "core_purchasecharge",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasechargeallocation_line_id_a5901384",
+        "sql_sha256": "a87a9a4049bb6ca6ead1d7d780c81c0d7718a7e89c3853631b587a06f91c3208",
+        "table": "core_purchasechargeallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasechargeallocation_revision_id_562b426c",
+        "sql_sha256": "ce686776f443c11f74d61b7f19ec802938cc68e7d6f54c0a80648b8e6a60127d",
+        "table": "core_purchasechargeallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasechargerevision_charge_id_75060783",
+        "sql_sha256": "dd2c8d99b4a08281cb0748330857c93fe45618e8ccec79a433da8b2f00b5d3ff",
+        "table": "core_purchasechargerevision",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasedocument_installation_id_5e05c149",
+        "sql_sha256": "0ae2fd402e13ba35037d890833b28866becb8d8344fbfa66cd61e96390bbb58c",
+        "table": "core_purchasedocument",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasedocument_order_id_59b3072c",
+        "sql_sha256": "36955e47c02d2e0bc92cbb88e2e0a925119a844583f0278d33a91094eebcf115",
+        "table": "core_purchasedocument",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasedocument_shop_id_e80ac179",
+        "sql_sha256": "173a1ffc009c1cb52c729c6d6bbdb097571f7a5dedf41128daa5f0b1a5e19ecb",
+        "table": "core_purchasedocument",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasedocument_supplier_id_f8253142",
+        "sql_sha256": "3064c832a9d122533d2f85f6659e8c4777ea5783bf30c206018543230b088a38",
+        "table": "core_purchasedocument",
+        "type": "index"
+      },
+      {
+        "name": "core_purchaseline_document_id_b2abf728",
+        "sql_sha256": "85152dccb0c26d3e7b90a2dddbbeeb41f91b590a2f90c7883903cffd3a96c291",
+        "table": "core_purchaseline",
+        "type": "index"
+      },
+      {
+        "name": "core_purchaseline_pack_id_6daa0e7b",
+        "sql_sha256": "039e6e05552d2deaab91ee9b38a6aa58508cf379403626ab5290f6a26abd5f69",
+        "table": "core_purchaseline",
+        "type": "index"
+      },
+      {
+        "name": "core_purchaseline_product_id_7c9b3479",
+        "sql_sha256": "d6693ef1ada255bca02cb9667651c82cc96675cd19335a3dc947934cb81528c9",
+        "table": "core_purchaseline",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasereceipt_document_id_78d84a7f",
+        "sql_sha256": "a58e942d9df3cc3b6092849325f1b7cc3f25386295b8d1c08475fff15da95a2a",
+        "table": "core_purchasereceipt",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasereceipt_installation_id_c2b69eaa",
+        "sql_sha256": "6d45fe7cbf22c2067bc6e3c2d3be052309acd5d9e09096033f8d433c419025f1",
+        "table": "core_purchasereceipt",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasereceiptline_line_id_b6192a01",
+        "sql_sha256": "4f46b8c8d460aba051bbffe88a2ff05e0ff17a005006c0423c75a443ecf6c3b3",
+        "table": "core_purchasereceiptline",
+        "type": "index"
+      },
+      {
+        "name": "core_purchasereceiptline_receipt_id_7ebd3616",
+        "sql_sha256": "c6a45b7d7ea7d65838ca7173453c9a6c875906926d2864f2126b58c0565305da",
+        "table": "core_purchasereceiptline",
+        "type": "index"
+      },
+      {
+        "name": "core_regularizationallocation_debt_id_1d2a4b11",
+        "sql_sha256": "c3b2bada722896a5db27adb922cfaa21d3d93a859df6a9c7f0d16b3d9116dcd1",
+        "table": "core_regularizationallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_regularizationallocation_regularization_id_51e91aa2",
+        "sql_sha256": "1b3b6794828dddf9a50a775ad816d552c2e5fb55497e5196fdf498efb2c0f8f9",
+        "table": "core_regularizationallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_return_batch_i_a42321_idx",
+        "sql_sha256": "c071e0213d5bc393e50d8808122fd778a132406dc569b0849954af19a3b5322e",
+        "table": "core_returncostrevision",
+        "type": "index"
+      },
+      {
+        "name": "core_return_return__ad70df_idx",
+        "sql_sha256": "8689380755a073475e2b42b864aa53c0ba1f7457b0751524c7f800f79b9b6233",
+        "table": "core_returnreceipt",
+        "type": "index"
+      },
+      {
+        "name": "core_return_sale_re_29bbe7_idx",
+        "sql_sha256": "adc16253ce705f0d1206f81caa25f279bcff779aa983397f65fe1ef54bad5360",
+        "table": "core_returncreditsettlement",
+        "type": "index"
+      },
+      {
+        "name": "core_returncostreconstruction_batch_id_892e1d2a",
+        "sql_sha256": "07cb41692b92653bc11a4886f5d114ef399dae627b7790a1d64dac127d5508a7",
+        "table": "core_returncostreconstruction",
+        "type": "index"
+      },
+      {
+        "name": "core_returncostrevision_batch_id_847ff03b",
+        "sql_sha256": "5aba2156f1fd12a13686ee1dae9e94adaa431693f1a4dc8fde40b6b9c9329098",
+        "table": "core_returncostrevision",
+        "type": "index"
+      },
+      {
+        "name": "core_returncostrevision_origin_id_8543ca2a",
+        "sql_sha256": "ac5256216a0250d164ff2541391370e6ffdd3a0a0bdae52a0dbf48ef1d21e294",
+        "table": "core_returncostrevision",
+        "type": "index"
+      },
+      {
+        "name": "core_returncostrevision_sale_cost_id_c2e4714f",
+        "sql_sha256": "9ea80a6059fa7582918df8be3d9b991739174f5d8e56f279e57fca18c9274e86",
+        "table": "core_returncostrevision",
+        "type": "index"
+      },
+      {
+        "name": "core_returncostsnapshot_sale_cost_id_843d9e66",
+        "sql_sha256": "776be3a42f53494a1c7a98ac822150e06731ae23904e357a7cd6fd5af4837572",
+        "table": "core_returncostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "core_returncreditallocation_debt_id_342db7c0",
+        "sql_sha256": "bcc2f79b2e3167f955f7ad4b1b76a40f1b69f16c3a4198efe9c461cb5c0cec88",
+        "table": "core_returncreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_returncreditallocation_settlement_id_17084fd5",
+        "sql_sha256": "93565eef7ecad676d47dbc8858e067b6d38d1516a9574f419763997529b536d9",
+        "table": "core_returncreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_returncreditsettlement_installation_id_5704c85e",
+        "sql_sha256": "5aff89e7327a5c76bc239f6c7338dace4a98ac552db58399c60174fa81fdc7ca",
+        "table": "core_returncreditsettlement",
+        "type": "index"
+      },
+      {
+        "name": "core_returncreditsettlement_sale_return_id_8189c604",
+        "sql_sha256": "6e6c6911752cd13691c21914fd40b6291193d0d225a7ba70a87334ef4da11e84",
+        "table": "core_returncreditsettlement",
+        "type": "index"
+      },
+      {
+        "name": "core_returnreceipt_installation_id_47402a9d",
+        "sql_sha256": "de21f74aa9193dd0fba65f5d8395d9641fe091cb1e68cb6da37648f7f163888c",
+        "table": "core_returnreceipt",
+        "type": "index"
+      },
+      {
+        "name": "core_returnreceipt_return_line_id_77bfa372",
+        "sql_sha256": "fca29bcbf45a8108a2f39244b3f379af3752a3303d8a76959314a85dd7833818",
+        "table": "core_returnreceipt",
+        "type": "index"
+      },
+      {
+        "name": "core_sale_actor_id_6278175a",
+        "sql_sha256": "27ef4fc0e60ce6b8a369c412e3dbdc2588975ac79bad29b5bd12585990889d20",
+        "table": "core_sale",
+        "type": "index"
+      },
+      {
+        "name": "core_sale_customer_id_2acb5b23",
+        "sql_sha256": "2a68529ddd604ea68758ffb4f716f8f9a6dc6bfea4f5e8701503572e167b3e96",
+        "table": "core_sale",
+        "type": "index"
+      },
+      {
+        "name": "core_sale_installation_id_ff126850",
+        "sql_sha256": "5ac793f8f664b0f2b5bf40e6dffb41a54067d5db3923315b493154d674340dd3",
+        "table": "core_sale",
+        "type": "index"
+      },
+      {
+        "name": "core_sale_shop_id_48ebddac",
+        "sql_sha256": "638ddfa060a94a4a034c4809d2e73c297c05d5ec6f9735eeb7b1cd00b23643d6",
+        "table": "core_sale",
+        "type": "index"
+      },
+      {
+        "name": "core_sale_shop_id_9f8a6e_idx",
+        "sql_sha256": "d932733dc7decb38d57bf1b460119bbbb7d088775c447e7e907d106cbf5cf3b5",
+        "table": "core_sale",
+        "type": "index"
+      },
+      {
+        "name": "core_salecancellation_installation_id_989698cc",
+        "sql_sha256": "ea8dcbbcdc8df18d67ac9ac8e750c6b928695c8385791327a77d9d363dab3527",
+        "table": "core_salecancellation",
+        "type": "index"
+      },
+      {
+        "name": "core_saleline_pack_id_2405ccac",
+        "sql_sha256": "00dc3b1baba912cdd154a907417407e0430e78c0700d2e97b40e9e516c1b6f20",
+        "table": "core_saleline",
+        "type": "index"
+      },
+      {
+        "name": "core_saleline_product_id_7b59e325",
+        "sql_sha256": "e035016cb20b298719f07a980b106becdf596d7b3ba9ceae7732a13223664d73",
+        "table": "core_saleline",
+        "type": "index"
+      },
+      {
+        "name": "core_saleline_sale_id_e39ff29c",
+        "sql_sha256": "5a21c4fc3b45862949a09226c60d13c9b65ba307a28ff71202f8163c09154476",
+        "table": "core_saleline",
+        "type": "index"
+      },
+      {
+        "name": "core_salepa_externa_1d92dd_idx",
+        "sql_sha256": "698f60880b869e3496ede73ce23903b24cdaf7ecdb5e8819b411a771aea2b868",
+        "table": "core_salepayment",
+        "type": "index"
+      },
+      {
+        "name": "core_salepayment_sale_id_7de9b2ea",
+        "sql_sha256": "a4adea6e57213c8cc6613deaf3ee1608c7a3da416e451cb1eb4f3c78befb8860",
+        "table": "core_salepayment",
+        "type": "index"
+      },
+      {
+        "name": "core_salere_sale_id_1b3e2a_idx",
+        "sql_sha256": "8cc351cc552f07674e0165e050910dfa2f9bd064e6130f4da3406147dbb055e1",
+        "table": "core_salereturn",
+        "type": "index"
+      },
+      {
+        "name": "core_salereturn_installation_id_ce9fc929",
+        "sql_sha256": "9523688a78827b99000cbb4f0317630b510f2bd3cf2d4e15836edeae4574010d",
+        "table": "core_salereturn",
+        "type": "index"
+      },
+      {
+        "name": "core_salereturn_sale_id_8e308520",
+        "sql_sha256": "25b199a030f8ee4bdeb08ca45af1f7e37d979fa30d7e22673ed3a9780da9a9af",
+        "table": "core_salereturn",
+        "type": "index"
+      },
+      {
+        "name": "core_salereturnline_sale_line_id_c1fdf6f4",
+        "sql_sha256": "bb87ae1bb2f03719861a156ae35ac7a275295712a177a1619e24ad3633bf2517",
+        "table": "core_salereturnline",
+        "type": "index"
+      },
+      {
+        "name": "core_salereturnline_sale_return_id_a0945538",
+        "sql_sha256": "eacd4261342d8981071bda7e2bc0b8390632618d8b588c2d8bd4aa8c3452cf75",
+        "table": "core_salereturnline",
+        "type": "index"
+      },
+      {
+        "name": "core_shop_owner_id_5cf0eeb8",
+        "sql_sha256": "56ce5e35f2071eb5251f39757bfdfa395f4af3f50f25c66321da0a4ed0b34860",
+        "table": "core_shop",
+        "type": "index"
+      },
+      {
+        "name": "core_shopdeviceaccess_installation_id_ed35cd11",
+        "sql_sha256": "671b96e2499d3eee8f75476cd1e3034c5b19a698b4af307493bcdb2ba88b3f73",
+        "table": "core_shopdeviceaccess",
+        "type": "index"
+      },
+      {
+        "name": "core_shopdeviceaccess_shop_id_8815c773",
+        "sql_sha256": "2fd600c44b4f2e21eca95229dce32dcd76ac34185b9936de818e443d83a87044",
+        "table": "core_shopdeviceaccess",
+        "type": "index"
+      },
+      {
+        "name": "core_stocka_product_6bf1db_idx",
+        "sql_sha256": "b9f0fa2f431b8f3ca231f19905c9859428f23ae1ab59ce88a6217a079657e5fd",
+        "table": "core_stockalertevent",
+        "type": "index"
+      },
+      {
+        "name": "core_stockalertevent_operation_id_9faea6ec",
+        "sql_sha256": "3528b753464ce2c979745154f0ba1fd9f7434b63a17a432f3d0eafc8bbc22cb6",
+        "table": "core_stockalertevent",
+        "type": "index"
+      },
+      {
+        "name": "core_stockalertevent_product_id_9ae3d4d2",
+        "sql_sha256": "d67444709c65ea79d1f0181f2e902984a01602a779964380fa7e8cbf6fca6a6a",
+        "table": "core_stockalertevent",
+        "type": "index"
+      },
+      {
+        "name": "core_stockc_product_4db4e7_idx",
+        "sql_sha256": "5383aee1746b6df6455bb36b191a666b7ba21033da8ea6edcd2f78c066b00a04",
+        "table": "core_stockcount",
+        "type": "index"
+      },
+      {
+        "name": "core_stockcostsnapshot_movement_id_8cdfbd8e",
+        "sql_sha256": "271cf76ee5bf8755d43ecf783a0adaf5656016c18f064e8103e6447e549f49ee",
+        "table": "core_stockcostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "core_stockcostsnapshot_trigger_operation_id_93e75f22",
+        "sql_sha256": "e4caad1557cf520be024dea66a1bde94f2d0e3038a7db53b5e5d027693453c7c",
+        "table": "core_stockcostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "core_stockcount_installation_id_0aa04857",
+        "sql_sha256": "4b963639f3fc9dde6ce1880df3adbf1b5bd332ba41b11c4bfe69f46a13ef0c1e",
+        "table": "core_stockcount",
+        "type": "index"
+      },
+      {
+        "name": "core_stockcount_product_id_600696fb",
+        "sql_sha256": "65d22906e7e17181c32d27b386abb69077d447e9513c10629077f046cfcbbca4",
+        "table": "core_stockcount",
+        "type": "index"
+      },
+      {
+        "name": "core_stockcountadjustment_count_id_323ffd64",
+        "sql_sha256": "f05a844b7b1b7d6df59e8ee36ed6e8bfac5f0f5df8ec9dc380f73c0bbc42c737",
+        "table": "core_stockcountadjustment",
+        "type": "index"
+      },
+      {
+        "name": "core_stockcountadjustment_installation_id_c7b7ff0b",
+        "sql_sha256": "5d13bd7378cf579b834b49f02ec5d01357a46bf3cfc1d4982b75572ef5bf1c9d",
+        "table": "core_stockcountadjustment",
+        "type": "index"
+      },
+      {
+        "name": "core_stockl_product_85e209_idx",
+        "sql_sha256": "1ad85915fc5581754e96d076c49bb3e56651dad03dc7c9d1fbfc4492de4537d5",
+        "table": "core_stockloss",
+        "type": "index"
+      },
+      {
+        "name": "core_stockloss_installation_id_94513396",
+        "sql_sha256": "63c2e83a6dbb15aceca7f37570d079b4d089cf6b86e0905bb8adc1e909b8ca77",
+        "table": "core_stockloss",
+        "type": "index"
+      },
+      {
+        "name": "core_stockloss_product_id_76c43ff6",
+        "sql_sha256": "cc22b488facf624cb13ebcd228915712c43f9f0690bf80f602fdc5fc0eededeb",
+        "table": "core_stockloss",
+        "type": "index"
+      },
+      {
+        "name": "core_stockm_product_18d1fd_idx",
+        "sql_sha256": "5ecafe4d2f57478753ddb6482b7281da32ef7276950d32f49f588472c5e3dd44",
+        "table": "core_stockmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_stockmovement_actor_id_1f48dac9",
+        "sql_sha256": "a44c0bf7b2bbc7390a4bc9a61f23701c16b726182da25f0351d10aa6aff07f0c",
+        "table": "core_stockmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_stockmovement_operation_id_28d8020b",
+        "sql_sha256": "3fe9c02d6d600d4f7d6ae9145fe2192bb3bfcb20b294bfe277a2abccac8c614d",
+        "table": "core_stockmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_stockmovement_product_id_bd647177",
+        "sql_sha256": "ae2729471dec3e0434c79e07fc249c445172869dca01bff54c44e39ace5b4741",
+        "table": "core_stockmovement",
+        "type": "index"
+      },
+      {
+        "name": "core_stocknotificationpreference_shop_id_a65e8e0c",
+        "sql_sha256": "d88806c1a1817508b9fc49834a39911d1a883f51de06bd9c1d557b23e8d35e06",
+        "table": "core_stocknotificationpreference",
+        "type": "index"
+      },
+      {
+        "name": "core_stocknotificationpreference_user_id_54df363d",
+        "sql_sha256": "ec157e00512d02eac8ea9cf6a244870c561917aae65f2bf7974d7a5c77703acf",
+        "table": "core_stocknotificationpreference",
+        "type": "index"
+      },
+      {
+        "name": "core_stockr_product_509702_idx",
+        "sql_sha256": "60d48a38ffbbb9cfad1229429f64afeb63228d182b6612c5d7b4d2eee0494ca1",
+        "table": "core_stockreservation",
+        "type": "index"
+      },
+      {
+        "name": "core_stockreservation_operation_id_b18e2a49",
+        "sql_sha256": "8dca6eb99ee5232abc5c2e35dd6185642d7441567cf9c5c1b10308065ae4deed",
+        "table": "core_stockreservation",
+        "type": "index"
+      },
+      {
+        "name": "core_stockreservation_product_id_d2083fa1",
+        "sql_sha256": "d00193e77c0a0c935d25b2a1f099c2214386d87d2da4481807fc7fd017a5ea1f",
+        "table": "core_stockreservation",
+        "type": "index"
+      },
+      {
+        "name": "core_stockshortagereview_count_id_139214b4",
+        "sql_sha256": "2be5f6bcf4c6456f5cc9bd3258b2f0f3e2cc5a754c07d2610fa29f0b6ed5e073",
+        "table": "core_stockshortagereview",
+        "type": "index"
+      },
+      {
+        "name": "core_stockshortagereview_installation_id_98baaa5e",
+        "sql_sha256": "be057f08f61813d66682b4e199a84c57b52c91cce24dddbc97373eca9524fba6",
+        "table": "core_stockshortagereview",
+        "type": "index"
+      },
+      {
+        "name": "core_stockshortagereview_product_id_956cb2b9",
+        "sql_sha256": "ef58b56e0121d2e21d371ec525bc90e75c31934fe57082103d095143cab2bd3d",
+        "table": "core_stockshortagereview",
+        "type": "index"
+      },
+      {
+        "name": "core_stockvaluationadjustment_installation_id_17f30ff9",
+        "sql_sha256": "fe0cc125522d109e169ba8e319d8a882e604133cf93c7acd43ac8f40c015edaa",
+        "table": "core_stockvaluationadjustment",
+        "type": "index"
+      },
+      {
+        "name": "core_stockvaluationadjustment_product_id_db62090c",
+        "sql_sha256": "99b5a5b34bd2c9b572f38d853438639eb586def4cb175d0d52303919589d96d5",
+        "table": "core_stockvaluationadjustment",
+        "type": "index"
+      },
+      {
+        "name": "core_suppli_shop_id_2d87fa_idx",
+        "sql_sha256": "d45cac395b4b75118587ad17b709b1df69cb5aaf01ac1a89c9c1993ef8f4ad57",
+        "table": "core_supplierpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_suppli_shop_id_d7328d_idx",
+        "sql_sha256": "52ff86e971cb1b677f561cbcc070e711dd3d6b2c32bbc365887fdd22da65a731",
+        "table": "core_supplierdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_suppli_shop_id_dd8254_idx",
+        "sql_sha256": "f6e0783f573f789f945091c98a980d7bbb1b88c04206d91776f48e5dc17b38e0",
+        "table": "core_supplier",
+        "type": "index"
+      },
+      {
+        "name": "core_suppli_shop_id_e6fe49_idx",
+        "sql_sha256": "e2d1e45ea57cf75474c59fc7a2318790daf2c8d88f9491cabe5af2e67aae831e",
+        "table": "core_supplierledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "core_supplier_shop_id_d0819352",
+        "sql_sha256": "1286d8d0abf95be87d5857833707731b15686b229a838179781f51ab02ac4a71",
+        "table": "core_supplier",
+        "type": "index"
+      },
+      {
+        "name": "core_suppliercredit_installation_id_f19a96e6",
+        "sql_sha256": "8ecbdd4620ccae27162cb065fab8b58c408b89069c12e4af669a762d38bab62e",
+        "table": "core_suppliercredit",
+        "type": "index"
+      },
+      {
+        "name": "core_suppliercredit_opening_shop_id_db5c2b38",
+        "sql_sha256": "eaf6c2c2fd392299c8e6d1623a2839ad144ba377c2aed47137d0e3e72d1cafba",
+        "table": "core_suppliercredit",
+        "type": "index"
+      },
+      {
+        "name": "core_suppliercredit_opening_supplier_id_c90ffc34",
+        "sql_sha256": "86f0db53cdfe6dae2bb51d97b5b8b47ea8921058d36050ebb0ab8191dcf66d19",
+        "table": "core_suppliercredit",
+        "type": "index"
+      },
+      {
+        "name": "core_suppliercredit_supplier_return_id_3ea70be3",
+        "sql_sha256": "8c5b236fdc1218052f69e6c78fa2d48fe8f0cfcb05c5b3a3108199b8ff43e646",
+        "table": "core_suppliercredit",
+        "type": "index"
+      },
+      {
+        "name": "core_suppliercreditallocation_credit_id_9ade5612",
+        "sql_sha256": "f7e53b5c9a54acd486fd5d08abbd741ac6851bcfef2fbfc57d1aa460c65060e4",
+        "table": "core_suppliercreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_suppliercreditallocation_debt_id_ea6300c0",
+        "sql_sha256": "edfe843ea9a319a3b256c3abdef8a4a29dc3954094e9075a0871c5746ba9ec9a",
+        "table": "core_suppliercreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_suppliercreditallocation_operation_id_79965039",
+        "sql_sha256": "d3b57afbddbd76430bd81c3830486935bb81c9cd636b091e01eb359dd197e6ff",
+        "table": "core_suppliercreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierdebt_installation_id_fcdf6a29",
+        "sql_sha256": "9e589f37ea5b0c1073c6906c45d52520a46ba44c1d9384f21e5b9a11824205a9",
+        "table": "core_supplierdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierdebt_shop_id_71b6a2a4",
+        "sql_sha256": "e02b179ddc928dd039d8c262c0fbb72a22f7176cf3bc987a3c499ee93eb44034",
+        "table": "core_supplierdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierdebt_supplier_id_1cd53b5c",
+        "sql_sha256": "143fe46a4e040e46338dbb360f613be1df23f0d4d01aa37d308d7caa6f037e58",
+        "table": "core_supplierdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierledgerentry_operation_id_a1353fb9",
+        "sql_sha256": "15e1faf181ed0ba48356e753a1c11a30f31ac5a06a2e9f0abb2fa06b44b996a7",
+        "table": "core_supplierledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierledgerentry_shop_id_4b1775fd",
+        "sql_sha256": "07f2e3702184615daa9bb64889a0f80508a3d69783cd6c6d4da69121dcb64735",
+        "table": "core_supplierledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierledgerentry_supplier_id_cdbf8dcd",
+        "sql_sha256": "ecb99d6db1404c1ed993a357afb2a86be473dddbe6d46d8964bc883b25468625",
+        "table": "core_supplierledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierpayment_installation_id_2ac3e0fb",
+        "sql_sha256": "146280400f71d3b8c61718414ba2c0d3de5dfdfb01569cede1c616561c06ca34",
+        "table": "core_supplierpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierpayment_shop_id_d0ae41fc",
+        "sql_sha256": "604dc4d15ef65a082aa87f51288cdd73afa141f40c23fbbf93ac86e8e3bbba00",
+        "table": "core_supplierpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierpayment_supplier_id_7faf18d4",
+        "sql_sha256": "c50d5ebf6476a930ffa09ac1b4544a700894884cc708576102295b83a02bcf8c",
+        "table": "core_supplierpayment",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierpaymentallocation_debt_id_b8d6c433",
+        "sql_sha256": "13a909c3b8fa998e815c54ec8d9d1fff0ae5db3a8ab0b189e255b67cc6245958",
+        "table": "core_supplierpaymentallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierpaymentallocation_operation_id_7cfaf4fb",
+        "sql_sha256": "cf5020bc89453b2f49bda8157230980f5ee52d68dbcd1f7e9213e21d0bb81451",
+        "table": "core_supplierpaymentallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierpaymentallocation_payment_id_485256a6",
+        "sql_sha256": "ab9de62ce2ec31a86da7410a07d574974e5e03e6a585b97303981b374b7063eb",
+        "table": "core_supplierpaymentallocation",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierpaymentpart_payment_id_188134f4",
+        "sql_sha256": "d8b17ec73fddbfa1a39135645f13f790826039aee6f150bda364c1c981d1a34c",
+        "table": "core_supplierpaymentpart",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierrefund_credit_id_8cb31d88",
+        "sql_sha256": "c60c2fd8ec153bb96a8a341b6b90aaa44268ada3303350bb3a987ff106dc9265",
+        "table": "core_supplierrefund",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierrefund_installation_id_60f20bfa",
+        "sql_sha256": "3641b5cc4045715f4a8540befd429af4d611fa08176aac663ebae78c0950bca0",
+        "table": "core_supplierrefund",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierreturn_document_id_3197d51b",
+        "sql_sha256": "c055b0a00d096b67a4d8c6c2ce1b1451681f9b5e81fd8477ead9cf2b7e1aab3f",
+        "table": "core_supplierreturn",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierreturn_installation_id_69fde83f",
+        "sql_sha256": "13e06618c716a50f514c461ced05874ea7ab0e1a9ac1369c7da50b76b4f716ec",
+        "table": "core_supplierreturn",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierreturnline_line_id_a3f59035",
+        "sql_sha256": "a0bb9612a08db888e093e98241aed212085221b10e9a1e3fdb6500fb4449cac6",
+        "table": "core_supplierreturnline",
+        "type": "index"
+      },
+      {
+        "name": "core_supplierreturnline_supplier_return_id_996f622a",
+        "sql_sha256": "4cf710e1dadd9811e37916cc9f209c7b935bf009b3ff77eb04660496385d4309",
+        "table": "core_supplierreturnline",
+        "type": "index"
+      },
+      {
+        "name": "core_user_groups_group_id_fe8c697f",
+        "sql_sha256": "c7f003b65695da80f186a9440757cb59ed2ba88e0c861505d86b84658aaf4c1e",
+        "table": "core_user_groups",
+        "type": "index"
+      },
+      {
+        "name": "core_user_groups_user_id_70b4d9b8",
+        "sql_sha256": "20db542d653a8197ed01e28a60e1b46b24d0578e45472a09a382c0aa37b3c421",
+        "table": "core_user_groups",
+        "type": "index"
+      },
+      {
+        "name": "core_user_groups_user_id_group_id_c82fcad1_uniq",
+        "sql_sha256": "16e20643d7d0963fe0858e000ec6b69af4362af127ab6be34562aa69f2a8ea0c",
+        "table": "core_user_groups",
+        "type": "index"
+      },
+      {
+        "name": "core_user_user_permissions_permission_id_35ccf601",
+        "sql_sha256": "8858f61c09e1f0585d14b017b2fd40890826ca8583567eefdc20c4898ddd98b5",
+        "table": "core_user_user_permissions",
+        "type": "index"
+      },
+      {
+        "name": "core_user_user_permissions_user_id_085123d3",
+        "sql_sha256": "3df544cfbcb4beb939237c3b45ec40afe3f7db284a8e8edcff0f862687b54996",
+        "table": "core_user_user_permissions",
+        "type": "index"
+      },
+      {
+        "name": "core_user_user_permissions_user_id_permission_id_73ea0daa_uniq",
+        "sql_sha256": "43f3a053ef00b652ce0cc9adf513263a2a03ec3c916bcbcfec8bcc0b80fd702b",
+        "table": "core_user_user_permissions",
+        "type": "index"
+      },
+      {
+        "name": "customer_shop_name_match",
+        "sql_sha256": "ca9350d0482a480495fdb0b8263f0af02831cf8d093531a4695164855db959ef",
+        "table": "core_customer",
+        "type": "index"
+      },
+      {
+        "name": "customer_shop_phone_match",
+        "sql_sha256": "ced56483098a9e8168703d8f3165784773f0f40e476b58575cfa2b60ba29c793",
+        "table": "core_customer",
+        "type": "index"
+      },
+      {
+        "name": "django_admin_log_content_type_id_c4bce8eb",
+        "sql_sha256": "7fdf69f16b043bee121521df2c2b6d9b8e680f17350b6da0dc6943fb889deef5",
+        "table": "django_admin_log",
+        "type": "index"
+      },
+      {
+        "name": "django_admin_log_user_id_c564eba6",
+        "sql_sha256": "a92f9fe257b9fcd5f740c41377e07b8e209d2bb93540f999df6b9658469d496b",
+        "table": "django_admin_log",
+        "type": "index"
+      },
+      {
+        "name": "django_content_type_app_label_model_76bd3d3b_uniq",
+        "sql_sha256": "f0d820df27f456b03de4c27e8be1d437e7b4588447e8b3b512b58dec281bb30a",
+        "table": "django_content_type",
+        "type": "index"
+      },
+      {
+        "name": "django_session_expire_date_a5c62663",
+        "sql_sha256": "0aed2b518579cba2b68a67f9089f1dbb702a4a1ef8391df3ec16e4673922fdea",
+        "table": "django_session",
+        "type": "index"
+      },
+      {
+        "name": "hosting_observation_page",
+        "sql_sha256": "42f4eb4dab58c48abfba6a86cfcd95aab841404207d5e9455f9212dda948c67b",
+        "table": "backups_hostingobservation",
+        "type": "index"
+      },
+      {
+        "name": "one_native_price_proposal",
+        "sql_sha256": "a2b9a015d5ac12fa05de51c34e0500315eea3e38377027dd6998f55d3ac7aaf7",
+        "table": "catalogue_productpriceproposal",
+        "type": "index"
+      },
+      {
+        "name": "one_open_product_price_conflict",
+        "sql_sha256": "04f1d91ec56efd5283f34d5a9def87421c9130c5d80e2064f052b130092ae37a",
+        "table": "catalogue_productpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "opening_operation_once",
+        "sql_sha256": "b446a27a95f97a36f6389ba521240e5d3c01ed53dc548da5f4fe09573d1efd72",
+        "table": "core_stockmovement",
+        "type": "index"
+      },
+      {
+        "name": "price_conflict_shop_order",
+        "sql_sha256": "1e311d1303c4560e58b682315c5002132a288511ee6295cd57361f87f34c5379",
+        "table": "catalogue_productpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "recovery_collection_state_page",
+        "sql_sha256": "8552a0c06d97c02589b23f35bb7aff936657ca0f73866c669ce82b57c8339026",
+        "table": "backups_recoverycollectionreview",
+        "type": "index"
+      },
+      {
+        "name": "recovery_deposit_shop_page",
+        "sql_sha256": "3f94a058b5db348277d4402e411f84136acf9bca340481bfdde8c07e9097c746",
+        "table": "backups_recoveryjournaldeposit",
+        "type": "index"
+      },
+      {
+        "name": "recovery_operation_shop_page",
+        "sql_sha256": "feeb1962f3d9b2051d594c120a99b976e2459d6acfe4229c8f4f3b58f3e148f7",
+        "table": "backups_recoveryjournaloperation",
+        "type": "index"
+      },
+      {
+        "name": "recovery_operation_uuid",
+        "sql_sha256": "4767b3626804552e3373e10adc7cb6553d3f0bd5e77c6758da2a640e4bfcdf28",
+        "table": "backups_recoveryjournaloperation",
+        "type": "index"
+      },
+      {
+        "name": "recovery_sale_hold_state_page",
+        "sql_sha256": "f9b70232b866f5f0ce0adcac8ae7e5152fe56aaac5f832616a0192a70228cef4",
+        "table": "backups_recoverysalehold",
+        "type": "index"
+      },
+      {
+        "name": "restore_prepare_one_worker",
+        "sql_sha256": "64a1dd736bc0ef9468139c47a138f80ce3f8bef8f0bb9fff6751d92df95c525d",
+        "table": "backups_importpreparation",
+        "type": "index"
+      },
+      {
+        "name": "restore_quarantine_one_worker",
+        "sql_sha256": "78f8751d60eaeb025832f245db323b2a222833244b76a56d1e256438fc897f74",
+        "table": "backups_importquarantine",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_auth_group_1",
+        "sql_sha256": null,
+        "table": "auth_group",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupconfiguration_1",
+        "sql_sha256": null,
+        "table": "backups_backupconfiguration",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupconfiguration_2",
+        "sql_sha256": null,
+        "table": "backups_backupconfiguration",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupconfigurationchange_1",
+        "sql_sha256": null,
+        "table": "backups_backupconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupconfigurationchange_2",
+        "sql_sha256": null,
+        "table": "backups_backupconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupconfigurationchange_3",
+        "sql_sha256": null,
+        "table": "backups_backupconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupdispatch_1",
+        "sql_sha256": null,
+        "table": "backups_backupdispatch",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupdispatch_2",
+        "sql_sha256": null,
+        "table": "backups_backupdispatch",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupevent_1",
+        "sql_sha256": null,
+        "table": "backups_backupevent",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupjob_1",
+        "sql_sha256": null,
+        "table": "backups_backupjob",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupjob_2",
+        "sql_sha256": null,
+        "table": "backups_backupjob",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupjob_3",
+        "sql_sha256": null,
+        "table": "backups_backupjob",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backuppart_1",
+        "sql_sha256": null,
+        "table": "backups_backuppart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backuppart_2",
+        "sql_sha256": null,
+        "table": "backups_backuppart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backuppart_3",
+        "sql_sha256": null,
+        "table": "backups_backuppart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupschedulerstate_1",
+        "sql_sha256": null,
+        "table": "backups_backupschedulerstate",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupschedulerstate_2",
+        "sql_sha256": null,
+        "table": "backups_backupschedulerstate",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupschedulerun_1",
+        "sql_sha256": null,
+        "table": "backups_backupschedulerun",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupschedulerun_2",
+        "sql_sha256": null,
+        "table": "backups_backupschedulerun",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupschedulerun_3",
+        "sql_sha256": null,
+        "table": "backups_backupschedulerun",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_backupschedulerun_4",
+        "sql_sha256": null,
+        "table": "backups_backupschedulerun",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingconfiguration_1",
+        "sql_sha256": null,
+        "table": "backups_hostingconfiguration",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingconfiguration_2",
+        "sql_sha256": null,
+        "table": "backups_hostingconfiguration",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingconfigurationchange_1",
+        "sql_sha256": null,
+        "table": "backups_hostingconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingconfigurationchange_2",
+        "sql_sha256": null,
+        "table": "backups_hostingconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingconfigurationchange_3",
+        "sql_sha256": null,
+        "table": "backups_hostingconfigurationchange",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingobservation_1",
+        "sql_sha256": null,
+        "table": "backups_hostingobservation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingobservation_2",
+        "sql_sha256": null,
+        "table": "backups_hostingobservation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingreminder_1",
+        "sql_sha256": null,
+        "table": "backups_hostingreminder",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingreminder_2",
+        "sql_sha256": null,
+        "table": "backups_hostingreminder",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingreminderattempt_1",
+        "sql_sha256": null,
+        "table": "backups_hostingreminderattempt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingreminderattempt_2",
+        "sql_sha256": null,
+        "table": "backups_hostingreminderattempt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingreminderattempt_3",
+        "sql_sha256": null,
+        "table": "backups_hostingreminderattempt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingreminderrepair_1",
+        "sql_sha256": null,
+        "table": "backups_hostingreminderrepair",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingreminderrepair_2",
+        "sql_sha256": null,
+        "table": "backups_hostingreminderrepair",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_hostingreminderrepair_3",
+        "sql_sha256": null,
+        "table": "backups_hostingreminderrepair",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_importpreparation_1",
+        "sql_sha256": null,
+        "table": "backups_importpreparation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_importpreparation_2",
+        "sql_sha256": null,
+        "table": "backups_importpreparation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_importquarantine_1",
+        "sql_sha256": null,
+        "table": "backups_importquarantine",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_importquarantine_2",
+        "sql_sha256": null,
+        "table": "backups_importquarantine",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveredoperationorigin_1",
+        "sql_sha256": null,
+        "table": "backups_recoveredoperationorigin",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveredoperationorigin_2",
+        "sql_sha256": null,
+        "table": "backups_recoveredoperationorigin",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveredoperationorigin_3",
+        "sql_sha256": null,
+        "table": "backups_recoveredoperationorigin",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryclosure_1",
+        "sql_sha256": null,
+        "table": "backups_recoveryclosure",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryclosure_2",
+        "sql_sha256": null,
+        "table": "backups_recoveryclosure",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryclosure_3",
+        "sql_sha256": null,
+        "table": "backups_recoveryclosure",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverycollectionreview_1",
+        "sql_sha256": null,
+        "table": "backups_recoverycollectionreview",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverycollectionreview_2",
+        "sql_sha256": null,
+        "table": "backups_recoverycollectionreview",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverycollectionreview_3",
+        "sql_sha256": null,
+        "table": "backups_recoverycollectionreview",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverycollectionreview_4",
+        "sql_sha256": null,
+        "table": "backups_recoverycollectionreview",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverycollectionreviewdecision_1",
+        "sql_sha256": null,
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverycollectionreviewdecision_2",
+        "sql_sha256": null,
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverycollectionreviewdecision_3",
+        "sql_sha256": null,
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverycollectionreviewdecision_4",
+        "sql_sha256": null,
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverydevice_1",
+        "sql_sha256": null,
+        "table": "backups_recoverydevice",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverydevice_2",
+        "sql_sha256": null,
+        "table": "backups_recoverydevice",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryintegrationdecision_1",
+        "sql_sha256": null,
+        "table": "backups_recoveryintegrationdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryintegrationdecision_2",
+        "sql_sha256": null,
+        "table": "backups_recoveryintegrationdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryintegrationdecision_3",
+        "sql_sha256": null,
+        "table": "backups_recoveryintegrationdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryjournaldeposit_1",
+        "sql_sha256": null,
+        "table": "backups_recoveryjournaldeposit",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryjournaldeposit_2",
+        "sql_sha256": null,
+        "table": "backups_recoveryjournaldeposit",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryjournaloperation_1",
+        "sql_sha256": null,
+        "table": "backups_recoveryjournaloperation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoveryjournaloperation_2",
+        "sql_sha256": null,
+        "table": "backups_recoveryjournaloperation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysalehold_1",
+        "sql_sha256": null,
+        "table": "backups_recoverysalehold",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysalehold_2",
+        "sql_sha256": null,
+        "table": "backups_recoverysalehold",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysalehold_3",
+        "sql_sha256": null,
+        "table": "backups_recoverysalehold",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysalehold_4",
+        "sql_sha256": null,
+        "table": "backups_recoverysalehold",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysalehold_5",
+        "sql_sha256": null,
+        "table": "backups_recoverysalehold",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysaleholddecision_1",
+        "sql_sha256": null,
+        "table": "backups_recoverysaleholddecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysaleholddecision_2",
+        "sql_sha256": null,
+        "table": "backups_recoverysaleholddecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysaleholddecision_3",
+        "sql_sha256": null,
+        "table": "backups_recoverysaleholddecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_recoverysaleholddecision_4",
+        "sql_sha256": null,
+        "table": "backups_recoverysaleholddecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreaccessdecision_1",
+        "sql_sha256": null,
+        "table": "backups_restoreaccessdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreaccessdecision_2",
+        "sql_sha256": null,
+        "table": "backups_restoreaccessdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreaccessdecision_3",
+        "sql_sha256": null,
+        "table": "backups_restoreaccessdecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreaccessgeneration_1",
+        "sql_sha256": null,
+        "table": "backups_restoreaccessgeneration",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreaccessgeneration_2",
+        "sql_sha256": null,
+        "table": "backups_restoreaccessgeneration",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreaccessgeneration_3",
+        "sql_sha256": null,
+        "table": "backups_restoreaccessgeneration",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreaccessreview_1",
+        "sql_sha256": null,
+        "table": "backups_restoreaccessreview",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreaccessreview_2",
+        "sql_sha256": null,
+        "table": "backups_restoreaccessreview",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreimport_1",
+        "sql_sha256": null,
+        "table": "backups_restoreimport",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreimportpart_1",
+        "sql_sha256": null,
+        "table": "backups_restoreimportpart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoreimportpart_2",
+        "sql_sha256": null,
+        "table": "backups_restoreimportpart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoresession_1",
+        "sql_sha256": null,
+        "table": "backups_restoresession",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_restoresession_2",
+        "sql_sha256": null,
+        "table": "backups_restoresession",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_sendattempt_1",
+        "sql_sha256": null,
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_sendattempt_2",
+        "sql_sha256": null,
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_backups_sendattempt_3",
+        "sql_sha256": null,
+        "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_productpriceconflict_1",
+        "sql_sha256": null,
+        "table": "catalogue_productpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_productpriceconflict_2",
+        "sql_sha256": null,
+        "table": "catalogue_productpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_productpriceconflict_3",
+        "sql_sha256": null,
+        "table": "catalogue_productpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_productpriceproposal_1",
+        "sql_sha256": null,
+        "table": "catalogue_productpriceproposal",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_productpriceproposal_2",
+        "sql_sha256": null,
+        "table": "catalogue_productpriceproposal",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_productpriceresolution_1",
+        "sql_sha256": null,
+        "table": "catalogue_productpriceresolution",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_productpriceresolution_2",
+        "sql_sha256": null,
+        "table": "catalogue_productpriceresolution",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_productpriceresolution_3",
+        "sql_sha256": null,
+        "table": "catalogue_productpriceresolution",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_activity_1",
+        "sql_sha256": null,
+        "table": "core_activity",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_barcode_1",
+        "sql_sha256": null,
+        "table": "core_barcode",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_barcode_2",
+        "sql_sha256": null,
+        "table": "core_barcode",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_barcode_3",
+        "sql_sha256": null,
+        "table": "core_barcode",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashcount_1",
+        "sql_sha256": null,
+        "table": "core_cashcount",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashcount_2",
+        "sql_sha256": null,
+        "table": "core_cashcount",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashmovement_1",
+        "sql_sha256": null,
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashmovement_2",
+        "sql_sha256": null,
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashmovement_3",
+        "sql_sha256": null,
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashmovement_4",
+        "sql_sha256": null,
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashmovement_5",
+        "sql_sha256": null,
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashmovement_6",
+        "sql_sha256": null,
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_cashmovement_7",
+        "sql_sha256": null,
+        "table": "core_cashmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_catalogueimport_1",
+        "sql_sha256": null,
+        "table": "core_catalogueimport",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_catalogueimport_2",
+        "sql_sha256": null,
+        "table": "core_catalogueimport",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_category_1",
+        "sql_sha256": null,
+        "table": "core_category",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_costrevaluation_1",
+        "sql_sha256": null,
+        "table": "core_costrevaluation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_costrevaluation_2",
+        "sql_sha256": null,
+        "table": "core_costrevaluation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_costrevaluationitem_1",
+        "sql_sha256": null,
+        "table": "core_costrevaluationitem",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_costrevaluationitem_2",
+        "sql_sha256": null,
+        "table": "core_costrevaluationitem",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customer_1",
+        "sql_sha256": null,
+        "table": "core_customer",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customercredit_1",
+        "sql_sha256": null,
+        "table": "core_customercredit",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customercredit_2",
+        "sql_sha256": null,
+        "table": "core_customercredit",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customerdebt_1",
+        "sql_sha256": null,
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customerdebt_2",
+        "sql_sha256": null,
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customerledgerentry_1",
+        "sql_sha256": null,
+        "table": "core_customerledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customerledgerentry_2",
+        "sql_sha256": null,
+        "table": "core_customerledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customerpayment_1",
+        "sql_sha256": null,
+        "table": "core_customerpayment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customerpayment_2",
+        "sql_sha256": null,
+        "table": "core_customerpayment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customerpaymentpart_1",
+        "sql_sha256": null,
+        "table": "core_customerpaymentpart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_customerpaymentpart_2",
+        "sql_sha256": null,
+        "table": "core_customerpaymentpart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_debtallocation_1",
+        "sql_sha256": null,
+        "table": "core_debtallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_debtallocation_2",
+        "sql_sha256": null,
+        "table": "core_debtallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_devicesession_1",
+        "sql_sha256": null,
+        "table": "core_devicesession",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_installation_1",
+        "sql_sha256": null,
+        "table": "core_installation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_languagepreferencechange_1",
+        "sql_sha256": null,
+        "table": "core_languagepreferencechange",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_languagepreferencechange_2",
+        "sql_sha256": null,
+        "table": "core_languagepreferencechange",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_membership_1",
+        "sql_sha256": null,
+        "table": "core_membership",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_membership_2",
+        "sql_sha256": null,
+        "table": "core_membership",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_nonsellabledecision_1",
+        "sql_sha256": null,
+        "table": "core_nonsellabledecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_nonsellabledecision_2",
+        "sql_sha256": null,
+        "table": "core_nonsellabledecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_nonsellabledecision_3",
+        "sql_sha256": null,
+        "table": "core_nonsellabledecision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_paymentregularization_1",
+        "sql_sha256": null,
+        "table": "core_paymentregularization",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_paymentregularization_2",
+        "sql_sha256": null,
+        "table": "core_paymentregularization",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_product_1",
+        "sql_sha256": null,
+        "table": "core_product",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_productpack_1",
+        "sql_sha256": null,
+        "table": "core_productpack",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_productphoto_1",
+        "sql_sha256": null,
+        "table": "core_productphoto",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_productphoto_2",
+        "sql_sha256": null,
+        "table": "core_productphoto",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasecharge_1",
+        "sql_sha256": null,
+        "table": "core_purchasecharge",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasecharge_2",
+        "sql_sha256": null,
+        "table": "core_purchasecharge",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasechargeallocation_1",
+        "sql_sha256": null,
+        "table": "core_purchasechargeallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasechargeallocation_2",
+        "sql_sha256": null,
+        "table": "core_purchasechargeallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasechargerevision_1",
+        "sql_sha256": null,
+        "table": "core_purchasechargerevision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasechargerevision_2",
+        "sql_sha256": null,
+        "table": "core_purchasechargerevision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasechargerevision_3",
+        "sql_sha256": null,
+        "table": "core_purchasechargerevision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasechargerevision_4",
+        "sql_sha256": null,
+        "table": "core_purchasechargerevision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasedocument_1",
+        "sql_sha256": null,
+        "table": "core_purchasedocument",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasedocument_2",
+        "sql_sha256": null,
+        "table": "core_purchasedocument",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchaseline_1",
+        "sql_sha256": null,
+        "table": "core_purchaseline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchaseline_2",
+        "sql_sha256": null,
+        "table": "core_purchaseline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasereceipt_1",
+        "sql_sha256": null,
+        "table": "core_purchasereceipt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasereceipt_2",
+        "sql_sha256": null,
+        "table": "core_purchasereceipt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasereceiptline_1",
+        "sql_sha256": null,
+        "table": "core_purchasereceiptline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasereceiptline_2",
+        "sql_sha256": null,
+        "table": "core_purchasereceiptline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_purchasereceiptline_3",
+        "sql_sha256": null,
+        "table": "core_purchasereceiptline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_regularizationallocation_1",
+        "sql_sha256": null,
+        "table": "core_regularizationallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_regularizationallocation_2",
+        "sql_sha256": null,
+        "table": "core_regularizationallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncostreconstruction_1",
+        "sql_sha256": null,
+        "table": "core_returncostreconstruction",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncostreconstruction_2",
+        "sql_sha256": null,
+        "table": "core_returncostreconstruction",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncostrevision_1",
+        "sql_sha256": null,
+        "table": "core_returncostrevision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncostrevision_2",
+        "sql_sha256": null,
+        "table": "core_returncostrevision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncostrevision_3",
+        "sql_sha256": null,
+        "table": "core_returncostrevision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncostrevision_4",
+        "sql_sha256": null,
+        "table": "core_returncostrevision",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncostsnapshot_1",
+        "sql_sha256": null,
+        "table": "core_returncostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncostsnapshot_2",
+        "sql_sha256": null,
+        "table": "core_returncostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncreditallocation_1",
+        "sql_sha256": null,
+        "table": "core_returncreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncreditallocation_2",
+        "sql_sha256": null,
+        "table": "core_returncreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncreditsettlement_1",
+        "sql_sha256": null,
+        "table": "core_returncreditsettlement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returncreditsettlement_2",
+        "sql_sha256": null,
+        "table": "core_returncreditsettlement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returnreceipt_1",
+        "sql_sha256": null,
+        "table": "core_returnreceipt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returnreceipt_2",
+        "sql_sha256": null,
+        "table": "core_returnreceipt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_returnreceipt_3",
+        "sql_sha256": null,
+        "table": "core_returnreceipt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_sale_1",
+        "sql_sha256": null,
+        "table": "core_sale",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_sale_2",
+        "sql_sha256": null,
+        "table": "core_sale",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salecancellation_1",
+        "sql_sha256": null,
+        "table": "core_salecancellation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salecancellation_2",
+        "sql_sha256": null,
+        "table": "core_salecancellation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salecancellation_3",
+        "sql_sha256": null,
+        "table": "core_salecancellation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salecancellation_4",
+        "sql_sha256": null,
+        "table": "core_salecancellation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_saleline_1",
+        "sql_sha256": null,
+        "table": "core_saleline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_saleline_2",
+        "sql_sha256": null,
+        "table": "core_saleline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salepayment_1",
+        "sql_sha256": null,
+        "table": "core_salepayment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salepayment_2",
+        "sql_sha256": null,
+        "table": "core_salepayment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salereturn_1",
+        "sql_sha256": null,
+        "table": "core_salereturn",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salereturn_2",
+        "sql_sha256": null,
+        "table": "core_salereturn",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salereturnline_1",
+        "sql_sha256": null,
+        "table": "core_salereturnline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_salereturnline_2",
+        "sql_sha256": null,
+        "table": "core_salereturnline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_shop_1",
+        "sql_sha256": null,
+        "table": "core_shop",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_shopdeviceaccess_1",
+        "sql_sha256": null,
+        "table": "core_shopdeviceaccess",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_shopdeviceaccess_2",
+        "sql_sha256": null,
+        "table": "core_shopdeviceaccess",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockalertevent_1",
+        "sql_sha256": null,
+        "table": "core_stockalertevent",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockalertevent_2",
+        "sql_sha256": null,
+        "table": "core_stockalertevent",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockalertevent_3",
+        "sql_sha256": null,
+        "table": "core_stockalertevent",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockalertstate_1",
+        "sql_sha256": null,
+        "table": "core_stockalertstate",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockalertstate_2",
+        "sql_sha256": null,
+        "table": "core_stockalertstate",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcostsnapshot_1",
+        "sql_sha256": null,
+        "table": "core_stockcostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcostsnapshot_2",
+        "sql_sha256": null,
+        "table": "core_stockcostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcostsnapshot_3",
+        "sql_sha256": null,
+        "table": "core_stockcostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcostsnapshot_4",
+        "sql_sha256": null,
+        "table": "core_stockcostsnapshot",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcount_1",
+        "sql_sha256": null,
+        "table": "core_stockcount",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcount_2",
+        "sql_sha256": null,
+        "table": "core_stockcount",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcountadjustment_1",
+        "sql_sha256": null,
+        "table": "core_stockcountadjustment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcountadjustment_2",
+        "sql_sha256": null,
+        "table": "core_stockcountadjustment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockcountadjustment_3",
+        "sql_sha256": null,
+        "table": "core_stockcountadjustment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockloss_1",
+        "sql_sha256": null,
+        "table": "core_stockloss",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockloss_2",
+        "sql_sha256": null,
+        "table": "core_stockloss",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockloss_3",
+        "sql_sha256": null,
+        "table": "core_stockloss",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockmovement_1",
+        "sql_sha256": null,
+        "table": "core_stockmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockmovement_2",
+        "sql_sha256": null,
+        "table": "core_stockmovement",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stocknotificationpreference_1",
+        "sql_sha256": null,
+        "table": "core_stocknotificationpreference",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stocknotificationpreference_2",
+        "sql_sha256": null,
+        "table": "core_stocknotificationpreference",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockreservation_1",
+        "sql_sha256": null,
+        "table": "core_stockreservation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockreservation_2",
+        "sql_sha256": null,
+        "table": "core_stockreservation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockshortagereview_1",
+        "sql_sha256": null,
+        "table": "core_stockshortagereview",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockshortagereview_2",
+        "sql_sha256": null,
+        "table": "core_stockshortagereview",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockvaluationadjustment_1",
+        "sql_sha256": null,
+        "table": "core_stockvaluationadjustment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_stockvaluationadjustment_2",
+        "sql_sha256": null,
+        "table": "core_stockvaluationadjustment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplier_1",
+        "sql_sha256": null,
+        "table": "core_supplier",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_suppliercredit_1",
+        "sql_sha256": null,
+        "table": "core_suppliercredit",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_suppliercredit_2",
+        "sql_sha256": null,
+        "table": "core_suppliercredit",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_suppliercreditallocation_1",
+        "sql_sha256": null,
+        "table": "core_suppliercreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_suppliercreditallocation_2",
+        "sql_sha256": null,
+        "table": "core_suppliercreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_suppliercreditallocation_3",
+        "sql_sha256": null,
+        "table": "core_suppliercreditallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierdebt_1",
+        "sql_sha256": null,
+        "table": "core_supplierdebt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierdebt_2",
+        "sql_sha256": null,
+        "table": "core_supplierdebt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierdebt_3",
+        "sql_sha256": null,
+        "table": "core_supplierdebt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierledgerentry_1",
+        "sql_sha256": null,
+        "table": "core_supplierledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierledgerentry_2",
+        "sql_sha256": null,
+        "table": "core_supplierledgerentry",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierpayment_1",
+        "sql_sha256": null,
+        "table": "core_supplierpayment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierpayment_2",
+        "sql_sha256": null,
+        "table": "core_supplierpayment",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierpaymentallocation_1",
+        "sql_sha256": null,
+        "table": "core_supplierpaymentallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierpaymentallocation_2",
+        "sql_sha256": null,
+        "table": "core_supplierpaymentallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierpaymentallocation_3",
+        "sql_sha256": null,
+        "table": "core_supplierpaymentallocation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierpaymentpart_1",
+        "sql_sha256": null,
+        "table": "core_supplierpaymentpart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierpaymentpart_2",
+        "sql_sha256": null,
+        "table": "core_supplierpaymentpart",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierrefund_1",
+        "sql_sha256": null,
+        "table": "core_supplierrefund",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierrefund_2",
+        "sql_sha256": null,
+        "table": "core_supplierrefund",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierreturn_1",
+        "sql_sha256": null,
+        "table": "core_supplierreturn",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierreturn_2",
+        "sql_sha256": null,
+        "table": "core_supplierreturn",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierreturnline_1",
+        "sql_sha256": null,
+        "table": "core_supplierreturnline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierreturnline_2",
+        "sql_sha256": null,
+        "table": "core_supplierreturnline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_supplierreturnline_3",
+        "sql_sha256": null,
+        "table": "core_supplierreturnline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_user_1",
+        "sql_sha256": null,
+        "table": "core_user",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_user_2",
+        "sql_sha256": null,
+        "table": "core_user",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_core_user_3",
+        "sql_sha256": null,
+        "table": "core_user",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_django_session_1",
+        "sql_sha256": null,
+        "table": "django_session",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stockreservationreconciliation_1",
+        "sql_sha256": null,
+        "table": "stock_stockreservationreconciliation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stockreservationreconciliation_2",
+        "sql_sha256": null,
+        "table": "stock_stockreservationreconciliation",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransfer_1",
+        "sql_sha256": null,
+        "table": "stock_stocktransfer",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransfer_2",
+        "sql_sha256": null,
+        "table": "stock_stocktransfer",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferline_1",
+        "sql_sha256": null,
+        "table": "stock_stocktransferline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferline_2",
+        "sql_sha256": null,
+        "table": "stock_stocktransferline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferline_3",
+        "sql_sha256": null,
+        "table": "stock_stocktransferline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferreceipt_1",
+        "sql_sha256": null,
+        "table": "stock_stocktransferreceipt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferreceipt_2",
+        "sql_sha256": null,
+        "table": "stock_stocktransferreceipt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferreceiptline_1",
+        "sql_sha256": null,
+        "table": "stock_stocktransferreceiptline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferreceiptline_2",
+        "sql_sha256": null,
+        "table": "stock_stocktransferreceiptline",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_token_blacklist_blacklistedtoken_1",
+        "sql_sha256": null,
+        "table": "token_blacklist_blacklistedtoken",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_token_blacklist_outstandingtoken_1",
+        "sql_sha256": null,
+        "table": "token_blacklist_outstandingtoken",
+        "type": "index"
+      },
+      {
+        "name": "stock_shortage_product_time",
+        "sql_sha256": "737ae3c392bf580395b5f6eed4280fb97adb585463cac234d81c678e3b4811f6",
+        "table": "core_stockshortagereview",
+        "type": "index"
+      },
+      {
+        "name": "stock_stockreservationreconciliation_installation_id_992b293e",
+        "sql_sha256": "a5df258a63d3494a8c47e47951686bd7d5c0ec404b97bad8f2815a6456e39ae9",
+        "table": "stock_stockreservationreconciliation",
+        "type": "index"
+      },
+      {
+        "name": "stock_stockreservationreconciliation_movement_id_b06bd29c",
+        "sql_sha256": "43322d3e6751686f3a259492f9363470bebc25cfeb3316bc8ef0bcbbc95ecd1b",
+        "table": "stock_stockreservationreconciliation",
+        "type": "index"
+      },
+      {
+        "name": "stock_stockreservationreconciliation_reservation_id_6b8757f7",
+        "sql_sha256": "8a8aae35ef5846767a7b2533500773a9adf66ca7d0d4aa0a5824bc9dc962b1d9",
+        "table": "stock_stockreservationreconciliation",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransfer_destination_shop_id_93282c1c",
+        "sql_sha256": "9fc83965b65e11444cf20fc9102437f532e38aefbea11a1e0c319e4b0e920dcc",
+        "table": "stock_stocktransfer",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransfer_installation_id_891eb1e4",
+        "sql_sha256": "ae38aec0326685d9c75c40479044819837cc1ac6ef353cc3c0ce1fcf263f846b",
+        "table": "stock_stocktransfer",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransfer_source_shop_id_2efdff45",
+        "sql_sha256": "e3b0b90f766bd7090bec2f26888a0573e712e3cd7f96dc0161ff659b7e21f348",
+        "table": "stock_stocktransfer",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransferline_product_id_4395c341",
+        "sql_sha256": "2fbc52d09438c8657c1c320dee7f1a090c7440c6cc95144c060b5fbda94831d9",
+        "table": "stock_stocktransferline",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransferline_transfer_id_7194d770",
+        "sql_sha256": "decbb313e222a255334f3c20cd48fc5002c8a5f06e2e8151e6b52d8f352fbd0c",
+        "table": "stock_stocktransferline",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransferreceipt_installation_id_d40fd31d",
+        "sql_sha256": "edcb7fed99e19ffede55fab0ee55b409ac047d4aec472c70e48e4a9355d3c14d",
+        "table": "stock_stocktransferreceipt",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransferreceipt_transfer_id_02ad4da8",
+        "sql_sha256": "2b5cff925ccdcdd014bce474ac6ae7d801a8eb8c8ac139c31e4d5dd0678d1a17",
+        "table": "stock_stocktransferreceipt",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransferreceiptline_product_id_016a8ce1",
+        "sql_sha256": "58c2b32aef9f6ea5d310e8708411af9de65de48ab50f7be48c3f5b98070f5ee1",
+        "table": "stock_stocktransferreceiptline",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransferreceiptline_receipt_id_3994074b",
+        "sql_sha256": "379eeafa78a0eacd000a37e78430f779554f6f084c4e46a253e60a3cecb91ce5",
+        "table": "stock_stocktransferreceiptline",
+        "type": "index"
+      },
+      {
+        "name": "stock_stocktransferreceiptline_transfer_line_id_929cf72c",
+        "sql_sha256": "c20d25cb36127a956707d4686e5868a086f54e27bc4763967bb03855cb00c573",
+        "table": "stock_stocktransferreceiptline",
+        "type": "index"
+      },
+      {
+        "name": "stock_valuation_product_time",
+        "sql_sha256": "cca6dd0a5058ed93899d8adaf0d6d150d4e205b0bc5987fdc8febfccb3b71be0",
+        "table": "core_stockvaluationadjustment",
+        "type": "index"
+      },
+      {
+        "name": "token_blacklist_outstandingtoken_user_id_83bc629a",
+        "sql_sha256": "adfb14d0af749e575c3cf7d52332d17c4dbd0d983a5500369aaa0d97288fbb48",
+        "table": "token_blacklist_outstandingtoken",
+        "type": "index"
+      },
+      {
+        "name": "transfer_destination_page",
+        "sql_sha256": "3e33f2840c1a00b6e7a6c323f36331a95811bab373cf261a236ab1965bf332e0",
+        "table": "stock_stocktransfer",
+        "type": "index"
+      },
+      {
+        "name": "transfer_source_page",
+        "sql_sha256": "5816e58ff69af16763c82c879257e0c6a5045e47adf788ceeeb93bb11581b245",
+        "table": "stock_stocktransfer",
+        "type": "index"
+      },
+      {
+        "name": "auth_group",
+        "sql_sha256": "c548030a8f02364ba09afea4565daff8dad2de78b580c74a4c7df3ad794ded4d",
+        "table": "auth_group",
+        "type": "table"
+      },
+      {
+        "name": "auth_group_permissions",
+        "sql_sha256": "65fa4ab19b91a1f1befa5ac4a6688f771062453fb35dab528d9c36a08a116667",
+        "table": "auth_group_permissions",
+        "type": "table"
+      },
+      {
+        "name": "auth_permission",
+        "sql_sha256": "e39d2639d0815e45ebf01bc7c3ea5eb58d6c7fa1c919122790db846a3d649776",
+        "table": "auth_permission",
+        "type": "table"
+      },
+      {
+        "name": "backups_backupconfiguration",
+        "sql_sha256": "7f402280715454fdda3d6c2549689a907c7af294dbe6ce322745ba6929d7d3fe",
+        "table": "backups_backupconfiguration",
+        "type": "table"
+      },
+      {
+        "name": "backups_backupconfigurationchange",
+        "sql_sha256": "cf4353dd6f44ca9a0ba96bceb3c844adb22a735f3d1554ccf375e03dd1dd01aa",
+        "table": "backups_backupconfigurationchange",
+        "type": "table"
+      },
+      {
+        "name": "backups_backupdispatch",
+        "sql_sha256": "fa8bb36505e4620da5b9a13b8a6e69aa1458ea35af4ef28adc624264b42d8c74",
+        "table": "backups_backupdispatch",
+        "type": "table"
+      },
+      {
+        "name": "backups_backupevent",
+        "sql_sha256": "833604d656810b96dba7a87bc16143b527b9560ea1d1c7db450268cd6d82b9b4",
+        "table": "backups_backupevent",
+        "type": "table"
+      },
+      {
+        "name": "backups_backupjob",
+        "sql_sha256": "9dd029559301637a552eab4e052afcce27627c9eaa0fa2d71556317379b907d4",
+        "table": "backups_backupjob",
+        "type": "table"
+      },
+      {
+        "name": "backups_backuppart",
+        "sql_sha256": "c203bbf32f37734de2ee3ce9ad53efd9df4c1c67ffc15429d7a27dd0aef44664",
+        "table": "backups_backuppart",
+        "type": "table"
+      },
+      {
+        "name": "backups_backupschedulerstate",
+        "sql_sha256": "cb180cf9a4e404c04b67aacd9ee4ce643fa955d24881505eaf12c143e3160ef1",
+        "table": "backups_backupschedulerstate",
+        "type": "table"
+      },
+      {
+        "name": "backups_backupschedulerun",
+        "sql_sha256": "949f7d8ef25cf125989ade3a36102fdfb812e0d71ff13f18c46ef79d702f95cd",
+        "table": "backups_backupschedulerun",
+        "type": "table"
+      },
+      {
+        "name": "backups_hostingconfiguration",
+        "sql_sha256": "e06ea8f432de50d8034f5a4b4d44951881252a812d5540221f801a57a14f8405",
+        "table": "backups_hostingconfiguration",
+        "type": "table"
+      },
+      {
+        "name": "backups_hostingconfigurationchange",
+        "sql_sha256": "8a40edf195b66cb4719db55105ffebc85d1842df9a4910c0f1615fdb91307695",
+        "table": "backups_hostingconfigurationchange",
+        "type": "table"
+      },
+      {
+        "name": "backups_hostingobservation",
+        "sql_sha256": "8557fb1cb0efc79f932e4544b1c17520920fb5c5468d18bcf363c67dbef75c65",
+        "table": "backups_hostingobservation",
+        "type": "table"
+      },
+      {
+        "name": "backups_hostingreminder",
+        "sql_sha256": "7c897d4642db7dfdb6d1c1ced49de15d3d285a6ff49458eedb9b45993ee5c28f",
+        "table": "backups_hostingreminder",
+        "type": "table"
+      },
+      {
+        "name": "backups_hostingreminderattempt",
+        "sql_sha256": "145bf8a1e7d543e1a20d74e135299614e9bd2dc31c85f18fb9bc0e7221af20b0",
+        "table": "backups_hostingreminderattempt",
+        "type": "table"
+      },
+      {
+        "name": "backups_hostingreminderrepair",
+        "sql_sha256": "27de412ee389c30238f34f66b4708542874057fe1d6956c52c50736a89e53ea8",
+        "table": "backups_hostingreminderrepair",
+        "type": "table"
+      },
+      {
+        "name": "backups_importpreparation",
+        "sql_sha256": "1af3c4d2a6857305293bbed7d13efe0d1656ccb659f70b5575b62e70d99f3993",
+        "table": "backups_importpreparation",
+        "type": "table"
+      },
+      {
+        "name": "backups_importquarantine",
+        "sql_sha256": "3097d73c44606d5511dd1584251ad22d8c1aacbcb39e6ba12d2edc0753986f1c",
+        "table": "backups_importquarantine",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoveredoperationorigin",
+        "sql_sha256": "a25d1ee5b9c473a033eb8af8dbe849f7f2a72da68232b3fc402c9b041ad69242",
+        "table": "backups_recoveredoperationorigin",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoveryclosure",
+        "sql_sha256": "b995d5c168828a0a33027a9635bfb6df24f0cb4b120a93bf609a105afd2b1fbb",
+        "table": "backups_recoveryclosure",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoverycollectionreview",
+        "sql_sha256": "b8dc12394d9ed15c2d35da17a38fc6ea53edf5c2a240ab00a8ec29981e8590c5",
+        "table": "backups_recoverycollectionreview",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoverycollectionreviewdecision",
+        "sql_sha256": "797e9324c73b574049cca07d9bcf14f999fa2ab06f6f178e81e2b32f4e642eec",
+        "table": "backups_recoverycollectionreviewdecision",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoverydevice",
+        "sql_sha256": "3184b4d457e2eb4fe7a9656c05657f81227b33bd2d32754da70344841933ef4e",
+        "table": "backups_recoverydevice",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoveryintegrationdecision",
+        "sql_sha256": "87de2746c054a98f7ed181d3d7f20cb60eecea773519e0b52b96b4c72b89b1cf",
+        "table": "backups_recoveryintegrationdecision",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoveryjournaldeposit",
+        "sql_sha256": "42cec4514705519fecff64cdc9ce3c6da6a49559ad56b745985af6128c78f9a4",
+        "table": "backups_recoveryjournaldeposit",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoveryjournaloperation",
+        "sql_sha256": "505cce78d6c73f46a16a74992362c01d7e680f85e8741d5762fb7eafde58ccc7",
+        "table": "backups_recoveryjournaloperation",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoverysalehold",
+        "sql_sha256": "deb0df9f04d9d5a2144245a868dd6931d69e9673fe5a5eef4c9b8e1167272501",
+        "table": "backups_recoverysalehold",
+        "type": "table"
+      },
+      {
+        "name": "backups_recoverysaleholddecision",
+        "sql_sha256": "4ee63ca5948b0c2c64dbc8a02e2409bd5f4d16ade5e81896f3e0e7569108fdf5",
+        "table": "backups_recoverysaleholddecision",
+        "type": "table"
+      },
+      {
+        "name": "backups_restoreaccessdecision",
+        "sql_sha256": "ed4582742e58644d961aa6985eea2daf9b837a4a0ff9d02cf781af134dcec336",
+        "table": "backups_restoreaccessdecision",
+        "type": "table"
+      },
+      {
+        "name": "backups_restoreaccessgeneration",
+        "sql_sha256": "700089d0f1000923e9e310ee3e9782ad980fe0a374a9d1ed8892a0b17c8697ea",
+        "table": "backups_restoreaccessgeneration",
+        "type": "table"
+      },
+      {
+        "name": "backups_restoreaccessreview",
+        "sql_sha256": "b3f211d7bd65b37b4ff6d61847cc756c6ffc0ba08c5b1644039ca3a3e1b114b3",
+        "table": "backups_restoreaccessreview",
+        "type": "table"
+      },
+      {
+        "name": "backups_restoreimport",
+        "sql_sha256": "e4c7965cd4f0ac2287054062e40c8b85dce686c51af623e9810f98bd5773f220",
+        "table": "backups_restoreimport",
+        "type": "table"
+      },
+      {
+        "name": "backups_restoreimportpart",
+        "sql_sha256": "aab88960a7ed9c50d5cacfee361e82fa6f8c38c34a7cc72240cb5ec0d33cb14f",
+        "table": "backups_restoreimportpart",
+        "type": "table"
+      },
+      {
+        "name": "backups_restoresession",
+        "sql_sha256": "c7ae1cdfc85b1d20ddd403351391271f263da4f543e1ff5cf749778a2e9f4446",
+        "table": "backups_restoresession",
+        "type": "table"
+      },
+      {
+        "name": "backups_sendattempt",
+        "sql_sha256": "8157c6c90e0bcb901c4d58519cbdeb692a1c1604668eaf730f2ce63fd78c94a5",
+        "table": "backups_sendattempt",
+        "type": "table"
+      },
+      {
+        "name": "catalogue_productpriceconflict",
+        "sql_sha256": "2271fb41f2955338b4a354ddf09979cb650cbb67f8f35daaf48620e426a13820",
+        "table": "catalogue_productpriceconflict",
+        "type": "table"
+      },
+      {
+        "name": "catalogue_productpriceproposal",
+        "sql_sha256": "85e11890eb59aa311e15f93693aeaf6df4f9d0943c92894bccf325e18f5ec75a",
+        "table": "catalogue_productpriceproposal",
+        "type": "table"
+      },
+      {
+        "name": "catalogue_productpriceresolution",
+        "sql_sha256": "6b994e53068aee70cdc0f2df738dffde01bd810d73542298021e6ee502f447de",
+        "table": "catalogue_productpriceresolution",
+        "type": "table"
+      },
+      {
+        "name": "core_activity",
+        "sql_sha256": "5ea5c05781af2b225c93d06e502f171d3dec3349520019f486c3c5421d570358",
+        "table": "core_activity",
+        "type": "table"
+      },
+      {
+        "name": "core_barcode",
+        "sql_sha256": "59404d98b8dd398fa57fa25e66c32db5f7ede266aced9e9090826a5c2ddd806d",
+        "table": "core_barcode",
+        "type": "table"
+      },
+      {
+        "name": "core_cashcount",
+        "sql_sha256": "75a6ceb409bb9dcfa752d3cf996b9f02cddaea39a35379c532b339f2ecb22255",
+        "table": "core_cashcount",
+        "type": "table"
+      },
+      {
+        "name": "core_cashmovement",
+        "sql_sha256": "4e4905e268e8b1380ca39b6fb228e0c9cac2986e7939fac1903407eaa0492f94",
+        "table": "core_cashmovement",
+        "type": "table"
+      },
+      {
+        "name": "core_catalogueimport",
+        "sql_sha256": "d3638e37144fc8b519441ad58ea95db5719b94ff53adcc3be3bc33b13605e8fd",
+        "table": "core_catalogueimport",
+        "type": "table"
+      },
+      {
+        "name": "core_category",
+        "sql_sha256": "37ac823ee7aee1b1f10e79a58644ed3c40ebf9d855bf26a207f166dd23ce4fb1",
+        "table": "core_category",
+        "type": "table"
+      },
+      {
+        "name": "core_costrevaluation",
+        "sql_sha256": "71a94aa6b753f33564ecdfe2246a1e2d444ffad4c52b780f828937a844110d2d",
+        "table": "core_costrevaluation",
+        "type": "table"
+      },
+      {
+        "name": "core_costrevaluationitem",
+        "sql_sha256": "0beaab55ce47bd7557f55071dc851785031ce8499b6516424e9cb17ae5c0b33d",
+        "table": "core_costrevaluationitem",
+        "type": "table"
+      },
+      {
+        "name": "core_customer",
+        "sql_sha256": "808f6c32bd3832e7b3cbc6faf314b7e832b2af5becb1be9cca876caeaa95912f",
+        "table": "core_customer",
+        "type": "table"
+      },
+      {
+        "name": "core_customercredit",
+        "sql_sha256": "0265c0a3d6cbcb59721413032568a45b13577e696e93415c815404ef1fcf0d45",
+        "table": "core_customercredit",
+        "type": "table"
+      },
+      {
+        "name": "core_customerdebt",
+        "sql_sha256": "783f1aec055229f3a57499720eada97456ceaa3449df6ad07ab2c8fe4c747778",
+        "table": "core_customerdebt",
+        "type": "table"
+      },
+      {
+        "name": "core_customerledgerentry",
+        "sql_sha256": "4c44b22d24070307ca857c30070c0b6bbfbef82950075ee916b52595ec5c6111",
+        "table": "core_customerledgerentry",
+        "type": "table"
+      },
+      {
+        "name": "core_customerpayment",
+        "sql_sha256": "47c99627d7e904ddcaf66cf9977da92c6e56fe956dae5a521ba03596214adde0",
+        "table": "core_customerpayment",
+        "type": "table"
+      },
+      {
+        "name": "core_customerpaymentpart",
+        "sql_sha256": "3c39de4c963a8c321409b7e2124d65663c4a2634f259cae32ee856b8283435a3",
+        "table": "core_customerpaymentpart",
+        "type": "table"
+      },
+      {
+        "name": "core_debtallocation",
+        "sql_sha256": "91a62272c8fc23dc52a22597446659c8052f33edb98db1b1648bdb1e356bf3ed",
+        "table": "core_debtallocation",
+        "type": "table"
+      },
+      {
+        "name": "core_devicesession",
+        "sql_sha256": "afb4776dd1b3372addad24ce1b588ea943c17be1299515f97d4a905845e22691",
+        "table": "core_devicesession",
+        "type": "table"
+      },
+      {
+        "name": "core_installation",
+        "sql_sha256": "7610ba2ad4725083753730789f1b6a0a36d1a6f0ae8f5463de9a5e5b874b2502",
+        "table": "core_installation",
+        "type": "table"
+      },
+      {
+        "name": "core_languagepreferencechange",
+        "sql_sha256": "9cb2f76b78de4da1704cb1bf678da63f182a0b639e047a0529491566fb8c3e21",
+        "table": "core_languagepreferencechange",
+        "type": "table"
+      },
+      {
+        "name": "core_membership",
+        "sql_sha256": "66c085fd6f2de5e3536ec79ae625e509c2735f8c0c363f874b387e05e40ca193",
+        "table": "core_membership",
+        "type": "table"
+      },
+      {
+        "name": "core_nonsellabledecision",
+        "sql_sha256": "da4a235ae569113e556216ba0b208fec5e0915e63cfc7dec278434fd30280d9f",
+        "table": "core_nonsellabledecision",
+        "type": "table"
+      },
+      {
+        "name": "core_paymentregularization",
+        "sql_sha256": "a48bfb0e2f0956a6d478ef5ea0df5594c33412751597cc6ed286a88ed95a73bf",
+        "table": "core_paymentregularization",
+        "type": "table"
+      },
+      {
+        "name": "core_product",
+        "sql_sha256": "bb733dbc8d735a67c1b4274ffa3f5020ece2666625416fb92899df32575debad",
+        "table": "core_product",
+        "type": "table"
+      },
+      {
+        "name": "core_productpack",
+        "sql_sha256": "bf3cd5d718cba94840ebcb57710af8696d3d45b1b908c4bdf50701b42587b63c",
+        "table": "core_productpack",
+        "type": "table"
+      },
+      {
+        "name": "core_productphoto",
+        "sql_sha256": "57ada685150ad602df7bf9ce11e5b8fe4587aa551b56d3b3eea59cb88bb67c50",
+        "table": "core_productphoto",
+        "type": "table"
+      },
+      {
+        "name": "core_purchasecharge",
+        "sql_sha256": "ff232c63d526953f898db598216d61bfbd314c1db82a664bbf433d59f01f701f",
+        "table": "core_purchasecharge",
+        "type": "table"
+      },
+      {
+        "name": "core_purchasechargeallocation",
+        "sql_sha256": "893fdc544eadc48b7d34fa3e06faa07aeeb16d8c952887845d4980812ab5890e",
+        "table": "core_purchasechargeallocation",
+        "type": "table"
+      },
+      {
+        "name": "core_purchasechargerevision",
+        "sql_sha256": "865af4fdb834bb80864918f5893c4748d7aeb78757798be92b98b12c49ae8c75",
+        "table": "core_purchasechargerevision",
+        "type": "table"
+      },
+      {
+        "name": "core_purchasedocument",
+        "sql_sha256": "ecb4afc2c8f737138c448673e4423296b7ada4911283ab289c5714bf6088d785",
+        "table": "core_purchasedocument",
+        "type": "table"
+      },
+      {
+        "name": "core_purchaseline",
+        "sql_sha256": "34eb684feae769bcdc7d47cb1fd2a9fb5cf7ded326a163ccac9ca656da269e89",
+        "table": "core_purchaseline",
+        "type": "table"
+      },
+      {
+        "name": "core_purchasereceipt",
+        "sql_sha256": "21063c94369461ba5247e01cd193668e5c5c76347aa1c91f1067a3dde6d586f0",
+        "table": "core_purchasereceipt",
+        "type": "table"
+      },
+      {
+        "name": "core_purchasereceiptline",
+        "sql_sha256": "036473af08368cb79922dd7132ba49b941a312fe80f7154cb801f7249da2e4e5",
+        "table": "core_purchasereceiptline",
+        "type": "table"
+      },
+      {
+        "name": "core_regularizationallocation",
+        "sql_sha256": "662f8de57f192871a5b1967e03b66521be40bff9dd7eab1780964d7a9535e678",
+        "table": "core_regularizationallocation",
+        "type": "table"
+      },
+      {
+        "name": "core_returncostreconstruction",
+        "sql_sha256": "5e51128cabc1d9488d862089c92e613ee99c7f895a9fae4c9f27256b3eff0f5a",
+        "table": "core_returncostreconstruction",
+        "type": "table"
+      },
+      {
+        "name": "core_returncostrevision",
+        "sql_sha256": "543d5cf29416c16cc89e3d1ed6cba31fb76b82e005880ffb935e7638abdce35c",
+        "table": "core_returncostrevision",
+        "type": "table"
+      },
+      {
+        "name": "core_returncostsnapshot",
+        "sql_sha256": "b41f0926d80acc630850f01b2457f1d9de5a6a1c98e2226207367c424d61b1ea",
+        "table": "core_returncostsnapshot",
+        "type": "table"
+      },
+      {
+        "name": "core_returncreditallocation",
+        "sql_sha256": "27673c8b16a53c472258cdae600700ba390158ad3b0a7bfd38e4600c3f0bad46",
+        "table": "core_returncreditallocation",
+        "type": "table"
+      },
+      {
+        "name": "core_returncreditsettlement",
+        "sql_sha256": "c20ed268c4510f64970ae02095059e3a80db3a229ea9a5578089d33c6b1d51c3",
+        "table": "core_returncreditsettlement",
+        "type": "table"
+      },
+      {
+        "name": "core_returnreceipt",
+        "sql_sha256": "34086cae83edf482c1a75934f2719b0e83af64da2fdf3409aa97ebab89f038a7",
+        "table": "core_returnreceipt",
+        "type": "table"
+      },
+      {
+        "name": "core_sale",
+        "sql_sha256": "328e0621c3f9fd762f5ca6584791b3262fa4f648facfa7773265066512568512",
+        "table": "core_sale",
+        "type": "table"
+      },
+      {
+        "name": "core_salecancellation",
+        "sql_sha256": "53bf127873056458cc6e4c4469159f286f9360f192e778111cb2b415d631f2f5",
+        "table": "core_salecancellation",
+        "type": "table"
+      },
+      {
+        "name": "core_saleline",
+        "sql_sha256": "f4bf0710ec0a5384095bc8ec83e14a271bed4335f44d90e3c76b02deabb421d7",
+        "table": "core_saleline",
+        "type": "table"
+      },
+      {
+        "name": "core_salepayment",
+        "sql_sha256": "2fe0effab814fc080a51024cfef00badd2a9e141e813f7e35002eba47d2fafce",
+        "table": "core_salepayment",
+        "type": "table"
+      },
+      {
+        "name": "core_salereturn",
+        "sql_sha256": "c253e880ee0c969aae4c61393cbc4192157c1f6f973ddf9c44b160bdcbd2c461",
+        "table": "core_salereturn",
+        "type": "table"
+      },
+      {
+        "name": "core_salereturnline",
+        "sql_sha256": "53001610a05deba2dd52ca651b42debc70e9f84af6e7422fb431a16f80fe5856",
+        "table": "core_salereturnline",
+        "type": "table"
+      },
+      {
+        "name": "core_shop",
+        "sql_sha256": "d7cbbeb43890d12a1ceed503da997fdb2fc62ea1948f8a40a445be5128612f06",
+        "table": "core_shop",
+        "type": "table"
+      },
+      {
+        "name": "core_shopdeviceaccess",
+        "sql_sha256": "6672021d41e8aaab240cd4ef820c56b461a2c0fd3cbf64db062f5532496527c7",
+        "table": "core_shopdeviceaccess",
+        "type": "table"
+      },
+      {
+        "name": "core_stockalertevent",
+        "sql_sha256": "5d24bbe3d598de69797377ce4ec91ebf67f13de57b71733c922be4ebcb7361db",
+        "table": "core_stockalertevent",
+        "type": "table"
+      },
+      {
+        "name": "core_stockalertstate",
+        "sql_sha256": "870d2ac31c264db61edcfeadee3069b0e2a446f9799ab932998857825c7d3a78",
+        "table": "core_stockalertstate",
+        "type": "table"
+      },
+      {
+        "name": "core_stockcostsnapshot",
+        "sql_sha256": "27fbdb52f255dda272940b95c4d2716886f98dc8d59bca922ad208420b8d903c",
+        "table": "core_stockcostsnapshot",
+        "type": "table"
+      },
+      {
+        "name": "core_stockcount",
+        "sql_sha256": "e478da47ee01145a7aa3fb1f1f7ffe17e21a15ab5c4c8d3e3e0882e2a271c006",
+        "table": "core_stockcount",
+        "type": "table"
+      },
+      {
+        "name": "core_stockcountadjustment",
+        "sql_sha256": "980345bcb3809f19027146ac4dd698e9d6864a110d26c9bdfc41a88329ac5aae",
+        "table": "core_stockcountadjustment",
+        "type": "table"
+      },
+      {
+        "name": "core_stockloss",
+        "sql_sha256": "2162275e1745d63047543f7d98ae4355ca5d65fee4f103e40231f4b14551a9ef",
+        "table": "core_stockloss",
+        "type": "table"
+      },
+      {
+        "name": "core_stockmovement",
+        "sql_sha256": "1e5659b5d9bc7d882fb2aa13156022be45d6f080dee1a8f3f85a99e3ef75c9f0",
+        "table": "core_stockmovement",
+        "type": "table"
+      },
+      {
+        "name": "core_stocknotificationpreference",
+        "sql_sha256": "6dc300a52d9716751e0e75d1b3f3a4f84d6fc2ca2a2cba0b41d2462aa1a5c2a3",
+        "table": "core_stocknotificationpreference",
+        "type": "table"
+      },
+      {
+        "name": "core_stockreservation",
+        "sql_sha256": "4566473fada9d51e950b358b1ab899991c65a724312eaf812895fb221117ace5",
+        "table": "core_stockreservation",
+        "type": "table"
+      },
+      {
+        "name": "core_stockshortagereview",
+        "sql_sha256": "ac9ff2528e6a1f04744609bc353a1483a2bddf4d767d2ad5ec96f8406e4b34b6",
+        "table": "core_stockshortagereview",
+        "type": "table"
+      },
+      {
+        "name": "core_stockvaluationadjustment",
+        "sql_sha256": "9d546b4a49ed5752874dd4492df93dc9f8b3ceed38dc11f90dee482a5b4c56f3",
+        "table": "core_stockvaluationadjustment",
+        "type": "table"
+      },
+      {
+        "name": "core_supplier",
+        "sql_sha256": "694a62c46e5216ddf5723fc1f5c1f7bcf454718fbc2775446ed6d1a2eae54fc2",
+        "table": "core_supplier",
+        "type": "table"
+      },
+      {
+        "name": "core_suppliercredit",
+        "sql_sha256": "1a001d5e08bb85b3bce0d5c4dbf670e321db7dec09a47aec2570a6ad426244ee",
+        "table": "core_suppliercredit",
+        "type": "table"
+      },
+      {
+        "name": "core_suppliercreditallocation",
+        "sql_sha256": "bb6c0c44940c2f9a9d13d79b07d1abffad0523a7817663282403753182a3ef91",
+        "table": "core_suppliercreditallocation",
+        "type": "table"
+      },
+      {
+        "name": "core_supplierdebt",
+        "sql_sha256": "228380d5535a8864b2106056933e6ec214f0b496612a0dc3219b6ab4c7374469",
+        "table": "core_supplierdebt",
+        "type": "table"
+      },
+      {
+        "name": "core_supplierledgerentry",
+        "sql_sha256": "0b5d7b248934180a0fb2916566e42c85c317b8cc96ef07252bd48078a8b9f1ec",
+        "table": "core_supplierledgerentry",
+        "type": "table"
+      },
+      {
+        "name": "core_supplierpayment",
+        "sql_sha256": "aeca788c13bc9883071c4e11cc6da6d5bd5b27d29da7656a97cd8afd5df03038",
+        "table": "core_supplierpayment",
+        "type": "table"
+      },
+      {
+        "name": "core_supplierpaymentallocation",
+        "sql_sha256": "736e198180c4b2d5c89ef6735bdd3308c5d6e116aa7e8b4d223eb984df59b771",
+        "table": "core_supplierpaymentallocation",
+        "type": "table"
+      },
+      {
+        "name": "core_supplierpaymentpart",
+        "sql_sha256": "60b80f9ec9d4707c3c64a339e2ff5e12b6f4bb8a648c2cc8306a99a675f72b55",
+        "table": "core_supplierpaymentpart",
+        "type": "table"
+      },
+      {
+        "name": "core_supplierrefund",
+        "sql_sha256": "0ce0fa8d565c1a28b12be3266a098bd2f9a24593f4859a1f4133db61d98438bf",
+        "table": "core_supplierrefund",
+        "type": "table"
+      },
+      {
+        "name": "core_supplierreturn",
+        "sql_sha256": "e56006819227b82762534a0ca0a003753316cdf57de788faea04aa8f59d9fe72",
+        "table": "core_supplierreturn",
+        "type": "table"
+      },
+      {
+        "name": "core_supplierreturnline",
+        "sql_sha256": "eda7ac2fe036d64ff484428b5ae6ad5398290fc39703ecb5788bb54034ab7f05",
+        "table": "core_supplierreturnline",
+        "type": "table"
+      },
+      {
+        "name": "core_user",
+        "sql_sha256": "1e13671a72d49c2fdca31e8f5c7877783d07d3a1c0d3f32a1f14af783d9b7a19",
+        "table": "core_user",
+        "type": "table"
+      },
+      {
+        "name": "core_user_groups",
+        "sql_sha256": "a14fd3d4132f32d2ded5f0b8370c92515a5b76787f1b9704a9bc2cdf889958df",
+        "table": "core_user_groups",
+        "type": "table"
+      },
+      {
+        "name": "core_user_user_permissions",
+        "sql_sha256": "0186553bb9b3e4d5818f8cef18dc1adbecc060cadd7aa9f6ecc1d6276ef80f5a",
+        "table": "core_user_user_permissions",
+        "type": "table"
+      },
+      {
+        "name": "django_admin_log",
+        "sql_sha256": "c73658bec1ffbff0c0d15c501c8ec444a439edf099fad6f85154d274fe6b0f8b",
+        "table": "django_admin_log",
+        "type": "table"
+      },
+      {
+        "name": "django_content_type",
+        "sql_sha256": "804a65c4bf5e5109862fcec6c1b3f939ada9799291d09c85263912604410da5a",
+        "table": "django_content_type",
+        "type": "table"
+      },
+      {
+        "name": "django_migrations",
+        "sql_sha256": "531a62722dd74957f22dc63e52147769a76f4a8ce00f8bf97295920ec5b0f93e",
+        "table": "django_migrations",
+        "type": "table"
+      },
+      {
+        "name": "django_session",
+        "sql_sha256": "71559036ace747193269ba4e9a603b5e085e9d5e69aa9d44cff69870c88de5cc",
+        "table": "django_session",
+        "type": "table"
+      },
+      {
+        "name": "sqlite_sequence",
+        "sql_sha256": "6589f13dd8db97a6c0ba1fee76a84cb71451469f3d7f749b4544e07b2869e0e6",
+        "table": "sqlite_sequence",
+        "type": "table"
+      },
+      {
+        "name": "stock_stockreservationreconciliation",
+        "sql_sha256": "1a9ac341501fed35a5bb81411a31ccc2a8f390881ce66093e486e0a7061faa97",
+        "table": "stock_stockreservationreconciliation",
+        "type": "table"
+      },
+      {
+        "name": "stock_stocktransfer",
+        "sql_sha256": "b3ce176e40062524e28685f9512f816291b8fa6ba7105306aac4cfb9276d535e",
+        "table": "stock_stocktransfer",
+        "type": "table"
+      },
+      {
+        "name": "stock_stocktransferline",
+        "sql_sha256": "44b1d81bc317cf7b1af9ccbf7deb2d4dbbdc5827da2239bd423d3a7c24b9d8bd",
+        "table": "stock_stocktransferline",
+        "type": "table"
+      },
+      {
+        "name": "stock_stocktransferreceipt",
+        "sql_sha256": "975b6baff62f1ff312bcb0e2e7d55469bcc7de1cee5b6ccc26126195e55b6c33",
+        "table": "stock_stocktransferreceipt",
+        "type": "table"
+      },
+      {
+        "name": "stock_stocktransferreceiptline",
+        "sql_sha256": "5a9598cdfbedd955fd6a984fc840625ecf0416b688b632bbb0c3660dcdfcc038",
+        "table": "stock_stocktransferreceiptline",
+        "type": "table"
+      },
+      {
+        "name": "token_blacklist_blacklistedtoken",
+        "sql_sha256": "7c711be9b2ff5a19261e47aa2b5811d07d7597e7f915fad077b430927d3e1051",
+        "table": "token_blacklist_blacklistedtoken",
+        "type": "table"
+      },
+      {
+        "name": "token_blacklist_outstandingtoken",
+        "sql_sha256": "e0a95578620adf30be58f18b522800b6ef4931308da2d13ffd9eb98486fdca19",
+        "table": "token_blacklist_outstandingtoken",
+        "type": "table"
+      },
+      {
+        "name": "price_conflict_evidence_no_update",
+        "sql_sha256": "fd87f76c49cf36f4d363377125b833bd0e28954e7149aab7ecc1b665adf31fd3",
+        "table": "catalogue_productpriceconflict",
+        "type": "trigger"
+      },
+      {
+        "name": "price_conflict_no_delete",
+        "sql_sha256": "95f16f537a063b96ea8922c17fe9660eec40a5ef8e4bb46691dd56e3a5b32231",
+        "table": "catalogue_productpriceconflict",
+        "type": "trigger"
+      },
+      {
+        "name": "price_proposal_no_delete",
+        "sql_sha256": "47f593eae84842ca051c5c5bf13f5e3fef0c879d983c349751d1e621d1b30569",
+        "table": "catalogue_productpriceproposal",
+        "type": "trigger"
+      },
+      {
+        "name": "price_proposal_no_update",
+        "sql_sha256": "03be63f84e87abd04c32ed7af8bc13a2b689a3896ccd19428205e5c43a3c8f42",
+        "table": "catalogue_productpriceproposal",
+        "type": "trigger"
+      },
+      {
+        "name": "price_resolution_no_delete",
+        "sql_sha256": "93e7c88db1608ebb7925db225fa89991ab1c802aeaf55b910da8fa3ab7aff094",
+        "table": "catalogue_productpriceresolution",
+        "type": "trigger"
+      },
+      {
+        "name": "price_resolution_no_update",
+        "sql_sha256": "c1d80315750cac2c2aff3b27f9fe045058ac3d60f0a9a333416bb042d5b99d44",
+        "table": "catalogue_productpriceresolution",
+        "type": "trigger"
+      }
+    ],
+    "sha256": "e79edf99402bd5933f776de4d7ab83e55cd4573d59d18fa718b8886ea964db98"
+  },
+  "worker_sha256": "a56c927e06d4c087977682bf68483c0307523f15c438f978ef28c84d1202f6c1"
+}

@@ -1,0 +1,62 @@
+# carnetapi is the server repository. Keep the Android client local.
+/client/
+/tools/android_client_smoke.py
+/tools/map_apk.py
+/tools/tests/test_android_client_smoke.py
+
+# Only these reviewed inputs and test baselines belong to the server checkout.
+/analysis/*
+!/analysis/scope-v1.md
+!/analysis/pricing-vectors.json
+!/analysis/backend-migration-history.json
+!/analysis/backend-route-baseline.json
+
+# Local Python environments and caches.
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Credentials and local configuration; sanitized examples may be published.
+.env
+.env.*
+!.env.example
+!.env.template
+*.pem
+*.key
+*.p12
+*.pfx
+*.jks
+*.keystore
+
+# Runtime data and generated deployment outputs.
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3
+*.sqlite3-wal
+*.sqlite3-shm
+/backend/media/
+/backend/staticfiles/
+/backend/backup-files/
+/backend/runtime-control/
+/dist/
+*.apk
+*.aab
+*.log
+*.tmp
+*.temp
+*.bak
+*.orig
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.7z
+*.rar

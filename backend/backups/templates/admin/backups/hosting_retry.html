@@ -1,0 +1,9 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<p>{{ state_label }} — {{ reminder.expires_at }}</p>
+<p>{% translate "A missing SMTP response may hide an accepted email. This manual resend can create a duplicate." %}</p>
+<form method="post">{% csrf_token %}{{ form.as_p }}
+  <button type="submit">{% translate "Record explicit resend" %}</button>
+</form>
+{% endblock %}

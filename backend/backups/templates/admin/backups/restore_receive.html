@@ -1,0 +1,11 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h2>{% translate "Import backup parts" %}</h2>
+<p>{% translate "Collection does not verify the complete archive or replace the active database." %}</p>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% translate "Collect this part" %}</button>
+</form>
+{% endblock %}

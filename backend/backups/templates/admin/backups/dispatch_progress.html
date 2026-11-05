@@ -1,0 +1,19 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<p>{{ backup.id }} — {{ backup.recipient }} — {{ command.created_at }}</p>
+<p>{{ command.get_state_display }}</p>
+<p>{% translate "SMTP accepted parts" %} : {{ accepted_parts }} / {{ backup.part_count }}</p>
+<p>{{ backup.get_cleanup_state_display }}</p>
+{% if next_attempt_at %}<p>{% translate "Next possible step (UTC)" %} : {{ next_attempt_at }}</p>{% endif %}
+<p>{% translate "One step submits at most one part. No background scheduler is enabled." %}</p>
+<p><a href="{{ attempts_url }}">{% translate "SMTP send attempts" %}</a></p>
+{% if show_advance %}
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% translate "Run next dispatch step" %}</button>
+</form>
+{% endif %}
+{% if can_restart %}<p><a href="{% url 'admin:backups_backupjob_dispatch_start' backup.id %}">{% translate "Start a new manual dispatch" %}</a></p>{% endif %}
+{% endblock %}

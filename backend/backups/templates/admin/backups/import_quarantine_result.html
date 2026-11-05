@@ -1,0 +1,35 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h2>{% translate "Quarantine result" %}</h2>
+<dl>
+  <dt>{% translate "Preparation UUID" %}</dt><dd>{{ quarantine.preparation_id }}</dd>
+  <dt>{% translate "Recorded state" %}</dt><dd>{{ quarantine.get_state_display }}</dd>
+  <dt>{% translate "Requested by" %}</dt><dd>{{ quarantine.requested_by }}</dd>
+  <dt>{% translate "Reason" %}</dt><dd>{{ quarantine.reason }}</dd>
+  <dt>{% translate "Created at (UTC)" %}</dt><dd>{{ quarantine.created_at }}</dd>
+  <dt>{% translate "Finished at (UTC)" %}</dt><dd>{{ quarantine.finished_at|default:"—" }}</dd>
+</dl>
+<p>{% translate "This copy cannot yet be activated." %}</p>
+{% if quarantine.state == 'quarantined' %}
+  <p>{% translate "Archived access was suspended in this copy. Current access rights have not been confirmed." %}</p>
+  <dl>
+    <dt>{% translate "Quarantined copy bytes" %}</dt><dd>{{ quarantine.candidate_bytes }}</dd>
+    <dt>{% translate "Quarantined copy SHA-256" %}</dt><dd>{{ quarantine.candidate_sha256 }}</dd>
+  </dl>
+  <table>
+    <thead><tr><th scope="col">{% translate "Access" %}</th><th scope="col">{% translate "Before" %}</th><th scope="col">{% translate "After" %}</th></tr></thead>
+    <tbody>{% for label,before,after in counts %}<tr><th scope="row">{{ label }}</th><td>{{ before }}</td><td>{{ after }}</td></tr>{% endfor %}</tbody>
+  </table>
+  {% if copy_available %}<p>{% translate "The private copy is present. This does not recheck its integrity or current permissions." %}</p>
+  {% else %}<p>{% translate "The private copy is missing or its size has changed. Prepare a new copy." %}</p>{% endif %}
+{% elif quarantine.state == 'failed' %}
+  <p>{% translate "Quarantine failed." %} {{ quarantine.failure_code }}</p>
+{% else %}
+  <p>{% translate "Quarantine was recorded as running. This page does not prove that its worker is still alive." %}</p>
+{% endif %}
+<a href="{% url 'admin:backups_importpreparation_result' quarantine.preparation_id %}">{% translate "Preparation result" %}</a>
+{% if quarantine.state != 'quarantining' %}
+  <a href="{% url 'admin:backups_importquarantine_start' quarantine.preparation_id %}">{% translate "Quarantine another copy" %}</a>
+{% endif %}
+{% endblock %}

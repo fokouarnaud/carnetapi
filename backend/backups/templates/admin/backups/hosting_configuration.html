@@ -1,0 +1,38 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<section aria-label="{% translate 'Hosting status' %}">
+  <p>{{ expiration_label }} — {% if hosting.configuration.expires_at %}{{ hosting.configuration.expires_at }}{% else %}{% translate "Unknown" %}{% endif %}</p>
+  <p>{% translate "Reminder calendar" %} : Africa/Douala</p>
+  {% if hosting.configuration_state == 'awaiting_verification' %}<p role="status">{% translate "Confirm expiration and recipient again after restoration before reminders can resume." %}</p>{% endif %}
+  {% if hosting.configuration_state == 'clock_inconsistent' %}<p role="status">{% translate "Server time precedes the last verification. Check the clock before sending reminders." %}</p>{% endif %}
+  {% if hosting.configuration_state == 'disabled' %}<p>{% translate "Hosting reminders are disabled" %}</p>{% endif %}
+  <p>{% translate "A visit, reload or email does not renew hosting. Verify and record the actual expiration manually." %}</p>
+  {% if hosting.requires_attention %}<p role="status">{% translate "Operator attention required" %}</p>{% endif %}
+  <ul>{% for reminder in reminders %}
+    <li>{% translate "Reminder lead days" %} : {{ reminder.lead_days }} — {{ reminder.due_local_date }} — {{ reminder.label }}
+    {% if reminder.state == 'failed' or reminder.state == 'uncertain' %}<a href="{% url 'admin:backups_hostingreminder_retry' reminder.id %}">{% translate "Explicit hosting reminder resend" %}</a>{% endif %}</li>
+  {% endfor %}</ul>
+  <p>{% translate "Last complete backup SMTP acceptance" %} : {% if hosting.backup.last_accepted_at %}{{ hosting.backup.last_accepted_at }}{% else %}{% translate "Unknown" %}{% endif %}</p>
+  <p>{% translate "Incomplete backups" %} : {{ hosting.backup.blocked_count }}</p>
+  <p>{% translate "Database filesystem free bytes, not provider quota" %} : {{ hosting.filesystem_free_bytes|default_if_none:"—" }}</p>
+  {% if hosting.reported_space %}
+    <p>{% translate "Reported service state" %} : {{ service_label }}</p>
+    <p>{% translate "Verification reference" %} : {{ hosting.reported_space.evidence_reference }}</p>
+    <p>{% translate "Reported installed bytes" %} : {{ hosting.reported_space.installed_bytes|default_if_none:"—" }}</p>
+    {% if hosting.reported_space.installed_budget_state == 'reported_limit_exceeded' %}<p role="status">{% translate "Reported installed size reaches or exceeds the strict 500000000-byte budget." %}</p>{% endif %}
+    <p>{% translate "Reported quota remaining bytes" %} : {{ hosting.reported_space.quota_remaining_bytes|default_if_none:"—" }}</p>
+    <p>{% translate "Observation time" %} : {{ hosting.reported_space.observed_at }}</p>
+  {% else %}<p>{% translate "No operator space observation recorded" %}</p>{% endif %}
+</section>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% translate "Save hosting report" %}</button>
+</form>
+<p><a href="{% url 'admin:backups_hostingconfigurationchange_changelist' %}">{% translate "Hosting configuration changes" %}</a></p>
+<p><a href="{% url 'admin:backups_hostingreminderattempt_changelist' %}">{% translate "Hosting reminder attempts" %}</a></p>
+<p><a href="{% url 'admin:backups_hostingreminderrepair_changelist' %}">{% translate "Hosting reminder interruption reviews" %}</a></p>
+<p><a href="{% url 'admin:backups_hostingobservation_changelist' %}">{% translate "Hosting observations" %}</a></p>
+<p><a href="{% url 'admin:backups_hostingobservation_record' %}">{% translate "Record hosting observation" %}</a></p>
+{% endblock %}

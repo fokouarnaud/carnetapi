@@ -1,0 +1,6 @@
+Django>=5.2.8,<5.3
+djangorestframework>=3.16,<4
+djangorestframework-simplejwt>=5.5,<6
+drf-spectacular>=0.28,<1
+django-unfold>=0.80,<1
+cryptography>=50.0.2,<51

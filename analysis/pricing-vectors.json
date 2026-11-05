@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "line_rounding": "half_up_once_before_discounts",
+  "global_discount_allocation": "largest_remainder_uuid_ascending_ties",
+  "reference_amounts": [
+    {"quantity_milli": 500, "unit_price_fcfa": 249, "unit_kind": "weight", "expected_fcfa": 125},
+    {"quantity_milli": 1250, "unit_price_fcfa": 999, "unit_kind": "weight", "expected_fcfa": 1249},
+    {"quantity_milli": 1500, "unit_price_fcfa": 1, "unit_kind": "volume", "expected_fcfa": 2},
+    {"quantity_milli": 1, "unit_price_fcfa": 500, "unit_kind": "weight", "expected_fcfa": 1},
+    {"quantity_milli": 1, "unit_price_fcfa": 499, "unit_kind": "weight", "expected_fcfa": 0}
+  ],
+  "baskets": [
+    {
+      "name": "proportional_after_own_discounts",
+      "lines": [
+        {"id": "00000000-0000-0000-0000-000000000001", "reference_fcfa": 2500, "own_discount_fcfa": 500},
+        {"id": "00000000-0000-0000-0000-000000000002", "reference_fcfa": 8000, "own_discount_fcfa": 0}
+      ],
+      "global_discount_fcfa": 500,
+      "seller_cap_basis_points": null,
+      "expected_global_discounts_fcfa": [100, 400],
+      "expected_line_nets_fcfa": [1900, 7600],
+      "expected_net_total_fcfa": 9500
+    },
+    {
+      "name": "stable_uuid_rounding",
+      "lines": [
+        {"id": "00000000-0000-0000-0000-000000000003", "reference_fcfa": 1000, "own_discount_fcfa": 0},
+        {"id": "00000000-0000-0000-0000-000000000001", "reference_fcfa": 1000, "own_discount_fcfa": 0},
+        {"id": "00000000-0000-0000-0000-000000000002", "reference_fcfa": 1000, "own_discount_fcfa": 0}
+      ],
+      "global_discount_fcfa": 100,
+      "seller_cap_basis_points": null,
+      "expected_global_discounts_fcfa": [33, 34, 33],
+      "expected_line_nets_fcfa": [967, 966, 967],
+      "expected_net_total_fcfa": 2900
+    },
+    {
+      "name": "large_unequal_remainders",
+      "lines": [
+        {"id": "00000000-0000-0000-0000-000000000002", "reference_fcfa": 10000000000000001, "own_discount_fcfa": 0},
+        {"id": "00000000-0000-0000-0000-000000000001", "reference_fcfa": 10000000000000000, "own_discount_fcfa": 0}
+      ],
+      "global_discount_fcfa": 1,
+      "seller_cap_basis_points": null,
+      "expected_global_discounts_fcfa": [1, 0],
+      "expected_line_nets_fcfa": [10000000000000000, 10000000000000000],
+      "expected_net_total_fcfa": 20000000000000000
+    },
+    {
+      "name": "combined_discount_cap",
+      "lines": [{"id": "00000000-0000-0000-0000-000000000001", "reference_fcfa": 10000, "own_discount_fcfa": 400}],
+      "global_discount_fcfa": 101,
+      "seller_cap_basis_points": 500,
+      "expected_failure": "discount_cap_exceeded"
+    }
+  ]
+}

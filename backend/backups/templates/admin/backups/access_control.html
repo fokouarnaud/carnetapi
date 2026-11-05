@@ -1,0 +1,34 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h2>{% translate "Review restored access" %}</h2>
+<p>{% translate "Shop" %} : {{ review.shop.name }} — {{ review.shop_id }}</p>
+<p>{% translate "User" %} : {{ review.user.username }} — {{ review.user_id }}</p>
+<p>{% translate "Restoration access generation" %} : {{ review.generation_id }}</p>
+<p>{% translate "Archived role" %} : {{ archived_role_label }}</p>
+<p>{% translate "Current role" %} : {{ current_role_label }}</p>
+<p>{% translate "Archived roles do not prove current rights. Verify the current identity and responsibility before deciding." %}</p>
+<p>{% translate "Current review status" %} : {{ current_state_label }} — {% translate "Version" %} {{ review.current_version }}</p>
+<p>{% translate "Business operations remain blocked during maintenance." %}</p>
+<p>{% translate "This control does not reopen the service or replace OTP verification." %}</p>
+{% if receipt %}
+<section aria-label="{% translate 'Recorded decision' %}">
+  <h3>{% translate "Recorded decision" %}</h3>
+  <p>{{ receipt.id }} — {{ receipt_state_label }} — {% translate "Version" %} {{ receipt.version }}</p>
+  <p>{{ receipt.reason }}</p>
+  {% if receipt.evidence_ref %}<p>{% translate "Evidence reference (optional)" %} : {{ receipt.evidence_ref }}</p>{% endif %}
+</section>
+{% endif %}
+<form method="post">{% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% translate "Record access decision" %}</button>
+</form>
+<h3>{% translate "Decision history" %}</h3>
+<table>
+  <thead><tr><th>{% translate "Version" %}</th><th>{% translate "Decision" %}</th><th>{% translate "Author" %}</th><th>{% translate "Created at (UTC)" %}</th><th>{% translate "Reason" %}</th><th>{% translate "Evidence reference (optional)" %}</th></tr></thead>
+  <tbody>{% for row in history_rows %}<tr><td>{{ row.event.version }}</td><td>{{ row.state_label }}</td><td>{{ row.event.requested_by }}</td><td>{{ row.event.created_at }}</td><td>{{ row.event.reason }}</td><td>{{ row.event.evidence_ref|default:"—" }}</td></tr>{% empty %}<tr><td colspan="6">{% translate "No access decision has been recorded." %}</td></tr>{% endfor %}</tbody>
+</table>
+{% if history.has_previous %}<a href="?history_page={{ history.previous_page_number }}">{% translate "Previous" %}</a>{% endif %}
+{% if history.has_next %}<a href="?history_page={{ history.next_page_number }}">{% translate "Next" %}</a>{% endif %}
+<p><a href="{% url 'admin:backups_restoreaccessreview_changelist' %}">{% translate "Restoration access reviews" %}</a></p>
+{% endblock %}

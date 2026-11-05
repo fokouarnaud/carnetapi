@@ -1,0 +1,15 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+{% include "admin/backups/health.html" %}
+<p>{{ schedule.local_hour|stringformat:"02d" }}:{{ schedule.local_minute|stringformat:"02d" }} — {{ schedule.timezone_name }}</p>
+<p>{% translate "Automatic recipient" %} : {% if schedule.automatic_recipient %}{{ schedule.automatic_recipient }}{% else %}{% translate "Not configured" %}{% endif %}</p>
+{% if schedule.next_run_at %}<p>{% translate "Next possible step (UTC)" %} : {{ schedule.next_run_at }}</p>{% endif %}
+<p>{% translate "Saving this schedule does not configure or execute an external trigger." %}</p>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% translate "Save daily backup configuration" %}</button>
+</form>
+<p><a href="{% url 'admin:backups_backupconfigurationchange_changelist' %}">{% translate "Backup configuration changes" %}</a></p>
+{% endblock %}

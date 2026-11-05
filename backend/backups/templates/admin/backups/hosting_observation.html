@@ -1,0 +1,9 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<p>{% translate "Observation time is UTC. Unknown measurements stay blank; zero is a measured value." %}</p>
+<p>{% translate "A provider quota or a filesystem reading does not qualify the full installed backend budget." %}</p>
+<form method="post">{% csrf_token %}{{ form.as_p }}
+  <button type="submit">{% translate "Record hosting observation" %}</button>
+</form>
+{% endblock %}

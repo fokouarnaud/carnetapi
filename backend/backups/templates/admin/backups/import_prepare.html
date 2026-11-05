@@ -1,0 +1,17 @@
+{% extends "admin/base_site.html" %}
+{% load i18n %}
+{% block content %}
+<h2>{% translate "Prepare a restore copy" %}</h2>
+<dl>
+  <dt>{% translate "Backup UUID" %}</dt><dd>{{ batch.backup_id }}</dd>
+  <dt>{% translate "Backup captured at (UTC)" %}</dt><dd>{{ batch.header.created_at }}</dd>
+  <dt>{% translate "Key identifier" %}</dt><dd>{{ batch.header.key_id }}</dd>
+</dl>
+<p>{% translate "All encrypted parts will be checked, then a private copy will be migrated and audited." %}</p>
+<p>{% translate "This copy cannot yet be activated." %}</p>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">{% translate "Prepare a restore copy" %}</button>
+</form>
+{% endblock %}
