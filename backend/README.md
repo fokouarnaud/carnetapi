@@ -492,7 +492,7 @@ Les paramètres de test emploient des clés factices et un hash de mot de passe 
 
 Définir `APP_SECRET_KEY` et `APP_JWT_SIGNING_KEY` : deux secrets aléatoires indépendants. `APP_ALLOWED_HOSTS` reçoit la liste des hôtes autorisés séparés par virgules. `APP_DB_PATH` est facultatif (défaut `backend/db.sqlite3`). `APP_ENV` vaut `production` par défaut, avec HTTPS obligatoire et cookies sécurisés ; utiliser `development` uniquement pour un serveur local. Aucun fichier de secrets n'est créé par le projet.
 
-Puis utiliser `manage.py migrate` et `createsuperuser` avec `config.settings`. Avant le premier `runserver` ou démarrage WSGI, initialiser explicitement la barrière externe avec `tools/restore_maintenance.py initialize` comme décrit dans [BACKUPS.md](BACKUPS.md). La configuration proxy et TLS de PythonAnywhere reste à vérifier avant déploiement. Aucun compte d'hébergement ou site n'a été créé.
+Pour une première installation, utiliser `manage.py migrate` et `createsuperuser` avec `config.settings`, puis initialiser explicitement la barrière externe avec `tools/restore_maintenance.py initialize` avant le démarrage WSGI, comme décrit dans [BACKUPS.md](BACKUPS.md). Le déploiement initial sur `carnetapi.pythonanywhere.com` est réalisé : HTTPS, accès Unfold et refus des API/documentation anonymes vérifiés, connexion SMTP authentifiée. La capacité du pilote, les envois et la planification restent à qualifier. Chemins, preuves et procédure d'exploitation : [PYTHONANYWHERE.md](PYTHONANYWHERE.md). Les mises à jour d'une base existante suivent le protocole de maintenance.
 
 ## Comportements actuellement implémentés
 

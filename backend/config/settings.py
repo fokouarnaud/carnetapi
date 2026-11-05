@@ -23,6 +23,8 @@ ALLOWED_HOSTS = os.environ.get("APP_ALLOWED_HOSTS", "localhost,127.0.0.1").split
 INSTALLED_APPS = list(INSTALLED_APPLICATIONS)
 RESTORE_RECOVERY = recovery_web_options(os.environ)
 UNFOLD = {"LOGIN":{"form":"backups.recovery_forms.RecoveryAuthenticationForm"}}
+# A direct Unfold login has no business profile page to return to.
+LOGIN_REDIRECT_URL = "/admin/"
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "backups.middleware.RestoreGateMiddleware",
