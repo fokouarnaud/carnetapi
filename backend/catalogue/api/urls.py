@@ -2,6 +2,7 @@
 from django.urls import include, path
 from catalogue.api.catalogue import ProductViewSet
 from catalogue.api.price_conflicts import ProductPriceConflictViewSet
+from catalogue.api.pack_price_conflicts import PackPriceConflictViewSet
 from catalogue.api.packs import PackViewSet
 from catalogue.api.categories import CategoryViewSet
 from catalogue.api.barcodes import BarcodeAssignmentViewSet, BarcodeLookupViewSet
@@ -9,6 +10,11 @@ from catalogue.api.product_photos import ProductPhotoViewSet
 from catalogue.api.catalogue_imports import CatalogueImportViewSet
 
 urlpatterns = [
+    path("shops/<uuid:shop_id>/products/<uuid:product_id>/packs/<uuid:pack_id>/price-conflicts/", PackPriceConflictViewSet.as_view({"get": "list", "post": "create"}), name="pack-price-conflict-list"),
+    path("shops/<uuid:shop_id>/products/<uuid:product_id>/packs/<uuid:pack_id>/price-conflicts/<uuid:pk>/", PackPriceConflictViewSet.as_view({"get": "retrieve"}), name="pack-price-conflict-detail"),
+    path("shops/<uuid:shop_id>/products/<uuid:product_id>/packs/<uuid:pack_id>/price-conflicts/<uuid:pk>/proposals/", PackPriceConflictViewSet.as_view({"get": "proposals"}), name="pack-price-conflict-proposals"),
+    path("shops/<uuid:shop_id>/products/<uuid:product_id>/packs/<uuid:pack_id>/price-conflicts/<uuid:pk>/preview/", PackPriceConflictViewSet.as_view({"get": "preview"}), name="pack-price-conflict-preview"),
+    path("shops/<uuid:shop_id>/products/<uuid:product_id>/packs/<uuid:pack_id>/price-conflicts/<uuid:pk>/resolve/", PackPriceConflictViewSet.as_view({"post": "resolve"}), name="pack-price-conflict-resolve"),
     path("shops/<uuid:shop_id>/products/<uuid:product_id>/price-conflicts/",ProductPriceConflictViewSet.as_view({"get":"list","post":"create"}),name="product-price-conflict-list"),
     path("shops/<uuid:shop_id>/products/<uuid:product_id>/price-conflicts/<uuid:pk>/",ProductPriceConflictViewSet.as_view({"get":"retrieve"}),name="product-price-conflict-detail"),
     path("shops/<uuid:shop_id>/products/<uuid:product_id>/price-conflicts/<uuid:pk>/preview/",ProductPriceConflictViewSet.as_view({"get":"preview"}),name="product-price-conflict-preview"),

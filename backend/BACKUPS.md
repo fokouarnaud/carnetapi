@@ -1,5 +1,45 @@
 # Sauvegardes serveur — préparation et vérification
 
+## Mise à jour — conflits de prix de conditionnement, 6 novembre 2026
+
+La migration additive `catalogue.0005_pack_price_conflicts` ajoute les preuves,
+propositions et décisions de prix de conditionnement, protégées par six triggers
+d'immutabilité. Les manifestes `backup_schema.json` et `restore_schema.json`
+incluent cette migration ; la référence de restauration a été reconstruite dans
+deux bases privées indépendantes, puis vérifiée courante à **710 objets**. Cette
+qualification locale ne signifie pas que la migration a été appliquée au serveur
+déployé ni qu'une sauvegarde réelle a été produite.
+
+Une activité `pack_updated` effectivement reprise par `pack_update` peut servir
+de preuve à un conflit de prix si son avant/après est exact et son facteur
+inchangé. Le prix concurrent ne modifie ni ce facteur ni le nom/statut déjà
+confirmé. L'auteur et l'installation déclarés de la source récupérée restent des
+références historiques : la validation par le responsable actuel ne crée ni ne
+réactive leur compte, installation ou droit.
+
+Tant que ce conflit de prix est ouvert, une nouvelle reprise `pack_update`
+contenant `sale_price_fcfa` ou `base_quantity_milli` est conservée mais bloquée,
+avec l'issue typée `catalogue_pack_price_conflict` dans l'aperçu. La persistance
+revérifie cette garde avant mutation ; elle ne remplace pas le prix commun par
+la proposition entrante. Une révision de nom seule reste possible et invalide
+l'ancien aperçu de résolution. Un reçu natif ou de reprise déjà reconnu garde
+son contenu initial et ne crée aucun nouvel effet.
+
+Le lot combiné domaine/API/gardes/régressions a **105 tests et 136 sous-tests
+réussis**. La déclaration OpenAPI bornant les propositions a ensuite été
+requalifiée séparément : **2 tests et 6 sous-tests réussis**. Le parcours HTTP
+réel concurrent démontre prix 5 200 → commun 4 800 → résolution 5 000, facteur 24
+et reçus idempotents, sans stock ou caisse créés par les décisions de prix.
+Voir [la qualification du backend](README.md) et
+[les tests des gardes de reprise](backups/tests/test_recovery_pack_price_conflicts.py).
+
+Cette tranche n'ajoute aucun type de journal pour rejouer un enregistrement ou
+une résolution de conflit lui-même perdu ; elle ne résout pas les conflits de
+facteur. Ni synchronisation ordinaire, ni client Android, ni clôture complète
+ou réouverture U44 ne sont qualifiés par ces preuves. Les autres paragraphes
+conservent les qualifications et limites des tranches antérieures ; aucune US
+complète ni récupération globale achevée n'en est déduite.
+
 Extension actuelle :
 [fournisseurs et ouvertures perdus](../analysis/backend-recovery-supplier-dependencies-2026-10-28.md).
 `supplier_creation`, `supplier_opening_debt`, `supplier_opening_balance` reprennent

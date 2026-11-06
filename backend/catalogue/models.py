@@ -4,6 +4,7 @@ from django.db.models.lookups import Exact, GreaterThan, LessThanOrEqual
 from django.utils.translation import gettext_lazy as _
 from common.model_base import UUIDRecord, _integer_columns
 from catalogue.price_conflict_models import ProductPriceConflict, ProductPriceProposal, ProductPriceResolution
+from catalogue.pack_price_conflict_models import PackPriceConflict, PackPriceProposal, PackPriceResolution
 
 
 class Category(UUIDRecord):

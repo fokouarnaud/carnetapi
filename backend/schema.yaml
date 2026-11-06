@@ -5921,6 +5921,419 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/products/{product_id}/packs/{pack_id}/price-conflicts/:
+    get:
+      operationId: shops_products_packs_price_conflicts_list
+      parameters:
+      - in: path
+        name: pack_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: Un numéro de page de l'ensemble des résultats.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Nombre de résultats à retourner par page.
+        schema:
+          type: integer
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPackPriceConflictList'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+    post:
+      operationId: shops_products_packs_price_conflicts_create
+      parameters:
+      - in: path
+        name: pack_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RecordPriceConflictInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/RecordPriceConflictInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/RecordPriceConflictInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackPriceConflict'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackPriceConflict'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/products/{product_id}/packs/{pack_id}/price-conflicts/{id}/:
+    get:
+      operationId: shops_products_packs_price_conflicts_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: pack_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackPriceConflict'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/products/{product_id}/packs/{pack_id}/price-conflicts/{id}/preview/:
+    get:
+      operationId: shops_products_packs_price_conflicts_preview_retrieve
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: pack_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackPriceConflictPreview'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/products/{product_id}/packs/{pack_id}/price-conflicts/{id}/proposals/:
+    get:
+      operationId: shops_products_packs_price_conflicts_proposals_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: pack_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: Un numéro de page de l'ensemble des résultats.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Nombre de résultats à retourner par page.
+        schema:
+          type: integer
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPriceProposalList'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/products/{product_id}/packs/{pack_id}/price-conflicts/{id}/resolve/:
+    post:
+      operationId: shops_products_packs_price_conflicts_resolve_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: pack_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ResolvePriceConflictInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ResolvePriceConflictInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ResolvePriceConflictInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PackPriceConflict'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/shops/{shop_id}/products/{product_id}/packs/{id}/:
     get:
       operationId: shops_products_packs_retrieve
@@ -21293,6 +21706,11 @@ components:
           type: integer
           readOnly: true
           default: 0
+        price_conflict:
+          allOf:
+          - $ref: '#/components/schemas/PublicPriceConflict'
+          nullable: true
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -21309,6 +21727,7 @@ components:
       - id
       - is_active
       - name
+      - price_conflict
       - product_id
       - product_updated_at
       - product_version
@@ -21345,6 +21764,160 @@ components:
       - details
       - id
       - reason
+    PackPriceConflict:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775806
+          minimum: 1
+          format: int64
+        common_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        state:
+          $ref: '#/components/schemas/ProductPriceConflictStateEnum'
+        version:
+          type: integer
+          minimum: 1
+        product_version:
+          type: integer
+          minimum: 1
+        created_at:
+          type: string
+          format: date-time
+        proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceProposal'
+          maxItems: 25
+        resolution:
+          allOf:
+          - $ref: '#/components/schemas/PriceResolution'
+          nullable: true
+        pack_id:
+          type: string
+          format: uuid
+        base_quantity_milli:
+          type: integer
+          minimum: 1
+        pack_version:
+          type: integer
+          minimum: 1
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
+      required:
+      - base_quantity_milli
+      - base_version
+      - common_price_fcfa
+      - created_at
+      - id
+      - pack_id
+      - pack_version
+      - product_id
+      - product_version
+      - proposals
+      - proposals_count
+      - proposals_url
+      - resolution
+      - source_change_id
+      - state
+      - version
+    PackPriceConflictPreview:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775806
+          minimum: 1
+          format: int64
+        common_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        state:
+          $ref: '#/components/schemas/ProductPriceConflictStateEnum'
+        version:
+          type: integer
+          minimum: 1
+        product_version:
+          type: integer
+          minimum: 1
+        created_at:
+          type: string
+          format: date-time
+        proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceProposal'
+          maxItems: 25
+        resolution:
+          allOf:
+          - $ref: '#/components/schemas/PriceResolution'
+          nullable: true
+        pack_id:
+          type: string
+          format: uuid
+        base_quantity_milli:
+          type: integer
+          minimum: 1
+        pack_version:
+          type: integer
+          minimum: 1
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
+        preview_token:
+          type: string
+          nullable: true
+          maxLength: 512
+        can_resolve:
+          type: boolean
+      required:
+      - base_quantity_milli
+      - base_version
+      - can_resolve
+      - common_price_fcfa
+      - created_at
+      - id
+      - pack_id
+      - pack_version
+      - preview_token
+      - product_id
+      - product_version
+      - proposals
+      - proposals_count
+      - proposals_url
+      - resolution
+      - source_change_id
+      - state
+      - version
     PackRevisionSnapshot:
       type: object
       properties:
@@ -22200,6 +22773,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/Pack'
+    PaginatedPackPriceConflictList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PackPriceConflict'
     PaginatedPaymentList:
       type: object
       required:
@@ -22246,6 +22842,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PaymentRegularization'
+    PaginatedPriceProposalList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceProposal'
     PaginatedProductHistoryList:
       type: object
       required:

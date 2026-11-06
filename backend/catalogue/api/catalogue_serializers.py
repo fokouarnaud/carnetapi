@@ -9,6 +9,7 @@ from common.api.fields import ExactIntegerField, StrictBoolean, StrictSerializer
 from catalogue.models import Product, ProductPack, ProductPhoto
 from catalogue.api.photo_metadata import PhotoMetadataSerializer, photo_metadata
 from catalogue.api.price_conflicts import PublicPriceConflictSerializer,public_price_conflict
+from catalogue.api.pack_price_conflicts import public_pack_price_conflict
 
 
 class CodeField(serializers.CharField):
@@ -159,12 +160,18 @@ class UpdatePackSerializer(StrictSerializer):
 
 
 class PackSerializer(serializers.ModelSerializer):
+    price_conflict = serializers.SerializerMethodField()
     product_id = serializers.UUIDField(read_only=True)
     product_version = serializers.IntegerField(source="product.version", read_only=True)
     product_updated_at = serializers.DateTimeField(source="product.updated_at", read_only=True)
     barcode = serializers.CharField(read_only=True, default=None, allow_null=True)
     barcode_version = serializers.IntegerField(read_only=True, default=0)
+
+    @extend_schema_field(PublicPriceConflictSerializer(allow_null=True))
+    def get_price_conflict(self, pack):
+        return public_pack_price_conflict(pack)
+
     class Meta:
         model = ProductPack
-        fields = ["id", "product_id", "version", "product_version", "product_updated_at", "name", "base_quantity_milli", "sale_price_fcfa", "is_active", "barcode", "barcode_version", "created_at", "updated_at"]
+        fields = ["id", "product_id", "version", "product_version", "product_updated_at", "name", "base_quantity_milli", "sale_price_fcfa", "is_active", "barcode", "barcode_version", "price_conflict", "created_at", "updated_at"]
         read_only_fields = fields

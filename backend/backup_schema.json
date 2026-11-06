@@ -196,6 +196,10 @@
     "0004_product_price_conflicts"
   ],
   [
+    "catalogue",
+    "0005_pack_price_conflicts"
+  ],
+  [
     "contenttypes",
     "0001_initial"
   ],

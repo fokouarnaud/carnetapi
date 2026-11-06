@@ -24,7 +24,7 @@ class PriceConflictContractTests(TestCase):
         cls.schema=SchemaGenerator().get_schema(request=None,public=True)
 
     def assert_response_schema(self,response,ending,method='get'):
-        path=next(path for path in self.schema['paths'] if path.endswith(ending))
+        path=next(path for path in self.schema['paths'] if path.endswith(ending) and '/packs/' not in path)
         rule=self.schema['paths'][path][method]['responses'][str(response.status_code)]['content']['application/json']['schema']
         validator=Draft4Validator(nullable_schema({**rule,'components':self.schema['components']}),format_checker=FormatChecker())
         errors=list(validator.iter_errors(json.loads(response.content)))

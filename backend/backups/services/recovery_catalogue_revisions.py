@@ -79,6 +79,11 @@ def build_catalogue_revision_preview(shop, capture):
             try:ensure_price_uncontested(current.id)
             except OperationConflict:
                 issues.append({"code":"catalogue_price_conflict","ids":[str(current.id)]})
+        if pack and current is not None and {"sale_price_fcfa", "base_quantity_milli"} & decoded.request.keys():
+            from catalogue.services.pack_price_conflicts import ensure_pack_price_uncontested
+            try:ensure_pack_price_uncontested(current.id)
+            except OperationConflict:
+                issues.append({"code":"catalogue_pack_price_conflict","ids":[str(current.id)]})
         if pack and current is not None and current.product.unit_kind == "piece" and decoded.snapshot["after"]["base_quantity_milli"] % 1000:
             issues.append({"code": "product_unit_conflict", "ids": [str(current.product_id)]})
         if not pack and decoded.snapshot["after"]["category_id"] is not None and not Category.objects.filter(
@@ -115,6 +120,9 @@ def persist_catalogue_revision(*, shop, actor, installation, decoded, origin_cap
     if not pack and "sale_price_fcfa" in decoded.request:
         from catalogue.services.price_conflicts import ensure_price_uncontested
         ensure_price_uncontested(item.id)
+    if pack and {"sale_price_fcfa", "base_quantity_milli"} & decoded.request.keys():
+        from catalogue.services.pack_price_conflicts import ensure_pack_price_uncontested
+        ensure_pack_price_uncontested(item.id)
     before = _state(item, pack=pack)
     data = dict(decoded.request)
     operation_id, reason = data.pop("operation_id"), data.pop("reason")

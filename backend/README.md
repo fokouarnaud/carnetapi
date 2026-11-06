@@ -1,4 +1,55 @@
-# Backend — continuation du 30 octobre 2026
+# Backend — continuation du 6 novembre 2026
+
+Les conflits de prix des conditionnements disposent maintenant du même parcours
+explicite que les prix produit, avec facteur strictement inchangé. Exemple
+qualifié : carton de 24 à 4 800 FCFA, changement confirmé à 5 200, puis proposition
+concurrente à 5 000 depuis la version initiale. La réception du conflit conserve
+les deux propositions et rétablit 4 800 pour les nouvelles ventes. Le responsable
+prévisualise puis choisit une proposition conservée ou le prix commun, avec motif ;
+aucun montant libre n'est accepté à la résolution. Les noms/statuts déjà confirmés,
+facteurs et anciennes ventes restent conservés, sans stock ni caisse créés par
+ces décisions. Les prix et facteurs historiques facturés restent indépendants
+des changements suivants.
+
+Les routes privées sont sous
+`/api/v1/shops/{shop_id}/products/{product_id}/packs/{pack_id}/price-conflicts/` :
+liste/création, détail, `preview/`, `resolve/` et `proposals/`. Droits actuels de
+responsable et session/installation sont relus avant un ancien reçu. Un seul
+conflit peut rester ouvert par format ; prix et facteur ne peuvent alors être
+écrasés par une modification native ou une nouvelle reprise de catalogue. Les
+anciens reçus identiques restent rejouables sans effet. L'aperçu signé est lié au
+compte, à l'installation, à la session et aux révisions conflit/format/produit.
+Les réponses embarquent au plus 25 propositions, leur nombre total et
+`proposals_url` pour la collection complète paginée, sans quota de propositions.
+Le vendeur ne reçoit que l'identifiant du conflit, son état et le prix commun.
+
+Qualification locale : **105 tests et 136 sous-tests réussis** sur le domaine,
+l'API, les gardes et les régressions sélectionnées. Après correction de la seule
+déclaration OpenAPI `maxItems: 25`, **2 tests de contrat et 6 sous-tests réussis**
+revalident les réponses réelles ; le lot de 105 n'a pas été répété après cette
+déclaration. Un serveur HTTP local multithread a conservé les ventes à
+5 200/4 800/5 000, le facteur 24, le stock final de 28 unités et 15 000 FCFA en
+caisse. Deux enregistrements simultanés du même UUID donnent 201/200 et deux
+résolutions 200/200, avec reçus identiques et un seul effet. Reproduction :
+[tests domaine](catalogue/tests/test_pack_price_conflicts.py),
+[contrat API](catalogue/tests/test_pack_price_conflicts_contract.py) et
+`python -m verification.pack_price_conflicts_smoke` depuis `backend/` avec le
+Python du venv. Le smoke utilise uniquement des identités de qualification et
+une base SQLite jetable.
+
+La migration additive `catalogue.0005_pack_price_conflicts` conserve les preuves,
+propositions et décisions par six triggers d'immutabilité. Les manifestes de
+sauvegarde/restauration ont été régénérés et vérifiés, avec référence de
+restauration à **710 objets** ; OpenAPI strict, Django check et fraîcheur des
+migrations passent. Ces preuves locales ne démontrent ni migration déployée,
+ni sauvegarde réelle, ni synchronisation ordinaire ou parcours Android des
+conflits. Les conflits portant sur un facteur restent à implémenter. La reprise
+d'une source `pack_update` valide est qualifiée, mais le rejeu d'un enregistrement
+ou d'une résolution de conflit lui-même perdu ne dispose pas encore de type de
+journal dédié. US-37/44 et les 46 US ne sont pas déclarées complètes ; la clôture
+complète et la question U44 demeurent ouvertes.
+
+## Historique — continuation du 30 octobre 2026
 
 Les conflits de prix d'un produit conservent les propositions, rétablissent le
 dernier prix commun et exigent aperçu puis choix motivé d'un responsable.

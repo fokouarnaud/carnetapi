@@ -76,6 +76,9 @@ def update_pack(shop_id, product_id, pack_id, actor, installation, validated_dat
     original = original_receipt(operation_id, shop, actor, "pack_updated", canonical)
     if original is not None:
         return original
+    if {"sale_price_fcfa", "base_quantity_milli"} & data.keys():
+        from catalogue.services.pack_price_conflicts import ensure_pack_price_uncontested
+        ensure_pack_price_uncontested(pack.id)
     if pack.version != data.pop("base_version"):
         raise PackVersionConflict()
     reason = data.pop("reason")

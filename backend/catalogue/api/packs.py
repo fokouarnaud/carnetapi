@@ -14,6 +14,7 @@ from catalogue.models import Product, ProductPack
 from common.services.operations import require_manager
 from catalogue.services.pack_services import create_pack, update_pack
 from catalogue.api.catalogue_queries import NameSearchInput, filter_by_name, with_codes
+from catalogue.api.pack_price_conflicts import with_pack_price_conflict_metadata
 
 
 class PackHistorySerializer(serializers.ModelSerializer):
@@ -35,12 +36,14 @@ class PackViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Gen
             accessible_shops(self.request.user, self.request.device_session.installation),
             id=self.kwargs["shop_id"],
         )
-        return get_object_or_404(Product.objects.select_related("shop"), shop=shop, id=self.kwargs["product_id"])
+        return get_object_or_404(Product.objects.select_related("shop").defer("purchase_price_fcfa"), shop=shop, id=self.kwargs["product_id"])
 
     def get_queryset(self):
         if getattr(self, "swagger_fake_view", False):
             return ProductPack.objects.none()
-        return filter_by_name(with_codes(ProductPack.objects.filter(product=self.get_product()).select_related("product"), pack=True),
+        queryset = with_pack_price_conflict_metadata(ProductPack.objects.filter(product=self.get_product())
+            .select_related("product").defer("product__purchase_price_fcfa"))
+        return filter_by_name(with_codes(queryset, pack=True),
                               self.request.query_params).order_by("created_at", "id")
 
     @extend_schema(parameters=[NameSearchInput], responses=PackSerializer(many=True))
@@ -87,6 +90,7 @@ class PackViewSet(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.Gen
         pack = self.get_object()
         require_manager(pack.product.shop, request.user)
         events = Activity.objects.filter(shop_id=pack.product.shop_id, target_id=pack.id,
-            action__in=["pack_created", "pack_updated"]).order_by("created_at", "id")
+            action__in=["pack_created", "pack_updated", "catalogue_pack_price_conflict_recorded",
+                "catalogue_pack_price_resolved"]).order_by("created_at", "id")
         page = self.paginate_queryset(events)
         return self.get_paginated_response(PackHistorySerializer(page, many=True).data)

@@ -1,7 +1,7 @@
 {
   "format": "app-x-sqlite-schema-reference",
   "format_version": 1,
-  "migration_code_sha256": "573623b2fba8db51b51c3aaf181709f54fc52c3a80a772b6ed960124ede41aae",
+  "migration_code_sha256": "a07af72b0681ccce8ec0f4203171d5b3db73a682eeee9d910e4fe531875fe073",
   "migrations": [
     [
       "admin",
@@ -198,6 +198,10 @@
     [
       "catalogue",
       "0004_product_price_conflicts"
+    ],
+    [
+      "catalogue",
+      "0005_pack_price_conflicts"
     ],
     [
       "contenttypes",
@@ -1062,6 +1066,36 @@
         "name": "barcode_unit_once",
         "sql_sha256": "50f79ba2021246d53d515dc5700a408ca2c3f0a9b7eb89431beca007c05af7de",
         "table": "core_barcode",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_packpriceconflict_pack_id_a761e5f8",
+        "sql_sha256": "a88054247dbc29e0021973cf12e442d8451e0b7aef4df0c738ded8c8fee1cc5f",
+        "table": "catalogue_packpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_packpriceconflict_product_id_0718c86b",
+        "sql_sha256": "7fc70dcbce03f0110469eab79772ace520a62c8d09d383e4298a0b8e81f62b6c",
+        "table": "catalogue_packpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_packpriceconflict_shop_id_200fa6f2",
+        "sql_sha256": "f661090ba77793c22a708887a224aa63a442b7ef2a4d54bc4a3e67c575024157",
+        "table": "catalogue_packpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_packpriceproposal_conflict_id_980da55e",
+        "sql_sha256": "2fc7dd41610523a776d19ca88633534209727d69056a0a14a581227a07241ca5",
+        "table": "catalogue_packpriceproposal",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_packpriceresolution_proposal_id_053d3162",
+        "sql_sha256": "0f6610a1a3b1c86dbdf809b58e1f1dc1b6f38273bee068ab1e5b6c96584a8fc1",
+        "table": "catalogue_packpriceresolution",
         "type": "index"
       },
       {
@@ -2241,9 +2275,21 @@
         "type": "index"
       },
       {
+        "name": "one_native_pack_price_proposal",
+        "sql_sha256": "5f7ffb05f71d86e802f87ac7f937874ce63760aa49c021595195b15262fc69ef",
+        "table": "catalogue_packpriceproposal",
+        "type": "index"
+      },
+      {
         "name": "one_native_price_proposal",
         "sql_sha256": "a2b9a015d5ac12fa05de51c34e0500315eea3e38377027dd6998f55d3ac7aaf7",
         "table": "catalogue_productpriceproposal",
+        "type": "index"
+      },
+      {
+        "name": "one_open_pack_price_conflict",
+        "sql_sha256": "879788a8e83ab1fd2d0c7d4a2eb44a5ad92715df383c9c0e759c83069568e284",
+        "table": "catalogue_packpriceconflict",
         "type": "index"
       },
       {
@@ -2256,6 +2302,12 @@
         "name": "opening_operation_once",
         "sql_sha256": "b446a27a95f97a36f6389ba521240e5d3c01ed53dc548da5f4fe09573d1efd72",
         "table": "core_stockmovement",
+        "type": "index"
+      },
+      {
+        "name": "pack_price_conflict_shop_order",
+        "sql_sha256": "091376c6ecede6cafac8fc2f80ccc35266927de0572ae13d4ad95305906ac1fd",
+        "table": "catalogue_packpriceconflict",
         "type": "index"
       },
       {
@@ -2832,6 +2884,54 @@
         "name": "sqlite_autoindex_backups_sendattempt_3",
         "sql_sha256": null,
         "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_packpriceconflict_1",
+        "sql_sha256": null,
+        "table": "catalogue_packpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_packpriceconflict_2",
+        "sql_sha256": null,
+        "table": "catalogue_packpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_packpriceconflict_3",
+        "sql_sha256": null,
+        "table": "catalogue_packpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_packpriceproposal_1",
+        "sql_sha256": null,
+        "table": "catalogue_packpriceproposal",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_packpriceproposal_2",
+        "sql_sha256": null,
+        "table": "catalogue_packpriceproposal",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_packpriceresolution_1",
+        "sql_sha256": null,
+        "table": "catalogue_packpriceresolution",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_packpriceresolution_2",
+        "sql_sha256": null,
+        "table": "catalogue_packpriceresolution",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_packpriceresolution_3",
+        "sql_sha256": null,
+        "table": "catalogue_packpriceresolution",
         "type": "index"
       },
       {
@@ -4215,6 +4315,24 @@
         "type": "table"
       },
       {
+        "name": "catalogue_packpriceconflict",
+        "sql_sha256": "94b22c0b08780be4ce4ed0675efea9b3a7507a47df72a102bf58bff8f2e5be6c",
+        "table": "catalogue_packpriceconflict",
+        "type": "table"
+      },
+      {
+        "name": "catalogue_packpriceproposal",
+        "sql_sha256": "5aaf79853f6c9d93ef9852e781c8954e11bee2e4c5b50643ab86acaa507ed4e4",
+        "table": "catalogue_packpriceproposal",
+        "type": "table"
+      },
+      {
+        "name": "catalogue_packpriceresolution",
+        "sql_sha256": "61c2147c0da4c049e1e94a3cce32581a8bd7d4c7c878ed5fdca7a8bdf0c94b62",
+        "table": "catalogue_packpriceresolution",
+        "type": "table"
+      },
+      {
         "name": "catalogue_productpriceconflict",
         "sql_sha256": "2271fb41f2955338b4a354ddf09979cb650cbb67f8f35daaf48620e426a13820",
         "table": "catalogue_productpriceconflict",
@@ -4731,6 +4849,42 @@
         "type": "table"
       },
       {
+        "name": "pack_price_conflict_evidence_no_update",
+        "sql_sha256": "b88ba16a43812b3ebf464eaaef76e063e412f168aec1adc0707113b479f86f47",
+        "table": "catalogue_packpriceconflict",
+        "type": "trigger"
+      },
+      {
+        "name": "pack_price_conflict_no_delete",
+        "sql_sha256": "3a4941c3c8c678165c88b6ffc7822905d4cdac943e49e5fee3866a1b63c3d132",
+        "table": "catalogue_packpriceconflict",
+        "type": "trigger"
+      },
+      {
+        "name": "pack_price_proposal_no_delete",
+        "sql_sha256": "8ad16b57b97938a111760205fc42fe70ab74c9b10cc5b6b3bdcfe17b82c6888b",
+        "table": "catalogue_packpriceproposal",
+        "type": "trigger"
+      },
+      {
+        "name": "pack_price_proposal_no_update",
+        "sql_sha256": "726b58e8c0afa3e2009daeb3f05103c0774dafa75d34470f2a1ceb9843025262",
+        "table": "catalogue_packpriceproposal",
+        "type": "trigger"
+      },
+      {
+        "name": "pack_price_resolution_no_delete",
+        "sql_sha256": "9b8cd976d5af88f8e37f84a29e173a81fb68558be740fe59b5f187baf00a2daf",
+        "table": "catalogue_packpriceresolution",
+        "type": "trigger"
+      },
+      {
+        "name": "pack_price_resolution_no_update",
+        "sql_sha256": "43d32e00ed8e6189462c9df69877ea39c967ed6e89b83c02571cb072fe86d117",
+        "table": "catalogue_packpriceresolution",
+        "type": "trigger"
+      },
+      {
         "name": "price_conflict_evidence_no_update",
         "sql_sha256": "fd87f76c49cf36f4d363377125b833bd0e28954e7149aab7ecc1b665adf31fd3",
         "table": "catalogue_productpriceconflict",
@@ -4767,7 +4921,7 @@
         "type": "trigger"
       }
     ],
-    "sha256": "e79edf99402bd5933f776de4d7ab83e55cd4573d59d18fa718b8886ea964db98"
+    "sha256": "373cd363f70b6b22f1daea79034b0e5e1b0b8ddea389f86f76b60112bc1270b9"
   },
   "worker_sha256": "a56c927e06d4c087977682bf68483c0307523f15c438f978ef28c84d1202f6c1"
 }
