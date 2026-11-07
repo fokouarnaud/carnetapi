@@ -1,4 +1,33 @@
-# Backend — continuation du 6 novembre 2026
+# Backend — continuation du 7 novembre 2026
+
+Le bilan de récupération distingue désormais les opérations appliquées, déjà
+connues, en attente, refusées et sans décision, d'après leur dernière décision.
+Les totaux couvrent tout le filtre autorisé ; les origines archivées et celles
+découvertes sont réunies dans une pagination SQL bornée. Le responsable consulte
+sa boutique et le compte technique les métadonnées globales, sans charger les
+contenus des opérations ni leurs montants ou coûts. Les réservations refusées
+encore non rapprochées restent visibles. Qualification : **77 tests et 57
+sous-tests réussis**, dont 14 nouveaux tests et les régressions sélectionnées.
+Ce bilan n'atteste pas la réception complète des journaux et n'active aucune
+clôture complète. Le critère métier de traitement préalable de toutes les
+opérations et réservations est maintenant confirmé dans `AGENTS.md`.
+
+Les nouveaux accusés de conflit de prix d'un conditionnement contiennent leur
+propre `recorded_proposal`, même au-delà des 25 propositions de la première page.
+Un réessai conserve exactement le reçu initial ; les anciens reçus ne sont pas
+réécrits. Qualification : **32 tests et 56 sous-tests réussis**. La récupération
+d'un enregistrement ou d'une résolution de conflit perdu reste à implémenter.
+
+Le [transport Cooms et le compteur global SMS](OTP_SMS.md) sont qualifiés
+localement : **22 tests et 61 sous-tests** de configuration/transport et **11
+tests** de budget persistant. Aucun SMS réel n'a été envoyé ; challenges OTP,
+activation, raccord API et déploiement de ces composants restent à réaliser.
+
+OpenAPI strict, contrôle Django en configuration de test et absence de nouvelle
+migration sont vérifiés pour ces ajouts. Ces preuves ne valent pas qualification
+complète des 46 US, ni validation Android de ces parcours.
+
+## Historique — continuation du 6 novembre 2026
 
 Les conflits de prix des conditionnements disposent maintenant du même parcours
 explicite que les prix produit, avec facteur strictement inchangé. Exemple

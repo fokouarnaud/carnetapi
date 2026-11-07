@@ -1681,6 +1681,92 @@ paths:
                 type: string
                 enum:
                 - no-store
+  /api/v1/recovery/sessions/{session_id}/balance/:
+    get:
+      operationId: recovery_sessions_balance_retrieve
+      description: Current technical superadministrator inspects global operational
+        metadata without a business membership. Read only metadata; no source payload,
+        money, costs, decision request/receipt or Activity details are loaded. The
+        SQL union contains archived observations and discovered (shop, installation,
+        user) origins, ordered by those UUIDs. Totals cover the full authorized filter,
+        independently of pagination. Each capture has one disposition from its latest
+        recorded integration decision, otherwise the latest matching source review,
+        otherwise without_decision. An Activity UUID alone never establishes already_known.
+        Exact pending/refused source reviews survive generations only with matching
+        operation UUID, shop and fingerprint. Remaining refused reservations are counted
+        individually, without adding quantities of different units. Null journal/retention/exhaustiveness
+        evidence means unknown. No attestation, business effect, right, closure decision
+        or reopening is created; can_close_complete remains false.
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: One-based page.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 25 by default; at most 100 origins returned.
+      - in: path
+        name: session_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - recovery
+      security:
+      - deviceJWT: []
+      - cookieAuth: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryBalancePage'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryDeviceAccessError'
+          description: Current authentication is missing, expired or revoked.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryDeviceAccessError'
+          description: Current responsible or technical role required for this route.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryDeviceAccessError'
+          description: Current recovery session or shop scope is inaccessible or unknown.
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/recovery/sessions/{session_id}/closure-preview/:
     get:
       operationId: recovery_sessions_closure_preview_retrieve
@@ -6031,13 +6117,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PackPriceConflict'
+                $ref: '#/components/schemas/PackPriceConflictRecordReceipt'
           description: ''
         '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PackPriceConflict'
+                $ref: '#/components/schemas/CreatedPackPriceConflictRecordReceipt'
           description: ''
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
@@ -8061,6 +8147,91 @@ paths:
               schema:
                 $ref: '#/components/schemas/ValuationPreview'
           description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/recovery/balance/:
+    get:
+      operationId: shops_recovery_balance_retrieve
+      description: Current confirmed shop responsible only; authorization precedes
+        filtering and pagination. Read only metadata; no source payload, money, costs,
+        decision request/receipt or Activity details are loaded. The SQL union contains
+        archived observations and discovered (shop, installation, user) origins, ordered
+        by those UUIDs. Totals cover the full authorized filter, independently of
+        pagination. Each capture has one disposition from its latest recorded integration
+        decision, otherwise the latest matching source review, otherwise without_decision.
+        An Activity UUID alone never establishes already_known. Exact pending/refused
+        source reviews survive generations only with matching operation UUID, shop
+        and fingerprint. Remaining refused reservations are counted individually,
+        without adding quantities of different units. Null journal/retention/exhaustiveness
+        evidence means unknown. No attestation, business effect, right, closure decision
+        or reopening is created; can_close_complete remains false.
+      parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+        description: One-based page.
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+        description: 25 by default; at most 100 origins returned.
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryBalancePage'
+          description: ''
+        '401':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryDeviceAccessError'
+          description: Current authentication is missing, expired or revoked.
+        '403':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryDeviceAccessError'
+          description: Current responsible or technical role required for this route.
+        '404':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryDeviceAccessError'
+          description: Current recovery session or shop scope is inaccessible or unknown.
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
             : maintenance ou contrôle externe indisponible. Aucun traitement métier.
@@ -17907,6 +18078,82 @@ components:
       - id
       - name
       - operation_id
+    CreatedPackPriceConflictRecordReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775806
+          minimum: 1
+          format: int64
+        common_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        state:
+          $ref: '#/components/schemas/ProductPriceConflictStateEnum'
+        version:
+          type: integer
+          minimum: 1
+        product_version:
+          type: integer
+          minimum: 1
+        created_at:
+          type: string
+          format: date-time
+        proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceProposal'
+          maxItems: 25
+        resolution:
+          allOf:
+          - $ref: '#/components/schemas/PriceResolution'
+          nullable: true
+        pack_id:
+          type: string
+          format: uuid
+        base_quantity_milli:
+          type: integer
+          minimum: 1
+        pack_version:
+          type: integer
+          minimum: 1
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
+        recorded_proposal:
+          $ref: '#/components/schemas/PriceProposal'
+      required:
+      - base_quantity_milli
+      - base_version
+      - common_price_fcfa
+      - created_at
+      - id
+      - pack_id
+      - pack_version
+      - product_id
+      - product_version
+      - proposals
+      - proposals_count
+      - proposals_url
+      - recorded_proposal
+      - resolution
+      - source_change_id
+      - state
+      - version
     Credit:
       type: object
       properties:
@@ -21918,6 +22165,81 @@ components:
       - source_change_id
       - state
       - version
+    PackPriceConflictRecordReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775806
+          minimum: 1
+          format: int64
+        common_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        state:
+          $ref: '#/components/schemas/ProductPriceConflictStateEnum'
+        version:
+          type: integer
+          minimum: 1
+        product_version:
+          type: integer
+          minimum: 1
+        created_at:
+          type: string
+          format: date-time
+        proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceProposal'
+          maxItems: 25
+        resolution:
+          allOf:
+          - $ref: '#/components/schemas/PriceResolution'
+          nullable: true
+        pack_id:
+          type: string
+          format: uuid
+        base_quantity_milli:
+          type: integer
+          minimum: 1
+        pack_version:
+          type: integer
+          minimum: 1
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
+        recorded_proposal:
+          $ref: '#/components/schemas/PriceProposal'
+      required:
+      - base_quantity_milli
+      - base_version
+      - common_price_fcfa
+      - created_at
+      - id
+      - pack_id
+      - pack_version
+      - product_id
+      - product_version
+      - proposals
+      - proposals_count
+      - proposals_url
+      - resolution
+      - source_change_id
+      - state
+      - version
     PackRevisionSnapshot:
       type: object
       properties:
@@ -25758,6 +26080,168 @@ components:
       - remaining_after_fcfa
       - remaining_before_fcfa
       - requested_amount_fcfa
+    RecoveryBalanceCounts:
+      type: object
+      properties:
+        captured:
+          type: integer
+          minimum: 0
+        applied:
+          type: integer
+          minimum: 0
+        already_known:
+          type: integer
+          minimum: 0
+        pending:
+          type: integer
+          minimum: 0
+        refused:
+          type: integer
+          minimum: 0
+        without_decision:
+          type: integer
+          minimum: 0
+      required:
+      - already_known
+      - applied
+      - captured
+      - pending
+      - refused
+      - without_decision
+    RecoveryBalanceOrigin:
+      type: object
+      properties:
+        shop_id:
+          type: string
+          format: uuid
+        origin_installation_id:
+          type: string
+          format: uuid
+        origin_user_id:
+          type: string
+          format: uuid
+        seen_in_archived_inventory:
+          type: boolean
+        origin_identity_conflict:
+          type: boolean
+        captures:
+          $ref: '#/components/schemas/RecoveryBalanceCounts'
+        refused_reservations_remaining:
+          type: integer
+          minimum: 0
+        journal_complete:
+          type: boolean
+          nullable: true
+        coverage_since_snapshot:
+          type: boolean
+          nullable: true
+      required:
+      - captures
+      - coverage_since_snapshot
+      - journal_complete
+      - origin_identity_conflict
+      - origin_installation_id
+      - origin_user_id
+      - refused_reservations_remaining
+      - seen_in_archived_inventory
+      - shop_id
+    RecoveryBalancePage:
+      type: object
+      properties:
+        count:
+          type: integer
+          minimum: 0
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecoveryBalanceOrigin'
+          maxItems: 100
+        summary:
+          $ref: '#/components/schemas/RecoveryBalanceSummary'
+      required:
+      - count
+      - next
+      - previous
+      - results
+      - summary
+    RecoveryBalanceSummary:
+      type: object
+      properties:
+        session_id:
+          type: string
+          format: uuid
+        generation_id:
+          type: string
+          format: uuid
+        shop_id:
+          type: string
+          format: uuid
+          nullable: true
+        snapshot_at:
+          type: string
+          format: date-time
+          nullable: true
+        inventory_recorded_at:
+          type: string
+          format: date-time
+          nullable: true
+        archived_device_observations:
+          type: integer
+          minimum: 0
+          nullable: true
+        origin_count:
+          type: integer
+          minimum: 0
+        origins_outside_archived_inventory:
+          type: integer
+          minimum: 0
+        captures:
+          $ref: '#/components/schemas/RecoveryBalanceCounts'
+        refused_reservations_remaining:
+          type: integer
+          minimum: 0
+        classification_basis:
+          type: string
+        inventory_exhaustive:
+          type: boolean
+          nullable: true
+        evidence_gaps:
+          type: array
+          items:
+            type: string
+        can_close_complete:
+          type: boolean
+        exhaustive_recovery_guaranteed:
+          type: boolean
+        closure_id:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - archived_device_observations
+      - can_close_complete
+      - captures
+      - classification_basis
+      - closure_id
+      - evidence_gaps
+      - exhaustive_recovery_guaranteed
+      - generation_id
+      - inventory_exhaustive
+      - inventory_recorded_at
+      - origin_count
+      - origins_outside_archived_inventory
+      - refused_reservations_remaining
+      - session_id
+      - shop_id
+      - snapshot_at
     RecoveryBusinessReceipt:
       oneOf:
       - $ref: '#/components/schemas/Sale'

@@ -33,6 +33,12 @@ def ensure_pack_price_uncontested(pack_id):
         raise OperationConflict()
 
 
+def _proposal_state(proposal):
+    return {"id": proposal.id, "operation_id": proposal.operation_id, "actor_id": proposal.actor_id,
+        "installation_id": proposal.installation_id, "proposed_price_fcfa": proposal.proposed_price_fcfa,
+        "reason": proposal.reason, "created_at": proposal.created_at}
+
+
 def pack_price_conflict_state(conflict, pack=None, product=None):
     """Expose a bounded first page and a reference to every preserved proposal."""
     pack = pack or conflict.pack
@@ -55,9 +61,7 @@ def pack_price_conflict_state(conflict, pack=None, product=None):
         "product_version": product.version, "created_at": conflict.created_at,
         "proposals_count": count,
         "proposals_url": f"/api/v1/shops/{conflict.shop_id}/products/{product.id}/packs/{pack.id}/price-conflicts/{conflict.id}/proposals/",
-        "proposals": [{"id": row.id, "operation_id": row.operation_id, "actor_id": row.actor_id,
-            "installation_id": row.installation_id, "proposed_price_fcfa": row.proposed_price_fcfa,
-            "reason": row.reason, "created_at": row.created_at} for row in proposals],
+        "proposals": [_proposal_state(row) for row in proposals],
         "resolution": None if decision is None else {"operation_id": decision.operation_id,
             "proposal_id": decision.proposal_id, "price_fcfa": decision.price_fcfa,
             "actor_id": decision.actor_id, "reason": decision.reason, "created_at": decision.created_at}})
@@ -165,9 +169,12 @@ def record_pack_price_conflict(shop_id, product_id, pack_id, actor, installation
     else:
         conflict.version += 1
         conflict.save(update_fields=["version", "updated_at"])
-    PackPriceProposal.objects.create(conflict=conflict, operation=event, actor_id=actor.id,
+    proposal = PackPriceProposal.objects.create(conflict=conflict, operation=event, actor_id=actor.id,
         installation_id=installation.id if installation else None, proposed_price_fcfa=data["proposed_price_fcfa"], reason=data["reason"])
     receipt = pack_price_conflict_state(conflict, pack, product)
+    # The caller must retain this operation's identity even when it falls
+    # outside the bounded first page. Frozen older receipts return above.
+    receipt["recorded_proposal"] = json_value(_proposal_state(proposal))
     event.details.update(after={"version": pack.version, "product_version": product.version, "sale_price_fcfa": pack.sale_price_fcfa}, response=receipt)
     event.save(update_fields=["details", "updated_at"])
     return receipt, True

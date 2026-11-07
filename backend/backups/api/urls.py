@@ -6,6 +6,7 @@ from backups.api.recovery_devices import RecoveryDeviceViewSet
 from backups.api.recovery_journals import RecoveryJournalViewSet,RecoveryOperationViewSet
 from backups.api.recovery_integration import RecoveryIntegrationViewSet
 from backups.api.recovery_closures import RecoveryClosurePreviewView, RecoveryClosureView
+from backups.api.recovery_balance import ShopRecoveryBalanceView, TechnicalRecoveryBalanceView
 from backups.api.recovery_sale_holds import RecoverySaleHoldViewSet
 from backups.api.recovery_collection_reviews import RecoveryCollectionReviewViewSet
 from backups.api.recovery_reservation_reconciliation import RecoveryReservationReconciliationViewSet
@@ -13,6 +14,8 @@ from backups.api.hosting import HostingConfigurationView, HostingStatusView, Hos
 
 
 urlpatterns = [
+    path("recovery/sessions/<uuid:session_id>/balance/",TechnicalRecoveryBalanceView.as_view(),name="technical-recovery-balance"),
+    path("shops/<uuid:shop_id>/recovery/balance/",ShopRecoveryBalanceView.as_view(),name="shop-recovery-balance"),
     path("recovery/sessions/<uuid:session_id>/closure-preview/",RecoveryClosurePreviewView.as_view(),name="recovery-closure-preview"),
     path("recovery/sessions/<uuid:session_id>/closures/",RecoveryClosureView.as_view(),name="recovery-closure"),
     path("hosting/configuration/",HostingConfigurationView.as_view(),name="hosting-configuration"),

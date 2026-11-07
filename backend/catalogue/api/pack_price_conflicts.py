@@ -60,6 +60,14 @@ class PackPriceConflictPreviewSerializer(PackPriceConflictSerializer):
     can_resolve = serializers.BooleanField()
 
 
+class PackPriceConflictRecordReceiptSerializer(PackPriceConflictSerializer):
+    recorded_proposal = PriceProposalSerializer(required=False)
+
+
+class CreatedPackPriceConflictRecordReceiptSerializer(PackPriceConflictRecordReceiptSerializer):
+    recorded_proposal = PriceProposalSerializer()
+
+
 class PackPriceConflictViewSet(viewsets.GenericViewSet):
     serializer_class = PackPriceConflictSerializer
     pagination_class = BoundedPagination
@@ -107,7 +115,7 @@ class PackPriceConflictViewSet(viewsets.GenericViewSet):
         return self.get_paginated_response(PriceProposalSerializer(self.paginate_queryset(rows), many=True).data)
 
     @extend_schema(request=RecordPriceConflictInput,
-        responses={200: PackPriceConflictSerializer, 201: PackPriceConflictSerializer})
+        responses={200: PackPriceConflictRecordReceiptSerializer, 201: CreatedPackPriceConflictRecordReceiptSerializer})
     def create(self, request, *args, **kwargs):
         from catalogue.services.pack_price_conflicts import record_pack_price_conflict
         self.context()
