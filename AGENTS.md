@@ -1,5 +1,23 @@
 # Réplication YemX — cadrage et incertitudes
 
+### Décision complémentaire US-43/44 — conditions de clôture complète, 7 novembre 2026
+
+Le titulaire exige que toutes les opérations en attente aient été validées ou
+refusées et que toutes les réservations refusées aient été rapprochées avant
+la clôture complète d'une récupération. La réception de tous les journaux reste
+également nécessaire ; l'absence de capture ne prouve pas qu'un journal est vide.
+La clôture partielle reste possible avec motif et mention persistante des données
+manquantes. La réalisation et sa qualification restent à démontrer.
+
+### Décision complémentaire US-01/07 — validité des OTP SMS, 6 novembre 2026
+
+Le titulaire valide un code OTP SMS de **6 chiffres**, valable **10 minutes**,
+avec **5 essais de vérification au maximum par code**. Après expiration ou
+épuisement de ces essais, un nouveau code doit être demandé dans le plafond
+global déjà accepté de **10 envois par jour, renvois compris**. La réalisation,
+la réception effective au Cameroun, le respect du quota et le coût nul restent
+à qualifier. Cette décision n'autorise aucune activation de facturation.
+
 ### Décision complémentaire US-16 — produit destinataire, 26 octobre 2026
 
 Pour U105, le titulaire confirme que le responsable destinataire choisit explicitement une fiche produit existante avec la même unité de base. Les UUID des catalogues restent distincts ; aucun rapprochement automatique des produits n'est autorisé. Ce choix détermine le produit dont le stock sera augmenté à la réception physique confirmée. La réalisation et sa qualification restent à démontrer.
