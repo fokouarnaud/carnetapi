@@ -135,14 +135,18 @@ def main():
             assert recorded['base_version']==1 and recorded['product_version']==3
             assert len(recorded['proposals'])==2 and {row['proposed_price_fcfa'] for row in recorded['proposals']}=={1100,1200}
             assert request(device_b,conflicts_path,proposal_b)==(200,recorded)
+            record_proof=recorded['operation_snapshot']
+            assert record_proof['operation_id']==proposal_b['operation_id']
+            assert len(record_proof['proposals_created'])==2 and record_proof['resolution'] is None
+            recorded_resource={key:value for key,value in recorded.items() if key!='operation_snapshot'}
             assert financial_before==(StockMovement.objects.count(),CashMovement.objects.count())
             selected=next(row for row in recorded['proposals'] if row['operation_id']==proposal_b['operation_id'])
             assert selected['proposed_price_fcfa']==1200 and selected['actor_id']==str(manager.id)
             assert selected['installation_id']==str(device_b['installation'].id)
             conflict_path=conflicts_path+recorded['id']+'/'
             status,listing=request(device_a,conflicts_path)
-            assert status==200 and listing['count']==1 and listing['results'][0]==recorded,(status,listing)
-            assert request(device_a,conflict_path)==(200,recorded)
+            assert status==200 and listing['count']==1 and listing['results'][0]==recorded_resource,(status,listing)
+            assert request(device_a,conflict_path)==(200,recorded_resource)
 
             status,fallback=request(seller_device,product_path)
             assert status==200 and fallback['sale_price_fcfa']==1000 and fallback['version']==3,(status,fallback)
@@ -185,7 +189,11 @@ def main():
             assert resolved['resolution']['proposal_id']==selected['id'] and resolved['resolution']['price_fcfa']==1200
             assert resolved['resolution']['actor_id']==str(owner.id)
             assert request(device_a,conflict_path+'resolve/',resolution)==(200,resolved)
-            assert request(device_a,conflict_path)==(200,resolved)
+            resolve_proof=resolved['operation_snapshot']
+            assert resolve_proof['operation_id']==resolution['operation_id']
+            assert resolve_proof['proposals_created']==[] and resolve_proof['resolution']['proposal_id']==selected['id']
+            assert str(ProductPriceResolution.objects.get(operation_id=resolution['operation_id']).id)==resolve_proof['resolution']['id']
+            assert request(device_a,conflict_path)==(200,{key:value for key,value in resolved.items() if key!='operation_snapshot'})
             assert request(device_b,conflicts_path,proposal_b)==(200,recorded)
             assert financial_before_resolution==(StockMovement.objects.count(),CashMovement.objects.count())
             status,final=request(seller_device,product_path)
@@ -216,8 +224,9 @@ def main():
                 'seller_common_price_without_cost':True,'seller_conflict_access_status':403,'foreign_shop_status':404,
                 'native_price_patch_during_conflict_status':patch_status,'revoked_session_status':revoked_status,
                 'price_decisions_create_no_stock_or_cash':True,'source_change_receipt_unchanged':True,
+                'native_operation_attestations_checked':True,
                 'verification_limits':['No Android client or ordinary offline synchronization qualified.','No OTP activation or external provider exercised.']}
-            result_path=Path(__file__).resolve().parents[2]/'analysis'/'catalogue-price-conflicts-smoke-2026-10-29.json'
+            result_path=Path(__file__).resolve().parents[2]/'analysis'/f'catalogue-price-conflicts-smoke-{timezone.now().date()}.json'
             result_path.write_text(json.dumps(report,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
             print(json.dumps(report,ensure_ascii=False))
             return report

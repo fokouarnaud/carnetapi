@@ -8,7 +8,7 @@ from rest_framework.response import Response
 
 from catalogue.api.price_conflicts import (
     PriceProposalSerializer, ProductPriceConflictSerializer,
-    RecordPriceConflictInput, ResolvePriceConflictInput,
+    RecordPriceConflictInput, ResolvePriceConflictInput, PriceOperationSnapshotSerializer,
 )
 from catalogue.models import PackPriceConflict, PackPriceProposal, Product, ProductPack
 from common.services.operations import current_shop, require_manager
@@ -62,10 +62,16 @@ class PackPriceConflictPreviewSerializer(PackPriceConflictSerializer):
 
 class PackPriceConflictRecordReceiptSerializer(PackPriceConflictSerializer):
     recorded_proposal = PriceProposalSerializer(required=False)
+    operation_snapshot = PriceOperationSnapshotSerializer(required=False)
 
 
 class CreatedPackPriceConflictRecordReceiptSerializer(PackPriceConflictRecordReceiptSerializer):
     recorded_proposal = PriceProposalSerializer()
+    operation_snapshot = PriceOperationSnapshotSerializer()
+
+
+class PackPriceOperationReceiptSerializer(PackPriceConflictSerializer):
+    operation_snapshot = PriceOperationSnapshotSerializer(required=False)
 
 
 class PackPriceConflictViewSet(viewsets.GenericViewSet):
@@ -134,7 +140,7 @@ class PackPriceConflictViewSet(viewsets.GenericViewSet):
             self.kwargs["shop_id"], self.kwargs["product_id"], self.kwargs["pack_id"], self.kwargs["pk"],
             request.user, request.device_session.installation, request.device_session.id))
 
-    @extend_schema(request=ResolvePriceConflictInput, responses=PackPriceConflictSerializer)
+    @extend_schema(request=ResolvePriceConflictInput, responses=PackPriceOperationReceiptSerializer)
     def resolve(self, request, *args, **kwargs):
         from catalogue.services.pack_price_conflicts import resolve_pack_price_conflict
         self.context()

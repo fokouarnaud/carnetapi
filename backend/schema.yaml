@@ -6395,7 +6395,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PackPriceConflict'
+                $ref: '#/components/schemas/PackPriceOperationReceipt'
           description: ''
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
@@ -6878,13 +6878,13 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductPriceConflict'
+                $ref: '#/components/schemas/ProductPriceOperationReceipt'
           description: ''
         '201':
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductPriceConflict'
+                $ref: '#/components/schemas/CreatedProductPriceOperationReceipt'
           description: ''
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
@@ -7064,7 +7064,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ProductPriceConflict'
+                $ref: '#/components/schemas/ProductPriceOperationReceipt'
           description: ''
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
@@ -18136,12 +18136,15 @@ components:
           type: string
         recorded_proposal:
           $ref: '#/components/schemas/PriceProposal'
+        operation_snapshot:
+          $ref: '#/components/schemas/PriceOperationSnapshot'
       required:
       - base_quantity_milli
       - base_version
       - common_price_fcfa
       - created_at
       - id
+      - operation_snapshot
       - pack_id
       - pack_version
       - product_id
@@ -18150,6 +18153,62 @@ components:
       - proposals_count
       - proposals_url
       - recorded_proposal
+      - resolution
+      - source_change_id
+      - state
+      - version
+    CreatedProductPriceOperationReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775806
+          minimum: 1
+          format: int64
+        common_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        state:
+          $ref: '#/components/schemas/ProductPriceConflictStateEnum'
+        version:
+          type: integer
+          minimum: 1
+        product_version:
+          type: integer
+          minimum: 1
+        created_at:
+          type: string
+          format: date-time
+        proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceProposal'
+        resolution:
+          allOf:
+          - $ref: '#/components/schemas/PriceResolution'
+          nullable: true
+        operation_snapshot:
+          $ref: '#/components/schemas/PriceOperationSnapshot'
+      required:
+      - base_version
+      - common_price_fcfa
+      - created_at
+      - id
+      - operation_snapshot
+      - product_id
+      - product_version
+      - proposals
       - resolution
       - source_change_id
       - state
@@ -21538,6 +21597,84 @@ components:
         * `known` - Known
         * `provisional` - Provisional
         * `unknown` - Inconnu
+    NativePriceProposal:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        operation_id:
+          type: string
+          format: uuid
+        actor_id:
+          type: string
+          format: uuid
+        installation_id:
+          type: string
+          format: uuid
+          nullable: true
+        proposed_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        reason:
+          type: string
+          maxLength: 2000
+        created_at:
+          type: string
+          format: date-time
+        is_native:
+          type: boolean
+      required:
+      - actor_id
+      - created_at
+      - id
+      - installation_id
+      - is_native
+      - operation_id
+      - proposed_price_fcfa
+      - reason
+    NativePriceResolution:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        proposal_id:
+          type: string
+          format: uuid
+          nullable: true
+        price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        actor_id:
+          type: string
+          format: uuid
+        reason:
+          type: string
+          maxLength: 2000
+        created_at:
+          type: string
+          format: date-time
+        id:
+          type: string
+          format: uuid
+        installation_id:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - actor_id
+      - created_at
+      - id
+      - installation_id
+      - operation_id
+      - price_fcfa
+      - proposal_id
+      - reason
     NonSellableDecision:
       type: object
       description: Keep exact cost, legacy integer projection and uncertainty consistent.
@@ -21845,58 +21982,6 @@ components:
       - quantity_milli
       - reason
       - unit_cost_fcfa
-    OperationTypeEnum:
-      enum:
-      - sale
-      - customer_collection
-      - customer_creation
-      - customer_opening_debt
-      - customer_update
-      - customer_due_change
-      - customer_refund
-      - customer_allocation
-      - return_credit_settlement
-      - sale_return
-      - return_receipt
-      - non_sellable_decision
-      - sale_cancellation
-      - supplier_creation
-      - supplier_opening_debt
-      - supplier_opening_balance
-      - supplier_payment
-      - supplier_payment_allocation
-      - purchase_order
-      - purchase_invoice
-      - purchase_receipt
-      - transfer_receipt
-      - product_update
-      - pack_update
-      type: string
-      description: |-
-        * `sale` - sale
-        * `customer_collection` - customer_collection
-        * `customer_creation` - customer_creation
-        * `customer_opening_debt` - customer_opening_debt
-        * `customer_update` - customer_update
-        * `customer_due_change` - customer_due_change
-        * `customer_refund` - customer_refund
-        * `customer_allocation` - customer_allocation
-        * `return_credit_settlement` - return_credit_settlement
-        * `sale_return` - sale_return
-        * `return_receipt` - return_receipt
-        * `non_sellable_decision` - non_sellable_decision
-        * `sale_cancellation` - sale_cancellation
-        * `supplier_creation` - supplier_creation
-        * `supplier_opening_debt` - supplier_opening_debt
-        * `supplier_opening_balance` - supplier_opening_balance
-        * `supplier_payment` - supplier_payment
-        * `supplier_payment_allocation` - supplier_payment_allocation
-        * `purchase_order` - purchase_order
-        * `purchase_invoice` - purchase_invoice
-        * `purchase_receipt` - purchase_receipt
-        * `transfer_receipt` - transfer_receipt
-        * `product_update` - product_update
-        * `pack_update` - pack_update
     OriginReferenceError:
       type: object
       properties:
@@ -22223,6 +22308,83 @@ components:
           type: string
         recorded_proposal:
           $ref: '#/components/schemas/PriceProposal'
+        operation_snapshot:
+          $ref: '#/components/schemas/PriceOperationSnapshot'
+      required:
+      - base_quantity_milli
+      - base_version
+      - common_price_fcfa
+      - created_at
+      - id
+      - pack_id
+      - pack_version
+      - product_id
+      - product_version
+      - proposals
+      - proposals_count
+      - proposals_url
+      - resolution
+      - source_change_id
+      - state
+      - version
+    PackPriceOperationReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775806
+          minimum: 1
+          format: int64
+        common_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        state:
+          $ref: '#/components/schemas/ProductPriceConflictStateEnum'
+        version:
+          type: integer
+          minimum: 1
+        product_version:
+          type: integer
+          minimum: 1
+        created_at:
+          type: string
+          format: date-time
+        proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceProposal'
+          maxItems: 25
+        resolution:
+          allOf:
+          - $ref: '#/components/schemas/PriceResolution'
+          nullable: true
+        pack_id:
+          type: string
+          format: uuid
+        base_quantity_milli:
+          type: integer
+          minimum: 1
+        pack_version:
+          type: integer
+          minimum: 1
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
+        operation_snapshot:
+          $ref: '#/components/schemas/PriceOperationSnapshot'
       required:
       - base_quantity_milli
       - base_version
@@ -24950,6 +25112,55 @@ components:
       - operation_id
       - reason
       - recipient
+    PriceCatalogueRevision:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/PriceProductRevision'
+        pack:
+          allOf:
+          - $ref: '#/components/schemas/PricePackRevision'
+          nullable: true
+      required:
+      - pack
+      - product
+    PriceConflictIdentity:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        opening_operation_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+        common_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        base_quantity_milli:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+        created_at:
+          type: string
+          format: date-time
+      required:
+      - base_version
+      - common_price_fcfa
+      - created_at
+      - id
+      - opening_operation_id
+      - source_change_id
     PriceConflictPreview:
       type: object
       properties:
@@ -25010,6 +25221,209 @@ components:
       - resolution
       - source_change_id
       - state
+      - version
+    PriceConflictRevision:
+      type: object
+      properties:
+        state:
+          $ref: '#/components/schemas/ProductPriceConflictStateEnum'
+        version:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+      required:
+      - state
+      - version
+    PriceOperationRequest:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        pack_id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        conflict_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+        proposed_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        proposal_id:
+          type: string
+          format: uuid
+          nullable: true
+        preview_token:
+          type: string
+          maxLength: 512
+        reason:
+          type: string
+          maxLength: 2000
+      required:
+      - operation_id
+      - product_id
+      - reason
+    PriceOperationScope:
+      type: object
+      properties:
+        shop_id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        pack_id:
+          type: string
+          format: uuid
+          nullable: true
+      required:
+      - pack_id
+      - product_id
+      - shop_id
+    PriceOperationSnapshot:
+      type: object
+      properties:
+        schema_version:
+          $ref: '#/components/schemas/SchemaVersionEnum'
+        operation_type:
+          $ref: '#/components/schemas/PriceOperationSnapshotOperationTypeEnum'
+        operation_id:
+          type: string
+          format: uuid
+        scope:
+          $ref: '#/components/schemas/PriceOperationScope'
+        original_request:
+          $ref: '#/components/schemas/PriceOperationRequest'
+        actor_id:
+          type: string
+          format: uuid
+        installation_id:
+          type: string
+          format: uuid
+          nullable: true
+        recorded_at:
+          type: string
+          format: date-time
+        conflict:
+          $ref: '#/components/schemas/PriceConflictIdentity'
+        conflict_before:
+          allOf:
+          - $ref: '#/components/schemas/PriceConflictRevision'
+          nullable: true
+        conflict_after:
+          $ref: '#/components/schemas/PriceConflictRevision'
+        catalogue_before:
+          $ref: '#/components/schemas/PriceCatalogueRevision'
+        catalogue_after:
+          $ref: '#/components/schemas/PriceCatalogueRevision'
+        proposals_created:
+          type: array
+          items:
+            $ref: '#/components/schemas/NativePriceProposal'
+          maxItems: 2
+        resolution:
+          allOf:
+          - $ref: '#/components/schemas/NativePriceResolution'
+          nullable: true
+      required:
+      - actor_id
+      - catalogue_after
+      - catalogue_before
+      - conflict
+      - conflict_after
+      - conflict_before
+      - installation_id
+      - operation_id
+      - operation_type
+      - original_request
+      - proposals_created
+      - recorded_at
+      - resolution
+      - schema_version
+      - scope
+    PriceOperationSnapshotOperationTypeEnum:
+      enum:
+      - catalogue_price_conflict_recorded
+      - catalogue_price_resolved
+      - catalogue_pack_price_conflict_recorded
+      - catalogue_pack_price_resolved
+      type: string
+      description: |-
+        * `catalogue_price_conflict_recorded` - catalogue_price_conflict_recorded
+        * `catalogue_price_resolved` - catalogue_price_resolved
+        * `catalogue_pack_price_conflict_recorded` - catalogue_pack_price_conflict_recorded
+        * `catalogue_pack_price_resolved` - catalogue_pack_price_resolved
+    PricePackRevision:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        version:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+        sale_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        updated_at:
+          type: string
+          format: date-time
+        product_id:
+          type: string
+          format: uuid
+        base_quantity_milli:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+      required:
+      - base_quantity_milli
+      - id
+      - product_id
+      - sale_price_fcfa
+      - updated_at
+      - version
+    PriceProductRevision:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        version:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 1
+          format: int64
+        sale_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        updated_at:
+          type: string
+          format: date-time
+      required:
+      - id
+      - sale_price_fcfa
+      - updated_at
       - version
     PriceProposal:
       type: object
@@ -25165,6 +25579,61 @@ components:
       description: |-
         * `open` - open
         * `resolved` - resolved
+    ProductPriceOperationReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        product_id:
+          type: string
+          format: uuid
+        source_change_id:
+          type: string
+          format: uuid
+        base_version:
+          type: integer
+          maximum: 9223372036854775806
+          minimum: 1
+          format: int64
+        common_price_fcfa:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        state:
+          $ref: '#/components/schemas/ProductPriceConflictStateEnum'
+        version:
+          type: integer
+          minimum: 1
+        product_version:
+          type: integer
+          minimum: 1
+        created_at:
+          type: string
+          format: date-time
+        proposals:
+          type: array
+          items:
+            $ref: '#/components/schemas/PriceProposal'
+        resolution:
+          allOf:
+          - $ref: '#/components/schemas/PriceResolution'
+          nullable: true
+        operation_snapshot:
+          $ref: '#/components/schemas/PriceOperationSnapshot'
+      required:
+      - base_version
+      - common_price_fcfa
+      - created_at
+      - id
+      - product_id
+      - product_version
+      - proposals
+      - resolution
+      - source_change_id
+      - state
+      - version
     ProductRecoveryResponse:
       anyOf:
       - $ref: '#/components/schemas/PublicRecoveryProduct'
@@ -26921,7 +27390,7 @@ components:
           type: string
           format: uuid
         operation_type:
-          $ref: '#/components/schemas/OperationTypeEnum'
+          $ref: '#/components/schemas/RecoveryIntegrationPreviewOperationTypeEnum'
         version:
           type: integer
           minimum: 0
@@ -27041,6 +27510,58 @@ components:
       - snapshot
       - stocks
       - version
+    RecoveryIntegrationPreviewOperationTypeEnum:
+      enum:
+      - sale
+      - customer_collection
+      - customer_creation
+      - customer_opening_debt
+      - customer_update
+      - customer_due_change
+      - customer_refund
+      - customer_allocation
+      - return_credit_settlement
+      - sale_return
+      - return_receipt
+      - non_sellable_decision
+      - sale_cancellation
+      - supplier_creation
+      - supplier_opening_debt
+      - supplier_opening_balance
+      - supplier_payment
+      - supplier_payment_allocation
+      - purchase_order
+      - purchase_invoice
+      - purchase_receipt
+      - transfer_receipt
+      - product_update
+      - pack_update
+      type: string
+      description: |-
+        * `sale` - sale
+        * `customer_collection` - customer_collection
+        * `customer_creation` - customer_creation
+        * `customer_opening_debt` - customer_opening_debt
+        * `customer_update` - customer_update
+        * `customer_due_change` - customer_due_change
+        * `customer_refund` - customer_refund
+        * `customer_allocation` - customer_allocation
+        * `return_credit_settlement` - return_credit_settlement
+        * `sale_return` - sale_return
+        * `return_receipt` - return_receipt
+        * `non_sellable_decision` - non_sellable_decision
+        * `sale_cancellation` - sale_cancellation
+        * `supplier_creation` - supplier_creation
+        * `supplier_opening_debt` - supplier_opening_debt
+        * `supplier_opening_balance` - supplier_opening_balance
+        * `supplier_payment` - supplier_payment
+        * `supplier_payment_allocation` - supplier_payment_allocation
+        * `purchase_order` - purchase_order
+        * `purchase_invoice` - purchase_invoice
+        * `purchase_receipt` - purchase_receipt
+        * `transfer_receipt` - transfer_receipt
+        * `product_update` - product_update
+        * `pack_update` - pack_update
     RecoveryIntegrationPreviewOutcomeEnum:
       enum:
       - new
@@ -28719,6 +29240,11 @@ components:
       - quantity_milli
       - sale_line_id
       - unit_kind
+    SchemaVersionEnum:
+      enum:
+      - 1
+      type: integer
+      description: '* `1` - 1'
     SellerAccessError:
       type: object
       properties:

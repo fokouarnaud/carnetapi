@@ -15,6 +15,7 @@ from common.models import Activity
 from common.services.errors import OperationConflict
 from common.services.operations import current_shop, json_value, original_receipt, require_manager
 from identity.services.authentication import require_live_session
+from catalogue.services.price_operation_attestations import catalogue_state, conflict_state, operation_snapshot
 
 MAX_INTEGER = 9223372036854775807
 RECORD_ACTION = "catalogue_price_conflict_recorded"
@@ -157,6 +158,8 @@ def record_price_conflict(shop_id, product_id, actor, installation, validated_da
             or product.sale_price_fcfa != proof["after"]["sale_price_fcfa"]
             or ProductPriceConflict.objects.filter(source_change=source).exists()):
         raise OperationConflict()
+    before, conflict_before = catalogue_state(product), conflict_state(conflict)
+    proposals_created = []
     event = Activity.objects.create(id=data["operation_id"], shop=shop, actor=actor, action=RECORD_ACTION,
         target_id=product.id, reason=data["reason"], details={"request": canonical,
             "before": {"version": product.version, "sale_price_fcfa": product.sale_price_fcfa}})
@@ -164,17 +167,21 @@ def record_price_conflict(shop_id, product_id, actor, installation, validated_da
         conflict = ProductPriceConflict.objects.create(shop=shop, product=product, source_change=source,
             opening_operation=event, base_version=data["base_version"],
             common_price_fcfa=proof["before"]["sale_price_fcfa"], source_snapshot=proof)
-        ProductPriceProposal.objects.create(conflict=conflict, operation=source, actor_id=proof["actor_id"],
+        proposals_created.append(ProductPriceProposal.objects.create(conflict=conflict, operation=source, actor_id=proof["actor_id"],
             installation_id=proof["installation_id"], is_native=True,
-            proposed_price_fcfa=proof["after"]["sale_price_fcfa"], reason=source.reason)
+            proposed_price_fcfa=proof["after"]["sale_price_fcfa"], reason=source.reason))
         _advance_product(product, conflict.common_price_fcfa)
     else:
         conflict.version += 1
         conflict.save(update_fields=["version", "updated_at"])
-    ProductPriceProposal.objects.create(conflict=conflict, operation=event, actor_id=actor.id,
+    proposals_created.append(ProductPriceProposal.objects.create(conflict=conflict, operation=event, actor_id=actor.id,
         installation_id=installation.id if installation else None,
-        proposed_price_fcfa=data["proposed_price_fcfa"], reason=data["reason"])
+        proposed_price_fcfa=data["proposed_price_fcfa"], reason=data["reason"]))
     receipt = price_conflict_state(conflict, product)
+    snapshot = operation_snapshot(event=event, installation=installation, product=product,
+        conflict=conflict, before=before, conflict_before=conflict_before, proposals=proposals_created)
+    receipt["operation_snapshot"] = snapshot
+    event.details["operation_snapshot"] = snapshot
     event.details.update(after={"version": product.version, "sale_price_fcfa": product.sale_price_fcfa}, response=receipt)
     event.save(update_fields=["details", "updated_at"])
     return receipt, True
@@ -230,10 +237,11 @@ def resolve_price_conflict(shop_id, product_id, conflict_id, actor, installation
         if proposal is None:
             raise OperationConflict()
     price = proposal.proposed_price_fcfa if proposal else conflict.common_price_fcfa
+    before, conflict_before = catalogue_state(product), conflict_state(conflict)
     event = Activity.objects.create(id=data["operation_id"], shop=shop, actor=actor, action=RESOLVE_ACTION,
         target_id=product.id, reason=data["reason"], details={"request": canonical,
             "before": {"version": product.version, "sale_price_fcfa": product.sale_price_fcfa}})
-    ProductPriceResolution.objects.create(conflict=conflict, operation=event, proposal=proposal,
+    decision = ProductPriceResolution.objects.create(conflict=conflict, operation=event, proposal=proposal,
         actor_id=actor.id, installation_id=installation.id if installation else None,
         price_fcfa=price, reason=data["reason"])
     _advance_product(product, price)
@@ -241,6 +249,10 @@ def resolve_price_conflict(shop_id, product_id, conflict_id, actor, installation
     conflict.version += 1
     conflict.save(update_fields=["state", "version", "updated_at"])
     receipt = price_conflict_state(conflict, product)
+    snapshot = operation_snapshot(event=event, installation=installation, product=product,
+        conflict=conflict, before=before, conflict_before=conflict_before, resolution=decision)
+    receipt["operation_snapshot"] = snapshot
+    event.details["operation_snapshot"] = snapshot
     event.details.update(after={"version": product.version, "sale_price_fcfa": price}, response=receipt)
     event.save(update_fields=["details", "updated_at"])
     return receipt, True

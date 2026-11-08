@@ -1,4 +1,27 @@
-# Backend — continuation du 7 novembre 2026
+# Backend — continuation du 8 novembre 2026
+
+Les nouveaux reçus d'enregistrement et de résolution des conflits de prix,
+produits et conditionnements, conservent un `operation_snapshot` versionné.
+Il contient les UUID réels, la demande canonique, les dates d'origine et les
+prix/révisions avant et après. Le delta contient au plus deux propositions ;
+les coûts, marges et preuves privées de catalogue sont exclus. Ces informations
+restent propres à l'accusé d'opération ; les lectures de ressources et aperçus
+ne les ajoutent pas. Un ancien reçu est rejoué sans reconstitution rétroactive.
+
+Qualification locale : **74 tests et 112 sous-tests réussis** sur les fichiers de
+tests de prix, dont les nouveaux critères d'attestation et de contrat OpenAPI.
+Deux scénarios HTTP réels ont aussi réussi : produit, puis conditionnement avec
+enregistrements/résolutions concurrents et réessais exacts, sans nouveau stock
+ni caisse. La source catalogue antérieure et les montants facturés sont conservés.
+La génération OpenAPI stricte réussit. Aucune migration de données n'est ajoutée
+par cette tranche. Les adaptateurs de journal pour reprendre ces conflits perdus,
+leur validation après restauration et leur parcours Android restent à réaliser.
+
+La qualification réelle des sauvegardes et l'activation du déclencheur sont
+décrites dans [l'état PythonAnywhere](PYTHONANYWHERE.md). Elles ne valent pas
+qualification complète des 46 US.
+
+## Historique — continuation du 7 novembre 2026
 
 Le bilan de récupération distingue désormais les opérations appliquées, déjà
 connues, en attente, refusées et sans décision, d'après leur dernière décision.

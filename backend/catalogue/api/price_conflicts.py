@@ -73,6 +73,85 @@ class PriceResolutionSerializer(serializers.Serializer):
     created_at=serializers.DateTimeField()
 
 
+class PriceOperationRequestSerializer(serializers.Serializer):
+    operation_id = serializers.UUIDField()
+    product_id = serializers.UUIDField()
+    pack_id = serializers.UUIDField(required=False)
+    source_change_id = serializers.UUIDField(required=False)
+    conflict_id = serializers.UUIDField(required=False)
+    base_version = serializers.IntegerField(min_value=1, max_value=MAX_FCFA, required=False)
+    proposed_price_fcfa = serializers.IntegerField(min_value=0, max_value=MAX_FCFA, required=False)
+    proposal_id = serializers.UUIDField(allow_null=True, required=False)
+    preview_token = serializers.CharField(max_length=512, required=False)
+    reason = serializers.CharField(max_length=2000)
+
+
+class PriceOperationScopeSerializer(serializers.Serializer):
+    shop_id = serializers.UUIDField()
+    product_id = serializers.UUIDField()
+    pack_id = serializers.UUIDField(allow_null=True)
+
+
+class PriceProductRevisionSerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    version = serializers.IntegerField(min_value=1, max_value=MAX_FCFA)
+    sale_price_fcfa = serializers.IntegerField(min_value=0, max_value=MAX_FCFA)
+    updated_at = serializers.DateTimeField()
+
+
+class PricePackRevisionSerializer(PriceProductRevisionSerializer):
+    product_id = serializers.UUIDField()
+    base_quantity_milli = serializers.IntegerField(min_value=1, max_value=MAX_FCFA)
+
+
+class PriceCatalogueRevisionSerializer(serializers.Serializer):
+    product = PriceProductRevisionSerializer()
+    pack = PricePackRevisionSerializer(allow_null=True)
+
+
+class PriceConflictRevisionSerializer(serializers.Serializer):
+    state = serializers.ChoiceField(choices=["open", "resolved"])
+    version = serializers.IntegerField(min_value=1, max_value=MAX_FCFA)
+
+
+class PriceConflictIdentitySerializer(serializers.Serializer):
+    id = serializers.UUIDField()
+    source_change_id = serializers.UUIDField()
+    opening_operation_id = serializers.UUIDField()
+    base_version = serializers.IntegerField(min_value=1, max_value=MAX_FCFA)
+    common_price_fcfa = serializers.IntegerField(min_value=0, max_value=MAX_FCFA)
+    base_quantity_milli = serializers.IntegerField(min_value=1, max_value=MAX_FCFA, required=False)
+    created_at = serializers.DateTimeField()
+
+
+class NativePriceProposalSerializer(PriceProposalSerializer):
+    is_native = serializers.BooleanField()
+
+
+class NativePriceResolutionSerializer(PriceResolutionSerializer):
+    id = serializers.UUIDField()
+    installation_id = serializers.UUIDField(allow_null=True)
+
+
+class PriceOperationSnapshotSerializer(serializers.Serializer):
+    schema_version = serializers.ChoiceField(choices=[1])
+    operation_type = serializers.ChoiceField(choices=["catalogue_price_conflict_recorded",
+        "catalogue_price_resolved", "catalogue_pack_price_conflict_recorded", "catalogue_pack_price_resolved"])
+    operation_id = serializers.UUIDField()
+    scope = PriceOperationScopeSerializer()
+    original_request = PriceOperationRequestSerializer()
+    actor_id = serializers.UUIDField()
+    installation_id = serializers.UUIDField(allow_null=True)
+    recorded_at = serializers.DateTimeField()
+    conflict = PriceConflictIdentitySerializer()
+    conflict_before = PriceConflictRevisionSerializer(allow_null=True)
+    conflict_after = PriceConflictRevisionSerializer()
+    catalogue_before = PriceCatalogueRevisionSerializer()
+    catalogue_after = PriceCatalogueRevisionSerializer()
+    proposals_created = serializers.ListField(child=NativePriceProposalSerializer(), max_length=2)
+    resolution = NativePriceResolutionSerializer(allow_null=True)
+
+
 class ProductPriceConflictSerializer(serializers.Serializer):
     id=serializers.UUIDField()
     product_id=serializers.UUIDField()
@@ -90,6 +169,14 @@ class ProductPriceConflictSerializer(serializers.Serializer):
 class PriceConflictPreviewSerializer(ProductPriceConflictSerializer):
     preview_token=serializers.CharField(max_length=512,allow_null=True)
     can_resolve=serializers.BooleanField()
+
+
+class ProductPriceOperationReceiptSerializer(ProductPriceConflictSerializer):
+    operation_snapshot = PriceOperationSnapshotSerializer(required=False)
+
+
+class CreatedProductPriceOperationReceiptSerializer(ProductPriceOperationReceiptSerializer):
+    operation_snapshot = PriceOperationSnapshotSerializer()
 
 
 class ProductPriceConflictViewSet(viewsets.GenericViewSet):
@@ -122,7 +209,8 @@ class ProductPriceConflictViewSet(viewsets.GenericViewSet):
         from catalogue.services.price_conflicts import price_conflict_state
         return Response(price_conflict_state(self.get_object()))
 
-    @extend_schema(request=RecordPriceConflictInput,responses={200:ProductPriceConflictSerializer,201:ProductPriceConflictSerializer})
+    @extend_schema(request=RecordPriceConflictInput,responses={
+        200:ProductPriceOperationReceiptSerializer,201:CreatedProductPriceOperationReceiptSerializer})
     def create(self,request,*args,**kwargs):
         from catalogue.services.price_conflicts import record_price_conflict
         self.context()
@@ -138,7 +226,7 @@ class ProductPriceConflictViewSet(viewsets.GenericViewSet):
         return Response(preview_price_conflict(self.kwargs['shop_id'],self.kwargs['product_id'],self.kwargs['pk'],
             request.user,request.device_session.installation,request.device_session.id))
 
-    @extend_schema(request=ResolvePriceConflictInput,responses=ProductPriceConflictSerializer)
+    @extend_schema(request=ResolvePriceConflictInput,responses=ProductPriceOperationReceiptSerializer)
     def resolve(self,request,*args,**kwargs):
         from catalogue.services.price_conflicts import resolve_price_conflict
         self.context()

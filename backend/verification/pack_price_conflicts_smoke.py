@@ -122,6 +122,10 @@ def main():
             assert sorted(status for status, _ in concurrent) == [200, 201], concurrent
             recorded = concurrent[0][1]
             assert concurrent[1][1] == recorded
+            record_proof = recorded["operation_snapshot"]
+            assert record_proof["operation_id"] == command["operation_id"]
+            assert len(record_proof["proposals_created"]) == 2 and record_proof["resolution"] is None
+            assert record_proof["catalogue_after"]["pack"]["base_quantity_milli"] == 24000
             assert recorded["common_price_fcfa"] == 4800 and recorded["base_quantity_milli"] == 24000
             assert recorded["pack_version"] == recorded["product_version"] == 3
             assert (StockMovement.objects.count(), CashMovement.objects.count()) == counts
@@ -135,6 +139,8 @@ def main():
             assert request(a, pack_path, change, "PATCH") == (200, source_receipt)
             history.append(sell(4800))
             detail = conflicts + recorded["id"] + "/"
+            assert request(b, detail) == (200, {key: value for key, value in recorded.items()
+                if key not in ("operation_snapshot", "recorded_proposal")})
             status, preview = request(b, detail + "preview/")
             assert status == 200 and preview["can_resolve"] and len(preview["preview_token"]) <= 512
             selected = next(row for row in recorded["proposals"] if row["proposed_price_fcfa"] == 5000)
@@ -146,6 +152,9 @@ def main():
             assert [status for status, _ in concurrent] == [200, 200], concurrent
             resolved = concurrent[0][1]
             assert concurrent[1][1] == resolved and resolved["resolution"]["price_fcfa"] == 5000
+            resolve_proof = resolved["operation_snapshot"]
+            assert resolve_proof["operation_id"] == resolution["operation_id"] and resolve_proof["proposals_created"] == []
+            assert resolve_proof["resolution"]["id"] == str(PackPriceResolution.objects.get(operation_id=resolution["operation_id"]).id)
             assert resolved["pack_version"] == resolved["product_version"] == 4
             assert (StockMovement.objects.count(), CashMovement.objects.count()) == counts
             assert request(b, conflicts, command) == (200, recorded)
@@ -166,9 +175,10 @@ def main():
                 "factor_milli": 24000, "final_stock_milli": 28000, "cash_total_fcfa": 15000,
                 "concurrent_record_statuses": [200, 201], "concurrent_resolution_statuses": [200, 200],
                 "record_and_resolution_retries_exact": True, "source_receipt_unchanged": True,
+                "native_operation_attestations_checked": True,
                 "seller_private_conflict_status": 403, "revoked_session_status": 401,
                 "limits": ["Price-only pack conflicts; factor-changing conflicts remain to implement.", "No Android or ordinary synchronization qualification."]}
-            output = Path(__file__).resolve().parents[2] / "analysis" / "pack-price-conflicts-smoke-2026-11-05.json"
+            output = Path(__file__).resolve().parents[2] / "analysis" / f"pack-price-conflicts-smoke-{timezone.now().date()}.json"
             output.write_text(json.dumps(report, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
             print(json.dumps(report, ensure_ascii=False))
         finally:
