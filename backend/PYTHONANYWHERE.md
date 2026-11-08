@@ -1,4 +1,47 @@
-# Exploitation PythonAnywhere — déploiement initial du 5 novembre 2026
+# Exploitation PythonAnywhere
+
+## Sauvegardes qualifiées les 7 et 8 novembre 2026
+
+La configuration et l'essai ont été effectués dans le Browser Plugin intégré,
+sur les comptes PythonAnywhere et cron-job.org déjà connectés. Le déclencheur
+appelle en POST l'endpoint HTTPS privé `backups/trigger/` avec un jeton dédié,
+sans droits de lecture des archives ni de restauration. La capture quotidienne
+est activée à **02:00 Africa/Douala** ; les appels chaque minute permettent les
+étapes d'envoi et les reprises bornées, sans nouvelle capture quotidienne.
+La tâche cron est enregistrée et active ; une première exécution automatique
+réussie a été observée le 8 novembre. La capture planifiée à 02:00 reste à observer.
+
+L'essai du 7 novembre a renvoyé successivement `prepared`, `accepted`, puis
+`idle`. L'instantané SQLite faisait **3 108 864 octets**, dans une partie chiffrée
+de **93 649 octets**. La préparation officielle vérifie le déchiffrement, les
+empreintes, les contraintes et les clés étrangères avant de rendre l'archive
+prête. Un seul essai SMTP a été accepté, sans reprise, pour un message encodé
+de **129 348 octets**. Les parties temporaires ont ensuite été nettoyées ; les
+manifestes fichier et SQL ainsi que le journal sont conservés. Le nouvel appel
+n'a créé ni seconde capture ni second envoi. L'acceptation SMTP ne prouve pas
+la réception en boîte Gmail ; celle-ci reste à confirmer. Cette base ne contenait
+aucune photo : cet essai n'est pas une qualification de photos représentatives.
+Une copie locale de la clé séparée est conservée hors Git et hors du chat.
+
+La mesure de quinze minutes comprend **1 791 relevés** sans erreur de lecture,
+avec intervalle maximal observé de 0,503 seconde. Le pic sur le périmètre
+inventorié, réserve de 32 768 octets pour l'observateur comprise, est de
+**493 793 570 octets**. Le répertoire applicatif est relu à chaque relevé ; le
+reste du répertoire personnel, le runtime et les journaux externes sont figés
+au relevé initial. La bibliothèque SQLite externe identifiée par `ldd` est
+incluse. Les parcours de fichiers ne sont pas atomiques ; un pic entre deux
+relevés peut échapper à la mesure. Ce constat ne démontre ni l'ensemble des
+auxiliaires externes, ni le budget à charge représentative, ni la capacité du
+pilote sur douze mois.
+
+La mise à jour du code publié après `01c078f` reste distincte de cette
+configuration. Elle doit suivre une sauvegarde récente, l'arrêt temporaire
+durable de la webapp et des déclencheurs, le drainage des travailleurs et la
+validation de la migration additive. Un verrou `hold_control` seul ne maintient
+pas cet arrêt si son processus s'interrompt. Ne pas utiliser `enter` puis `abort`
+pour rouvrir une base migrée : `abort` exige les fichiers métier inchangés.
+
+## Historique — déploiement initial du 5 novembre 2026
 
 Le backend du commit `2c84760637af81e99d16c6cd718b729da32c7627` est déployé
 sur `https://carnetapi.pythonanywhere.com`, depuis la branche `main` du dépôt
