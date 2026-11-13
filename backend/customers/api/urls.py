@@ -1,5 +1,6 @@
 """Routes owned by the customers domain; external API paths remain stable."""
 from customers.api.merges import CustomerMergeView
+from customers.api.reminders import CustomerReminderPreviewView, CustomerReminderView, DeclareReminderSentView
 from django.urls import include, path
 from customers.api.clients import ClientViewSet
 from customers.api.return_credit_settlements import ClientReturnCreditViewSet, ReturnCreditSettlementViewSet
@@ -29,6 +30,9 @@ urlpatterns = [
     path("shops/<uuid:shop_id>/clients/<uuid:client_id>/debts/<uuid:pk>/due-date/", CustomerDebtViewSet.as_view({"post": "due_date"}), name="customer-debt-due-date"),
     path("shops/<uuid:shop_id>/clients/<uuid:client_id>/debts/<uuid:pk>/history/", CustomerDebtViewSet.as_view({"get": "history"}), name="customer-debt-history"),
     path("shops/<uuid:shop_id>/clients/<uuid:client_id>/merge/", CustomerMergeView.as_view(), name="client-merge"),
+    path("shops/<uuid:shop_id>/clients/<uuid:client_id>/reminders/", CustomerReminderView.as_view(), name="client-reminders"),
+    path("shops/<uuid:shop_id>/clients/<uuid:client_id>/reminders/preview/", CustomerReminderPreviewView.as_view(), name="client-reminder-preview"),
+    path("shops/<uuid:shop_id>/reminders/<uuid:pk>/declare-sent/", DeclareReminderSentView.as_view(), name="reminder-declare-sent"),
     path("shops/<uuid:shop_id>/clients/", ClientViewSet.as_view({"get": "list", "post": "create"}), name="client-list"),
     path("shops/<uuid:shop_id>/clients/<uuid:pk>/", ClientViewSet.as_view({"get": "retrieve", "patch": "partial_update"}), name="client-detail"),
     path("shops/<uuid:shop_id>/clients/<uuid:pk>/possible-duplicates/", ClientViewSet.as_view({"get": "possible_duplicates"}), name="client-possible-duplicates"),

@@ -258,3 +258,53 @@ class ReturnCreditAllocation(UUIDRecord):
             models.UniqueConstraint(fields=["settlement", "debt"], name="return_credit_debt_once"),
             models.CheckConstraint(condition=models.Q(amount_fcfa__gt=0) & _integer_columns("amount_fcfa"), name="return_credit_allocation_integer"),
         ]
+
+
+class CustomerReminder(UUIDRecord):
+    """US-25 / Q83–Q88: a frozen WhatsApp reminder; "sent" is only ever declared by a person."""
+    class Status(models.TextChoices):
+        PREPARED = "prepared", _("Prepared")
+        SENT_DECLARED = "sent_declared", _("Sent (declared)")
+
+    shop = models.ForeignKey('identity.Shop', on_delete=models.PROTECT, related_name="customer_reminders")
+    customer = models.ForeignKey('customers.Customer', on_delete=models.PROTECT, related_name="reminders")
+    actor = models.ForeignKey('core.User', on_delete=models.PROTECT, related_name="customer_reminders")
+    installation = models.ForeignKey('identity.Installation', on_delete=models.PROTECT, related_name="customer_reminders")
+    operation = models.OneToOneField('core.Activity', on_delete=models.PROTECT, related_name="customer_reminder")
+    language = models.CharField(max_length=2, choices=[("fr", "Français"), ("en", "English")])
+    phone = models.CharField(max_length=16, null=True, blank=True)
+    message = models.TextField()
+    total_fcfa = models.PositiveBigIntegerField()
+    status = models.CharField(max_length=13, choices=Status.choices, default=Status.PREPARED)
+    declared_at = models.DateTimeField(null=True, blank=True)
+    declared_by = models.ForeignKey('core.User', on_delete=models.PROTECT, null=True, blank=True, related_name="+")
+
+    class Meta:
+        ordering = ["created_at", "id"]
+        indexes = [models.Index(fields=["shop", "customer", "created_at", "id"], name="customer_reminder_list_idx")]
+        constraints = [
+            models.CheckConstraint(condition=models.Q(total_fcfa__gt=0) & _integer_columns("total_fcfa"),
+                                   name="customer_reminder_positive_total"),
+            models.CheckConstraint(condition=models.Q(status__in=["prepared", "sent_declared"]),
+                                   name="customer_reminder_known_status"),
+            models.CheckConstraint(
+                condition=(models.Q(status="prepared", declared_at__isnull=True, declared_by__isnull=True)
+                           | models.Q(status="sent_declared", declared_at__isnull=False, declared_by__isnull=False)),
+                name="customer_reminder_declaration_consistent"),
+        ]
+
+
+class CustomerReminderDebt(models.Model):
+    """The debt amounts as frozen in the prepared text."""
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    reminder = models.ForeignKey('customers.CustomerReminder', on_delete=models.PROTECT, related_name="debts")
+    debt = models.ForeignKey('customers.CustomerDebt', on_delete=models.PROTECT, related_name="+")
+    remaining_fcfa = models.PositiveBigIntegerField()
+    overdue = models.BooleanField()
+
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=["reminder", "debt"], name="customer_reminder_debt_once"),
+            models.CheckConstraint(condition=models.Q(remaining_fcfa__gt=0) & _integer_columns("remaining_fcfa"),
+                                   name="customer_reminder_debt_positive"),
+        ]

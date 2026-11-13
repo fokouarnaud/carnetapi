@@ -572,6 +572,10 @@
     "0007_customer_import_reference_and_more"
   ],
   [
+    "customers",
+    "0008_customerreminder"
+  ],
+  [
     "identity",
     "0001_domain_state"
   ],

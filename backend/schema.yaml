@@ -4538,6 +4538,183 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/clients/{client_id}/reminders/:
+    get:
+      operationId: shops_clients_reminders_list
+      parameters:
+      - in: path
+        name: client_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ReminderOutput'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+    post:
+      operationId: shops_clients_reminders_create
+      parameters:
+      - in: path
+        name: client_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrepareReminderInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PrepareReminderInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PrepareReminderInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderOutput'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderOutput'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/clients/{client_id}/reminders/preview/:
+    get:
+      operationId: shops_clients_reminders_preview_retrieve
+      parameters:
+      - in: path
+        name: client_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: extra_debt_ids
+        schema:
+          type: string
+      - in: query
+        name: language
+        schema:
+          type: string
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderPreviewOutput'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/shops/{shop_id}/clients/{client_id}/return-credits/:
     get:
       operationId: shops_clients_return_credits_list
@@ -10688,6 +10865,68 @@ paths:
               schema:
                 $ref: '#/components/schemas/RecoveryDeviceAccessError'
           description: application/json required.
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/reminders/{id}/declare-sent/:
+    post:
+      operationId: shops_reminders_declare_sent_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DeclareSentInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/DeclareSentInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/DeclareSentInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ReminderOutput'
+          description: ''
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
             : maintenance ou contrôle externe indisponible. Aucun traitement métier.
@@ -19550,6 +19789,14 @@ components:
       description: |-
         * `keep` - keep
         * `reassign` - reassign
+    DeclareSentInputRequest:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+      required:
+      - operation_id
     DeclaredPaymentRequest:
       type: object
       properties:
@@ -26247,6 +26494,28 @@ components:
       - operation_id
       - reason
       - recipient
+    PrepareReminderInputRequest:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        operation_id:
+          type: string
+          format: uuid
+        language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          default: fr
+        extra_debt_ids:
+          type: array
+          items:
+            type: string
+            format: uuid
+          maxItems: 200
+      required:
+      - id
+      - operation_id
     PresenceReleaseInputRequest:
       type: object
       properties:
@@ -29387,6 +29656,111 @@ components:
       - amount_fcfa
       - debt_id
       - id
+    ReminderDebtOutput:
+      type: object
+      properties:
+        debt_id:
+          type: string
+          format: uuid
+        remaining_fcfa:
+          type: integer
+        overdue:
+          type: boolean
+      required:
+      - debt_id
+      - overdue
+      - remaining_fcfa
+    ReminderOutput:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        customer_id:
+          type: string
+          format: uuid
+        actor_id:
+          type: string
+          format: uuid
+        language:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        message:
+          type: string
+        total_fcfa:
+          type: integer
+        debts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReminderDebtOutput'
+        status:
+          $ref: '#/components/schemas/ReminderOutputStatusEnum'
+        created_at:
+          type: string
+          format: date-time
+        declared_at:
+          type: string
+          format: date-time
+          nullable: true
+        declared_by:
+          type: string
+          format: uuid
+          nullable: true
+        other_devices_warning:
+          type: boolean
+      required:
+      - actor_id
+      - created_at
+      - customer_id
+      - debts
+      - declared_at
+      - declared_by
+      - id
+      - language
+      - message
+      - other_devices_warning
+      - phone
+      - status
+      - total_fcfa
+    ReminderOutputStatusEnum:
+      enum:
+      - prepared
+      - sent_declared
+      type: string
+      description: |-
+        * `prepared` - Préparée
+        * `sent_declared` - Sent (declared)
+    ReminderPreviewOutput:
+      type: object
+      properties:
+        customer_id:
+          type: string
+          format: uuid
+        language:
+          type: string
+        phone:
+          type: string
+          nullable: true
+        message:
+          type: string
+        total_fcfa:
+          type: integer
+        debts:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReminderDebtOutput'
+        other_devices_warning:
+          type: boolean
+      required:
+      - customer_id
+      - debts
+      - language
+      - message
+      - other_devices_warning
+      - phone
+      - total_fcfa
     RenewalSourceEnum:
       enum:
       - operator_report

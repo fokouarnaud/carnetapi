@@ -1,7 +1,7 @@
 {
   "format": "app-x-sqlite-schema-reference",
   "format_version": 1,
-  "migration_code_sha256": "d80c8a148557c12835b49d3c787c28e7d48735e6334693f7673341bcffee3b2f",
+  "migration_code_sha256": "f49c3cd03a5bb56927b27e3a408057d831e907220b58d1e224b20fd9b65060f2",
   "migrations": [
     [
       "admin",
@@ -574,6 +574,10 @@
     [
       "customers",
       "0007_customer_import_reference_and_more"
+    ],
+    [
+      "customers",
+      "0008_customerreminder"
     ],
     [
       "identity",
@@ -2339,6 +2343,12 @@
         "type": "index"
       },
       {
+        "name": "customer_reminder_list_idx",
+        "sql_sha256": "b049279160bc9f30b93d311fdada89176f3eaabcbaf8405ffe07c821c1be8132",
+        "table": "customers_customerreminder",
+        "type": "index"
+      },
+      {
         "name": "customer_shop_name_match",
         "sql_sha256": "ca9350d0482a480495fdb0b8263f0af02831cf8d093531a4695164855db959ef",
         "table": "core_customer",
@@ -2348,6 +2358,48 @@
         "name": "customer_shop_phone_match",
         "sql_sha256": "ced56483098a9e8168703d8f3165784773f0f40e476b58575cfa2b60ba29c793",
         "table": "core_customer",
+        "type": "index"
+      },
+      {
+        "name": "customers_customerreminder_actor_id_a362527c",
+        "sql_sha256": "5c8a8188fd47ae324dc61ec39d4dbfa0967460dfdf226b137c1bf0e0b70d38e6",
+        "table": "customers_customerreminder",
+        "type": "index"
+      },
+      {
+        "name": "customers_customerreminder_customer_id_345687e6",
+        "sql_sha256": "fd3690c65bdbcdd4b2b234bf1a7dd0cfb5404ef643b4f0f7ac50321b1e79755a",
+        "table": "customers_customerreminder",
+        "type": "index"
+      },
+      {
+        "name": "customers_customerreminder_declared_by_id_0a9c6840",
+        "sql_sha256": "1a4ed6ce8491a1e57239a5c2f3fe337f8fd6b10e81f9652222a38112dc812280",
+        "table": "customers_customerreminder",
+        "type": "index"
+      },
+      {
+        "name": "customers_customerreminder_installation_id_5924fe68",
+        "sql_sha256": "799cde1a4dd1b3d50c1f1d7a3e1d0fd7c31fb86ee4f598b5bc20041897e658bd",
+        "table": "customers_customerreminder",
+        "type": "index"
+      },
+      {
+        "name": "customers_customerreminder_shop_id_157f35a3",
+        "sql_sha256": "8719ab3822d17d77ae4bec5dc83d6583774c619fb32b8a9bf34b8a0c7089767d",
+        "table": "customers_customerreminder",
+        "type": "index"
+      },
+      {
+        "name": "customers_customerreminderdebt_debt_id_4ce76718",
+        "sql_sha256": "c5a0fceff5294efbdc0568876c6ece6f0d76e0ab4befd6fcc467a8b89cc111a2",
+        "table": "customers_customerreminderdebt",
+        "type": "index"
+      },
+      {
+        "name": "customers_customerreminderdebt_reminder_id_e7f5a9c5",
+        "sql_sha256": "70ef3ac9f58b929385352d539d393be67e954353761334744b157d50b20e7d48",
+        "table": "customers_customerreminderdebt",
         "type": "index"
       },
       {
@@ -4115,6 +4167,30 @@
         "type": "index"
       },
       {
+        "name": "sqlite_autoindex_customers_customerreminder_1",
+        "sql_sha256": null,
+        "table": "customers_customerreminder",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_customers_customerreminder_2",
+        "sql_sha256": null,
+        "table": "customers_customerreminder",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_customers_customerreminderdebt_1",
+        "sql_sha256": null,
+        "table": "customers_customerreminderdebt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_customers_customerreminderdebt_2",
+        "sql_sha256": null,
+        "table": "customers_customerreminderdebt",
+        "type": "index"
+      },
+      {
         "name": "sqlite_autoindex_django_session_1",
         "sql_sha256": null,
         "table": "django_session",
@@ -5141,6 +5217,18 @@
         "type": "table"
       },
       {
+        "name": "customers_customerreminder",
+        "sql_sha256": "b692b555884c3e73cbe08ac51094b641bb4ffd0792dca2c43684cbfba6d58755",
+        "table": "customers_customerreminder",
+        "type": "table"
+      },
+      {
+        "name": "customers_customerreminderdebt",
+        "sql_sha256": "4643aaaec25116dc73ac3f14223a7ae2d18c7285869080391feefe4ff8dd55d5",
+        "table": "customers_customerreminderdebt",
+        "type": "table"
+      },
+      {
         "name": "django_admin_log",
         "sql_sha256": "c73658bec1ffbff0c0d15c501c8ec444a439edf099fad6f85154d274fe6b0f8b",
         "table": "django_admin_log",
@@ -5345,7 +5433,7 @@
         "type": "trigger"
       }
     ],
-    "sha256": "d485e612c9b2770733a73f7fd400a12340a3ed42fbfa6e3a888a0fb367821a5d"
+    "sha256": "156f7252a28bf2279fefbe20854141f5805dbe4cb792238009d1827df6e95125"
   },
   "worker_sha256": "a56c927e06d4c087977682bf68483c0307523f15c438f978ef28c84d1202f6c1"
 }
