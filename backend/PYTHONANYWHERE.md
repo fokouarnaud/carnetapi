@@ -1,5 +1,29 @@
 # Exploitation PythonAnywhere
 
+## Mise à jour du 13 novembre 2026 — `01c078f` → `5afa105`
+
+Procédure reproductible : skill projet `.claude/skills/deploy-carnetapi`.
+
+- Instantané avant déploiement par l'API de sauvegarde SQLite via la connexion
+  Django (les contraintes appellent des fonctions SQL de l'application) :
+  `~/app-data/pre-deploy-20261113T041452Z.sqlite3`, `integrity_check` ok,
+  aucune violation de clé étrangère, 161 migrations, 3 207 168 octets. À
+  supprimer après confirmation de la version (budget disque).
+- Répétition des **17 migrations** sur une copie, depuis un `git worktree` de
+  `origin/main` et un lanceur dédié forçant la base et la barrière dans `/tmp`
+  (le lanceur privé écrase `APP_DB_PATH`) : sortie 0, rien en attente.
+- Webapp désactivée 04:21–04:24 UTC (API en 404, appels cron-job.org en échec
+  pendant cette fenêtre, sans modification du planificateur), puis `git pull
+  --ff-only`, migrations réelles identiques à la répétition, `collectstatic`
+  sans changement, `check --deploy` limité à W005/W021. Requirements inchangés.
+- Réactivation et rechargement. Contrôles HTTP : redirection HTTPS 302, login
+  admin 200, API/schéma/docs 401, statiques 200 ; nouvelles routes `changes`
+  et `account/recovery-codes` en 401 anonyme ; OTP avec numéro invalide 400
+  `otp_request_invalid`, vérification avec code mal formé 400. Aucun SMS
+  possible : `APP_SMS_BUDGET_PATH` n'est pas configuré (OTP en 503 sinon).
+- Expiration du site lue : samedi 5 décembre 2026. La reprise de la tâche de
+  sauvegarde après la fenêtre d'arrêt reste à observer.
+
 ## Sauvegardes qualifiées les 7 et 8 novembre 2026
 
 La configuration et l'essai ont été effectués dans le Browser Plugin intégré,

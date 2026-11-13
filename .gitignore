@@ -62,3 +62,6 @@ htmlcov/
 *.rar
 
 YemX.apk
+
+# Browser automation snapshots and console screenshots stay local.
+/.playwright-mcp/
