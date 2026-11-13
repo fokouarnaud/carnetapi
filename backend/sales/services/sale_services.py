@@ -125,7 +125,9 @@ def create_sale(shop_id, actor, installation, validated_data, session_id):
     remaining = [stocks.get(product_id, 0) - quantity for product_id, quantity in quantities.items()]
     if any(value < -MAX_FCFA - 1 for value in remaining):
         raise ValidationError({"quantity_milli": "Solde de stock hors capacité."})
-    effective_at = data.get("occurred_at", timezone.now())
+    now = timezone.now()
+    # A device time slightly ahead of the server (tolerated skew) never dates a sale in the future.
+    effective_at = data.get("occurred_at") or min(data.get("recorded_at", now), now)
     return _persist_sale(shop=shop, actor=actor, installation=installation, data=data, canonical=canonical,
         snapshots=snapshots, basket=basket, customer=customer, due_at=due_at,
         remaining=remaining, quantities=quantities, effective_at=effective_at)

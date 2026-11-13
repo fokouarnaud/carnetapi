@@ -1,5 +1,19 @@
 # Réplication YemX — cadrage et incertitudes
 
+### Décision complémentaire US-05/US-17 — date d'une vente hors connexion, 13 novembre 2026
+
+Le titulaire retient que le serveur accepte l'heure enregistrée par le téléphone
+(`recorded_at`) pour une vente faite hors connexion, si elle reste dans la durée
+du bail hors connexion : au plus 7 jours avant la réception serveur, et pas dans
+le futur au-delà d'une tolérance technique de 5 minutes d'horloge. Hors de cette
+borne, la vente est refusée sans effet et reste dans la file du téléphone pour le
+responsable. La vente, son mouvement de stock et son encaissement prennent cette
+date ; la réception serveur reste conservée séparément. Ce champ est distinct de
+l'antidatage manuel (G15 : responsable, motif) et ne peut pas lui être combiné.
+La borne porte sur la durée du bail et non sur la dernière vérification, celle-ci
+précédant normalement l'envoi de la file au retour du réseau. Qualification sur
+téléphone restant à faire.
+
 ### Décision complémentaire US-43/44 — conditions de clôture complète, 7 novembre 2026
 
 Le titulaire exige que toutes les opérations en attente aient été validées ou

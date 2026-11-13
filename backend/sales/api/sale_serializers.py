@@ -1,3 +1,4 @@
+from datetime import timedelta
 from rest_framework import serializers
 from django.utils import timezone
 from django.utils.translation import gettext_lazy
@@ -59,8 +60,15 @@ class CreateSalePaymentSerializer(DeclaredPaymentSerializer):
         return data
 
 
+OFFLINE_LEASE = timedelta(days=7)
+DEVICE_CLOCK_TOLERANCE = timedelta(minutes=5)
+
+
 class CreateSaleSerializer(StrictSerializer):
     occurred_at = serializers.DateTimeField(required=False)
+    # Q136 / decision of 13 November 2026: time recorded by the selling device while offline,
+    # trusted only within the offline lease length. Not a manual backdate (G15).
+    recorded_at = serializers.DateTimeField(required=False)
     reason = serializers.CharField(max_length=2000, allow_blank=False, required=False)
     backdate_reason = serializers.CharField(max_length=2000, allow_blank=False, required=False)  # G15, beyond 30 days
     id = serializers.UUIDField()
@@ -78,7 +86,18 @@ class CreateSaleSerializer(StrictSerializer):
             raise serializers.ValidationError(gettext_lazy("Une vente ne peut pas être datée dans le futur."))
         return value
 
+    def validate_recorded_at(self, value):
+        now = timezone.now()
+        if value > now + DEVICE_CLOCK_TOLERANCE or value < now - OFFLINE_LEASE:
+            raise serializers.ValidationError(
+                gettext_lazy("Heure de l'appareil hors de la période hors connexion autorisée."),
+                code="recorded_at_outside_lease")
+        return value
+
     def validate(self, data):
+        if "recorded_at" in data and "occurred_at" in data:
+            raise serializers.ValidationError(
+                {"recorded_at": gettext_lazy("Heure de l'appareil incompatible avec une date effective manuelle.")})
         if "occurred_at" in data and "reason" not in data:
             raise serializers.ValidationError({"reason": gettext_lazy("Motif obligatoire pour une date effective manuelle.")})
         if "reason" in data and "occurred_at" not in data:

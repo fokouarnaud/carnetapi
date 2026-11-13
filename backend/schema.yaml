@@ -18850,6 +18850,9 @@ components:
         occurred_at:
           type: string
           format: date-time
+        recorded_at:
+          type: string
+          format: date-time
         reason:
           type: string
           minLength: 1
