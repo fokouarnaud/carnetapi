@@ -76,6 +76,8 @@ Elle ne remplace ni les décisions détaillées ci-dessous ni `analysis/scope-v1
 3. Livrer d'abord un parcours vertical de bout en bout : OTP → activation → vente hors connexion → synchronisation → affichage sur un second téléphone (US-01/05/17/36).
 4. Enchaîner ensuite dans l'ordre du PRD.
 
+**Révision du 13 novembre 2026 (titulaire) — G1 levé :** le gel des tranches backend est supprimé ; les US backend du PRD reprennent sans attendre DOD-14. Dans chaque parcours, la version connectée (en ligne) est réalisée et démontrée d'abord, puis le fonctionnement hors connexion de ce parcours. DOD-14 reste une gate de livraison, mais n'est plus un préalable aux tranches backend.
+
 ### 1. Objectifs fonctionnels prioritaires
 
 1. **Livrer une application autonome de gestion de boutiques sur Android.**
@@ -521,7 +523,7 @@ Pour une US traversant Android et serveur : démontrer saisie Android, persistan
 | DOD-11 — Restauration/recovery | Restauration Unfold et console prouvée ; opérations antérieurement synchronisées rejouées sans doublon, droits révalidés, clôtures et retours tardifs conformes. | Exercice sauvegarde T 0/opérations T 1/restauration T 0/récupération T 1 avec plusieurs appareils, manque définitif et arrivée tardive ; DB/photos/soldes/journal comparés. Archive tronquée/altérée/mauvaise clé refusée avant remplacement. |
 | DOD-12 — Secours local | Export local/import après réinstallation conserve opérations et contrôle nouveaux droits ; codes secours usage unique et recours exceptionnel défini. | Désinstallation/réinstallation puis import avec ancien UUID, deuxième import sans effet, archive altérée/mauvais mot de passe et accès révoqué ; données serveur récupérables, pertes sans copie clairement annoncées. |
 | DOD-13 — Vérifications et handoff | Vérifications backend/Flutter/migrations/schema vertes sans affaiblir tests ; aucun défaut empêchant un critère accepté. Installation, exploitation et repli reproductibles. | Suites pertinentes, analyse Flutter/build, Django check/migrations et OpenAPI sans avertissement bloquant ; guide pilote, runbook sauvegarde/restauration, gestion secrets/signature, état des limites et accord de recette du titulaire. |
-| DOD-14 — Tranche verticale T0 | Avant toute nouvelle tranche backend hors parcours (G1) : OTP de développement verrouillé, activation, vente hors connexion sur A, envoi, flux `changes`, affichage sur B, relance sans perte ni doublon ; backend local migré puis qualification PythonAnywhere sans données pilote (G3). | Deux téléphones ou téléphone+émulateur, mode avion puis reprise, kill entre commit et accusé ; comparaison base serveur/Drift A/Drift B ; journal et captures datés. |
+| DOD-14 — Tranche verticale T0 | (Préalable aux tranches backend levé le 13 novembre 2026, gate de livraison maintenue.) Avant toute nouvelle tranche backend hors parcours (G1) : OTP de développement verrouillé, activation, vente hors connexion sur A, envoi, flux `changes`, affichage sur B, relance sans perte ni doublon ; backend local migré puis qualification PythonAnywhere sans données pilote (G3). | Deux téléphones ou téléphone+émulateur, mode avion puis reprise, kill entre commit et accusé ; comparaison base serveur/Drift A/Drift B ; journal et captures datés. |
 
 Les seuils de latence, RAM et démarrage ainsi que les modèles d'appareil et tolérances visuelles ne sont pas chiffrés dans les décisions validées. Les mesurer puis soumettre les critères au titulaire avant recette ; ne pas inventer un seuil « réussi ». Un dépassement de budget confirmé, une impossibilité d'OTP gratuit ou d'exploitation gratuite bloque la livraison conforme jusqu'à décision explicite, sans réduction silencieuse de fonctionnalité ni achat implicite.
 
@@ -591,7 +593,7 @@ Questions posées une à une ; chaque réponse a été acceptée par le titulair
 
 | ID | Question | Réponse retenue |
 | --- | --- | --- |
-| G1 | Geler l'approfondissement backend au profit d'un parcours vertical Android ↔ API ? | Oui, vertical d'abord. |
+| G1 | Geler l'approfondissement backend au profit d'un parcours vertical Android ↔ API ? | Oui, vertical d'abord. **Révisé le 13 novembre 2026 : gel levé ; parcours en ligne d'abord, hors connexion ensuite.** |
 | G2 | Que faire du travail non commité sur la pagination des propositions de conflit de prix ? | Le finir, lancer la suite complète, documenter le nouveau périmètre de signature du reçu, puis commiter. |
 | G3 | Contre quel serveur développer ? | Django local migré, puis qualification sur PythonAnywhere sans toucher aux données du pilote. |
 | G4 | Comment encadrer l'OTP hors production ? | Faux transport limité à dev/test, refusé en production, jamais preuve DOD-09 ; un seul vrai SMS, en qualification. |
