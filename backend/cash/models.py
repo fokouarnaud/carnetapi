@@ -6,6 +6,10 @@ from common.model_base import UUIDRecord, _integer_columns
 from sales.models import SalePayment
 
 
+EXPENSE_CATEGORIES = [("transport", _("Transport")), ("rent", _("Rent")), ("salaries", _("Salaries")),
+                      ("supplies", _("Supplies")), ("bills", _("Bills")), ("other", _("Other"))]
+
+
 class CashMovement(UUIDRecord):
     """One actual money movement per declared sale payment, separate from revenue."""
     shop = models.ForeignKey('identity.Shop', on_delete=models.PROTECT, related_name="cash_movements")
@@ -24,6 +28,9 @@ class CashMovement(UUIDRecord):
                                                                     ("withdrawal", _("Withdrawal")), ("expense", _("Expense"))])
     other_name = models.CharField(max_length=80, blank=True)
     external_reference = models.CharField(max_length=150, blank=True)
+    # G23: fixed categories; empty only for non-expenses and legacy expenses recorded before G23.
+    expense_category = models.CharField(max_length=12, blank=True, default="", db_default="", choices=EXPENSE_CATEGORIES)
+    expense_label = models.CharField(max_length=80, blank=True, default="", db_default="")
     amount_fcfa = models.BigIntegerField()
     occurred_at = models.DateTimeField()
     reason = models.TextField()
@@ -51,7 +58,10 @@ class CashMovement(UUIDRecord):
             customer_refund__isnull=True, supplier_payment_part__isnull=True, supplier_refund__isnull=True,
             manual_kind="", amount_fcfa__lt=0,
         ), name="cash_event_source_sign"),
-            models.CheckConstraint(condition=_integer_columns("amount_fcfa"), name="cash_movement_integral_amount")]
+            models.CheckConstraint(condition=_integer_columns("amount_fcfa"), name="cash_movement_integral_amount"),
+            models.CheckConstraint(condition=models.Q(expense_category="", expense_label="") | (
+                models.Q(manual_kind="expense", expense_category__in=[key for key, _label in EXPENSE_CATEGORIES])
+                & (~models.Q(expense_category="other") | ~models.Q(expense_label=""))), name="cash_expense_category")]
 
 
 class CashCount(UUIDRecord):

@@ -62,6 +62,7 @@ class CreateSalePaymentSerializer(DeclaredPaymentSerializer):
 class CreateSaleSerializer(StrictSerializer):
     occurred_at = serializers.DateTimeField(required=False)
     reason = serializers.CharField(max_length=2000, allow_blank=False, required=False)
+    backdate_reason = serializers.CharField(max_length=2000, allow_blank=False, required=False)  # G15, beyond 30 days
     id = serializers.UUIDField()
     operation_id = serializers.UUIDField()
     lines = CreateSaleLineSerializer(many=True, allow_empty=False, max_length=500)

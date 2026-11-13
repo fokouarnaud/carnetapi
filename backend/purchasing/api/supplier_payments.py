@@ -1,4 +1,5 @@
 """Actual supplier payments and explicit noncash allocation of their advances."""
+from common.services.backdating import require_allowed_backdate
 import uuid
 from django.db import transaction
 from purchasing.services.supplier_ledger import append_supplier_ledger
@@ -105,6 +106,7 @@ def create_payment(shop_id, supplier_id, request, data):
     original = original_receipt(data["operation_id"], shop, request.user, "supplier_payment_created", canonical)
     if original is not None:
         return original, False
+    require_allowed_backdate(shop, request.user, data["occurred_at"], data.get("backdate_reason"))  # G15
     if (SupplierPayment.objects.filter(id=data["id"]).exists()
             or SupplierPaymentPart.objects.filter(id__in=[part["id"] for part in data["parts"]]).exists()
             or CashMovement.objects.filter(id__in=[uuid.uuid5(part['id'],'supplier-payment-cash') for part in data['parts']]).exists()):

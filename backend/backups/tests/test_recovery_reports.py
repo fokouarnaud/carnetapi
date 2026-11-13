@@ -33,7 +33,8 @@ class RecoveryReportTests(TestCase):
             (self.paths()["customer"].replace("statement/","debts/"),{}),
             (self.paths()["supplier"].replace("statement/","debts/"),{}),
             (self.paths()["cash"],{"kind":"opening","method":"cash"}),
-            (self.paths()["cash"],{"kind":"addition","method":"orange"}),
+            # G15: dated more than 30 days ago, recorded by the owner with a second reason.
+            (self.paths()["cash"],{"kind":"addition","method":"orange","backdate_reason":"Reprise historique"}),
         ):
             response=self.client.post(url,{"id":str(uuid.uuid4()),"operation_id":str(uuid.uuid4()),
                 "amount_fcfa":1200,"occurred_at":"2026-10-01T08:00:00Z","reason":"Solde physique initial",**extra},format="json")

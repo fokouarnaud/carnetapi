@@ -150,3 +150,8 @@ SPECTACULAR_SETTINGS = {
     ],
     "SERVE_PERMISSIONS": ["identity.services.permissions.IsTechnicalSuperuser"],
 }
+
+# US-01 / G4: the fake transport is refused outside development/test (identity.services.otp).
+OTP_SMS_TRANSPORT = os.environ.get("APP_OTP_SMS_TRANSPORT", "cooms")
+# Private control file, shared by every sender and kept outside business backups/restores.
+SMS_BUDGET_PATH = os.environ.get("APP_SMS_BUDGET_PATH", "")

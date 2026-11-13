@@ -21,6 +21,7 @@ MAX_INTEGER = 9223372036854775807
 RECORD_ACTION = "catalogue_price_conflict_recorded"
 RESOLVE_ACTION = "catalogue_price_resolved"
 TOKEN_SALT = "catalogue.product-price-conflict.v1"
+PROPOSALS_PAGE_SIZE = 25
 
 
 def _uuid(value):
@@ -70,14 +71,20 @@ def price_conflict_state(conflict, product=None):
         decision = conflict.resolution
     except ProductPriceResolution.DoesNotExist:
         decision = None
+    count = (conflict.receipt_proposals_count if hasattr(conflict, "receipt_proposals_count")
+        else conflict.proposals.count())
+    proposals = (conflict.receipt_proposals if hasattr(conflict, "receipt_proposals")
+        else conflict.proposals.order_by("created_at", "id")[:PROPOSALS_PAGE_SIZE])
     return json_value({
         "id": conflict.id, "product_id": conflict.product_id,
         "source_change_id": conflict.source_change_id, "base_version": conflict.base_version,
         "common_price_fcfa": conflict.common_price_fcfa, "state": conflict.state,
         "version": conflict.version, "product_version": product.version, "created_at": conflict.created_at,
+        "proposals_count": count,
+        "proposals_url": f"/api/v1/shops/{conflict.shop_id}/products/{product.id}/price-conflicts/{conflict.id}/proposals/",
         "proposals": [{"id": row.id, "operation_id": row.operation_id, "actor_id": row.actor_id,
             "installation_id": row.installation_id, "proposed_price_fcfa": row.proposed_price_fcfa,
-            "reason": row.reason, "created_at": row.created_at} for row in conflict.proposals.all()],
+            "reason": row.reason, "created_at": row.created_at} for row in proposals],
         "resolution": None if decision is None else {"operation_id": decision.operation_id,
             "proposal_id": decision.proposal_id, "price_fcfa": decision.price_fcfa,
             "actor_id": decision.actor_id, "reason": decision.reason, "created_at": decision.created_at},
@@ -188,7 +195,11 @@ def record_price_conflict(shop_id, product_id, actor, installation, validated_da
 
 
 def _preview_frame(conflict, product, actor, installation, session_id):
-    return {"receipt": price_conflict_state(conflict, product), "price_fcfa": product.sale_price_fcfa,
+    # Immutable proposals can be appended only with an audited conflict revision.
+    # Bind that revision instead of loading their full history into a preview.
+    return {"conflict_id": str(conflict.id), "conflict_version": conflict.version, "state": conflict.state,
+        "shop_id": str(conflict.shop_id), "product_id": str(product.id), "product_version": product.version,
+        "common_price_fcfa": conflict.common_price_fcfa, "price_fcfa": product.sale_price_fcfa,
         "actor_id": str(actor.id), "installation_id": str(installation.id) if installation else None,
         "session_id": str(session_id)}
 
@@ -205,7 +216,7 @@ def preview_price_conflict(shop_id, product_id, conflict_id, actor, installation
     conflict = get_object_or_404(ProductPriceConflict, id=conflict_id, product=product, shop=shop)
     frame = _preview_frame(conflict, product, actor, installation, session_id)
     can_resolve = conflict.state == "open" and product.sale_price_fcfa == conflict.common_price_fcfa
-    return {**frame["receipt"], "can_resolve": can_resolve,
+    return {**price_conflict_state(conflict, product), "can_resolve": can_resolve,
         "preview_token": signing.dumps(_frame_digest(frame), salt=TOKEN_SALT) if can_resolve else None}
 
 

@@ -1,7 +1,7 @@
 {
   "format": "app-x-sqlite-schema-reference",
   "format_version": 1,
-  "migration_code_sha256": "a07af72b0681ccce8ec0f4203171d5b3db73a682eeee9d910e4fe531875fe073",
+  "migration_code_sha256": "d80c8a148557c12835b49d3c787c28e7d48735e6334693f7673341bcffee3b2f",
   "migrations": [
     [
       "admin",
@@ -184,6 +184,10 @@
       "0002_cashcount_cash_count_integral_physical_and_more"
     ],
     [
+      "cash",
+      "0003_cashmovement_expense_category_and_more"
+    ],
+    [
       "catalogue",
       "0001_domain_state"
     ],
@@ -202,6 +206,14 @@
     [
       "catalogue",
       "0005_pack_price_conflicts"
+    ],
+    [
+      "catalogue",
+      "0006_remove_catalogueimport_catalogue_import_bounded_source_and_more"
+    ],
+    [
+      "catalogue",
+      "0007_barcodecodeconflict"
     ],
     [
       "contenttypes",
@@ -552,6 +564,18 @@
       "0004_customer_customer_positive_integer_version_and_more"
     ],
     [
+      "customers",
+      "0005_customer_merged_into"
+    ],
+    [
+      "customers",
+      "0006_customerdebt_received_for"
+    ],
+    [
+      "customers",
+      "0007_customer_import_reference_and_more"
+    ],
+    [
       "identity",
       "0001_domain_state"
     ],
@@ -560,12 +584,40 @@
       "0002_membership_membership_integral_version_and_more"
     ],
     [
+      "identity",
+      "0003_shopinstallationcode"
+    ],
+    [
+      "identity",
+      "0004_ownershiptransfer"
+    ],
+    [
+      "identity",
+      "0005_accountrecoverycase"
+    ],
+    [
+      "identity",
+      "0006_otpchallenge"
+    ],
+    [
+      "identity",
+      "0007_recoverycode"
+    ],
+    [
       "purchasing",
       "0001_domain_state"
     ],
     [
       "purchasing",
       "0002_purchasedocument_purchase_document_integral_total_and_more"
+    ],
+    [
+      "purchasing",
+      "0003_supplier_import_reference_and_more"
+    ],
+    [
+      "purchasing",
+      "0004_purchaselineclosure"
     ],
     [
       "sales",
@@ -602,6 +654,18 @@
     [
       "stock",
       "0005_transfer_movement_kinds"
+    ],
+    [
+      "stock",
+      "0006_stockreservationpresencerelease"
+    ],
+    [
+      "stock",
+      "0007_stocktransferlineclosure"
+    ],
+    [
+      "sync",
+      "0001_initial"
     ],
     [
       "token_blacklist",
@@ -1063,9 +1127,33 @@
         "type": "index"
       },
       {
+        "name": "barcode_conflict_lookup",
+        "sql_sha256": "793d98c102856eb58e6442a9c0defcf671c875a03a6e1169d0a60f8a11073255",
+        "table": "catalogue_barcodecodeconflict",
+        "type": "index"
+      },
+      {
         "name": "barcode_unit_once",
         "sql_sha256": "50f79ba2021246d53d515dc5700a408ca2c3f0a9b7eb89431beca007c05af7de",
         "table": "core_barcode",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_barcodecodeconflict_pack_id_5ea5093a",
+        "sql_sha256": "28ae64e598bad786d957d9a3b11533474779410629e3223a14bcbd8bb3e80a9b",
+        "table": "catalogue_barcodecodeconflict",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_barcodecodeconflict_product_id_2d72acf3",
+        "sql_sha256": "ab7421904f43574e9e204fe8ad9554862151473eb9f60dbfe4c82e65530fd289",
+        "table": "catalogue_barcodecodeconflict",
+        "type": "index"
+      },
+      {
+        "name": "catalogue_barcodecodeconflict_shop_id_9d3468d2",
+        "sql_sha256": "6075594bd4432019d8391f76ef4454add3447a9822df610bfbd477f15d1d0021",
+        "table": "catalogue_barcodecodeconflict",
         "type": "index"
       },
       {
@@ -1315,6 +1403,12 @@
         "type": "index"
       },
       {
+        "name": "core_customer_merged_into_id_2becd994",
+        "sql_sha256": "94e455879d6da8e301e93c027cdae7f552610cdc5c83600d0320c18ef001db35",
+        "table": "core_customer",
+        "type": "index"
+      },
+      {
         "name": "core_customer_shop_id_bb24bb5a",
         "sql_sha256": "dfd7d57843f28ec58b434c0a16bf23818ca6aba7efb703d0568d58b25b35a6e7",
         "table": "core_customer",
@@ -1359,6 +1453,12 @@
       {
         "name": "core_customerdebt_operation_id_25143fd0",
         "sql_sha256": "01a7b0191c248fe4cadc018e6f19e7e6ff6d8c034e6f699f1ec5b7816eb7ab06",
+        "table": "core_customerdebt",
+        "type": "index"
+      },
+      {
+        "name": "core_customerdebt_received_for_id_d691ecb4",
+        "sql_sha256": "15a6828befe9f40ba3f04f675a720ade7420811386b07e56dc66fe345cbc6b59",
         "table": "core_customerdebt",
         "type": "index"
       },
@@ -2233,6 +2333,12 @@
         "type": "index"
       },
       {
+        "name": "customer_import_reference_once",
+        "sql_sha256": "f503d64c8ea15a9a381db53cdf1abdff717cad485564b6731ecd11b86891995e",
+        "table": "core_customer",
+        "type": "index"
+      },
+      {
         "name": "customer_shop_name_match",
         "sql_sha256": "ca9350d0482a480495fdb0b8263f0af02831cf8d093531a4695164855db959ef",
         "table": "core_customer",
@@ -2275,6 +2381,78 @@
         "type": "index"
       },
       {
+        "name": "identity_accountrecoverycase_account_id_3f107984",
+        "sql_sha256": "8217e5410a4674a7eb332cd143e396edc3f16a1ca27fb33d714458557d19160a",
+        "table": "identity_accountrecoverycase",
+        "type": "index"
+      },
+      {
+        "name": "identity_accountrecoverycase_confirming_member_id_23cf4989",
+        "sql_sha256": "6d1167b6ed7a1c6fd95f84bdd0b45b281ad685134162b39cffb7b7aba04da805",
+        "table": "identity_accountrecoverycase",
+        "type": "index"
+      },
+      {
+        "name": "identity_accountrecoverycase_decided_by_id_01dca389",
+        "sql_sha256": "b319ded6cc7a0b77f2c54cbee59717eeed34b5c923233fe3dd9395807f243a2b",
+        "table": "identity_accountrecoverycase",
+        "type": "index"
+      },
+      {
+        "name": "identity_otpchallenge_account_id_f7bf7007",
+        "sql_sha256": "1c453481530e9b4b4d589a0cb9c0ff844e2bc9855ee0e80f6d6b32790c4022d0",
+        "table": "identity_otpchallenge",
+        "type": "index"
+      },
+      {
+        "name": "identity_otpchallenge_recovery_code_id_4cf79a63",
+        "sql_sha256": "97fc3f51166699bf1cd3abdd00da84e22f278fcff903357c2690bf9913b623e1",
+        "table": "identity_otpchallenge",
+        "type": "index"
+      },
+      {
+        "name": "identity_ownershiptransfer_decided_by_id_ad8b4698",
+        "sql_sha256": "709cf1d80039777907f0971b63ab0358c045538d9f70433ebcb8a706d0ce8299",
+        "table": "identity_ownershiptransfer",
+        "type": "index"
+      },
+      {
+        "name": "identity_ownershiptransfer_new_owner_id_8df426e2",
+        "sql_sha256": "6ce3e5d85f45595a65ca8dd20b72c899d2c67701019a676cc1a16a4974e16bc9",
+        "table": "identity_ownershiptransfer",
+        "type": "index"
+      },
+      {
+        "name": "identity_ownershiptransfer_previous_owner_id_8316690d",
+        "sql_sha256": "78f6b7c486ce2bf3004678b3c1004b2b09b6b1f9eb34598febe1493d3a9204e4",
+        "table": "identity_ownershiptransfer",
+        "type": "index"
+      },
+      {
+        "name": "identity_ownershiptransfer_shop_id_dd9b64a5",
+        "sql_sha256": "db072d815a7b4e6df9f18201f1b378f0a59ca4d242b402efae71a4f36087ed68",
+        "table": "identity_ownershiptransfer",
+        "type": "index"
+      },
+      {
+        "name": "identity_recoverycode_account_id_e314d7f9",
+        "sql_sha256": "394aad712e063a72e19e087fcdb30bc37573e04ceac282fe4cc2b4ad28ae0fce",
+        "table": "identity_recoverycode",
+        "type": "index"
+      },
+      {
+        "name": "identity_shopinstallationcode_installation_id_adf0451b",
+        "sql_sha256": "3d8d81958ecf2d5e92707d99f42941978f399962c3b7f5fbc18dd4146f490ed2",
+        "table": "identity_shopinstallationcode",
+        "type": "index"
+      },
+      {
+        "name": "identity_shopinstallationcode_shop_id_304780db",
+        "sql_sha256": "b4ba906d8861288525b53928630ac13a2b3e3f2be98d6db3fff500bc38420988",
+        "table": "identity_shopinstallationcode",
+        "type": "index"
+      },
+      {
         "name": "one_native_pack_price_proposal",
         "sql_sha256": "5f7ffb05f71d86e802f87ac7f937874ce63760aa49c021595195b15262fc69ef",
         "table": "catalogue_packpriceproposal",
@@ -2305,6 +2483,12 @@
         "type": "index"
       },
       {
+        "name": "otp_challenge_phone_idx",
+        "sql_sha256": "12fc78ebb969bc2bcda1b85281fa02922aaf507b638f5cc23c255081e6e603ad",
+        "table": "identity_otpchallenge",
+        "type": "index"
+      },
+      {
         "name": "pack_price_conflict_shop_order",
         "sql_sha256": "091376c6ecede6cafac8fc2f80ccc35266927de0572ae13d4ad95305906ac1fd",
         "table": "catalogue_packpriceconflict",
@@ -2314,6 +2498,18 @@
         "name": "price_conflict_shop_order",
         "sql_sha256": "1e311d1303c4560e58b682315c5002132a288511ee6295cd57361f87f34c5379",
         "table": "catalogue_productpriceconflict",
+        "type": "index"
+      },
+      {
+        "name": "purchasing_purchaselineclosure_installation_id_f825fcf5",
+        "sql_sha256": "0bd0de3a500f888abe6f775d60ed470ab6ebea227cebaa6c0e1859de58696db0",
+        "table": "purchasing_purchaselineclosure",
+        "type": "index"
+      },
+      {
+        "name": "recovery_code_batch_idx",
+        "sql_sha256": "6a1d30c95ae7460b026666f73ab7017e3396f02633885ca1e160c136d7e449bc",
+        "table": "identity_recoverycode",
         "type": "index"
       },
       {
@@ -2884,6 +3080,18 @@
         "name": "sqlite_autoindex_backups_sendattempt_3",
         "sql_sha256": null,
         "table": "backups_sendattempt",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_barcodecodeconflict_1",
+        "sql_sha256": null,
+        "table": "catalogue_barcodecodeconflict",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_catalogue_barcodecodeconflict_2",
+        "sql_sha256": null,
+        "table": "catalogue_barcodecodeconflict",
         "type": "index"
       },
       {
@@ -3913,6 +4121,90 @@
         "type": "index"
       },
       {
+        "name": "sqlite_autoindex_identity_accountrecoverycase_1",
+        "sql_sha256": null,
+        "table": "identity_accountrecoverycase",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_identity_otpchallenge_1",
+        "sql_sha256": null,
+        "table": "identity_otpchallenge",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_identity_otpchallenge_2",
+        "sql_sha256": null,
+        "table": "identity_otpchallenge",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_identity_ownershiptransfer_1",
+        "sql_sha256": null,
+        "table": "identity_ownershiptransfer",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_identity_recoverycode_1",
+        "sql_sha256": null,
+        "table": "identity_recoverycode",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_identity_recoverycode_2",
+        "sql_sha256": null,
+        "table": "identity_recoverycode",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_identity_shopinstallationcode_1",
+        "sql_sha256": null,
+        "table": "identity_shopinstallationcode",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_identity_shopinstallationcode_2",
+        "sql_sha256": null,
+        "table": "identity_shopinstallationcode",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_identity_shopinstallationcode_3",
+        "sql_sha256": null,
+        "table": "identity_shopinstallationcode",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_purchasing_purchaselineclosure_1",
+        "sql_sha256": null,
+        "table": "purchasing_purchaselineclosure",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_purchasing_purchaselineclosure_2",
+        "sql_sha256": null,
+        "table": "purchasing_purchaselineclosure",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_purchasing_purchaselineclosure_3",
+        "sql_sha256": null,
+        "table": "purchasing_purchaselineclosure",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stockreservationpresencerelease_1",
+        "sql_sha256": null,
+        "table": "stock_stockreservationpresencerelease",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stockreservationpresencerelease_2",
+        "sql_sha256": null,
+        "table": "stock_stockreservationpresencerelease",
+        "type": "index"
+      },
+      {
         "name": "sqlite_autoindex_stock_stockreservationreconciliation_1",
         "sql_sha256": null,
         "table": "stock_stockreservationreconciliation",
@@ -3955,6 +4247,24 @@
         "type": "index"
       },
       {
+        "name": "sqlite_autoindex_stock_stocktransferlineclosure_1",
+        "sql_sha256": null,
+        "table": "stock_stocktransferlineclosure",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferlineclosure_2",
+        "sql_sha256": null,
+        "table": "stock_stocktransferlineclosure",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_stock_stocktransferlineclosure_3",
+        "sql_sha256": null,
+        "table": "stock_stocktransferlineclosure",
+        "type": "index"
+      },
+      {
         "name": "sqlite_autoindex_stock_stocktransferreceipt_1",
         "sql_sha256": null,
         "table": "stock_stocktransferreceipt",
@@ -3979,6 +4289,18 @@
         "type": "index"
       },
       {
+        "name": "sqlite_autoindex_sync_changefeedentry_1",
+        "sql_sha256": null,
+        "table": "sync_changefeedentry",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_sync_shopchangesequence_1",
+        "sql_sha256": null,
+        "table": "sync_shopchangesequence",
+        "type": "index"
+      },
+      {
         "name": "sqlite_autoindex_token_blacklist_blacklistedtoken_1",
         "sql_sha256": null,
         "table": "token_blacklist_blacklistedtoken",
@@ -3994,6 +4316,18 @@
         "name": "stock_shortage_product_time",
         "sql_sha256": "737ae3c392bf580395b5f6eed4280fb97adb585463cac234d81c678e3b4811f6",
         "table": "core_stockshortagereview",
+        "type": "index"
+      },
+      {
+        "name": "stock_stockreservationpresencerelease_installation_id_106cff99",
+        "sql_sha256": "4817e5d3c919a5c9769b6edcb9718798e0088e412dbbcbfcbff8141c1140e051",
+        "table": "stock_stockreservationpresencerelease",
+        "type": "index"
+      },
+      {
+        "name": "stock_stockreservationpresencerelease_reservation_id_20d26bd9",
+        "sql_sha256": "d08e214ef7d9c80c0dc06dfa8d0258221b1cd5c50a2434e6711f34a64a9fa130",
+        "table": "stock_stockreservationpresencerelease",
         "type": "index"
       },
       {
@@ -4045,6 +4379,12 @@
         "type": "index"
       },
       {
+        "name": "stock_stocktransferlineclosure_installation_id_2b6a2f09",
+        "sql_sha256": "eb8f6919647eee2bdad707749b392ad8bf6e428eac6d3d288d40378f53d8f58e",
+        "table": "stock_stocktransferlineclosure",
+        "type": "index"
+      },
+      {
         "name": "stock_stocktransferreceipt_installation_id_d40fd31d",
         "sql_sha256": "edcb7fed99e19ffede55fab0ee55b409ac047d4aec472c70e48e4a9355d3c14d",
         "table": "stock_stocktransferreceipt",
@@ -4078,6 +4418,24 @@
         "name": "stock_valuation_product_time",
         "sql_sha256": "cca6dd0a5058ed93899d8adaf0d6d150d4e205b0bc5987fdc8febfccb3b71be0",
         "table": "core_stockvaluationadjustment",
+        "type": "index"
+      },
+      {
+        "name": "supplier_import_reference_once",
+        "sql_sha256": "84ac5bb13291a9d720d924b6ed2721901fb3eec872071997b7bbdada71e24f03",
+        "table": "core_supplier",
+        "type": "index"
+      },
+      {
+        "name": "sync_changefeedentry_actor_id_bc082565",
+        "sql_sha256": "e456554f3b7ce75693116e95f509806beb5aee48820e7d1dff3a2e9a05ca6186",
+        "table": "sync_changefeedentry",
+        "type": "index"
+      },
+      {
+        "name": "sync_changefeedentry_shop_id_af7880fe",
+        "sql_sha256": "58beadf50677e0f7e7749475b9465f053a46d302436e181f618eb49cbb52d16a",
+        "table": "sync_changefeedentry",
         "type": "index"
       },
       {
@@ -4315,6 +4673,12 @@
         "type": "table"
       },
       {
+        "name": "catalogue_barcodecodeconflict",
+        "sql_sha256": "d4e8153d870083485e908350f2510a9c9df28fbfbd46088c2818338704080da6",
+        "table": "catalogue_barcodecodeconflict",
+        "type": "table"
+      },
+      {
         "name": "catalogue_packpriceconflict",
         "sql_sha256": "94b22c0b08780be4ce4ed0675efea9b3a7507a47df72a102bf58bff8f2e5be6c",
         "table": "catalogue_packpriceconflict",
@@ -4370,13 +4734,13 @@
       },
       {
         "name": "core_cashmovement",
-        "sql_sha256": "4e4905e268e8b1380ca39b6fb228e0c9cac2986e7939fac1903407eaa0492f94",
+        "sql_sha256": "e91bf4e7d0f05463313032fd95cf0d4954a189906cfcad660d19e864ff6095a8",
         "table": "core_cashmovement",
         "type": "table"
       },
       {
         "name": "core_catalogueimport",
-        "sql_sha256": "d3638e37144fc8b519441ad58ea95db5719b94ff53adcc3be3bc33b13605e8fd",
+        "sql_sha256": "a68ce748bd8439c967125ccf00e8f6c8c37c43bf6a3aa1f8705f2a2b7e524af4",
         "table": "core_catalogueimport",
         "type": "table"
       },
@@ -4400,7 +4764,7 @@
       },
       {
         "name": "core_customer",
-        "sql_sha256": "808f6c32bd3832e7b3cbc6faf314b7e832b2af5becb1be9cca876caeaa95912f",
+        "sql_sha256": "8bc628a6effdc8a15deb90439fdbea55ea86c526c0339aed0e6e5c8d24d77ce1",
         "table": "core_customer",
         "type": "table"
       },
@@ -4412,7 +4776,7 @@
       },
       {
         "name": "core_customerdebt",
-        "sql_sha256": "783f1aec055229f3a57499720eada97456ceaa3449df6ad07ab2c8fe4c747778",
+        "sql_sha256": "8e9fbf0a77f5f3769c797fc446619064f6190f05163dd2b308b990cb70471691",
         "table": "core_customerdebt",
         "type": "table"
       },
@@ -4694,7 +5058,7 @@
       },
       {
         "name": "core_supplier",
-        "sql_sha256": "694a62c46e5216ddf5723fc1f5c1f7bcf454718fbc2775446ed6d1a2eae54fc2",
+        "sql_sha256": "6609642883bb4fc6372f912cb823aa712b649d1ce05e80e7dcd8c813e87d1835",
         "table": "core_supplier",
         "type": "table"
       },
@@ -4801,9 +5165,51 @@
         "type": "table"
       },
       {
+        "name": "identity_accountrecoverycase",
+        "sql_sha256": "6a5dd5b95534d49e1cc0993c0e4f81162158e42114c98523c1300ffa704b42d6",
+        "table": "identity_accountrecoverycase",
+        "type": "table"
+      },
+      {
+        "name": "identity_otpchallenge",
+        "sql_sha256": "8a445b22abc20315306237fed58176eb2fabd9f4234d22e354945cfdbeec0763",
+        "table": "identity_otpchallenge",
+        "type": "table"
+      },
+      {
+        "name": "identity_ownershiptransfer",
+        "sql_sha256": "aebce51c0bd5f338add9982be885128aed879a6a9eece88324ea451acf79dc4b",
+        "table": "identity_ownershiptransfer",
+        "type": "table"
+      },
+      {
+        "name": "identity_recoverycode",
+        "sql_sha256": "62c11f9ea05cc024363c013da9ff56f3f8c9098adc291522acdd4fb209ae2066",
+        "table": "identity_recoverycode",
+        "type": "table"
+      },
+      {
+        "name": "identity_shopinstallationcode",
+        "sql_sha256": "0409eb248be43a80beeb06557ec3c67dc2b18ab87db5553d94119b816e46b690",
+        "table": "identity_shopinstallationcode",
+        "type": "table"
+      },
+      {
+        "name": "purchasing_purchaselineclosure",
+        "sql_sha256": "a78724d84dcb36ea2b6470203844744144b237e38c2597a8a8f9dd3921314278",
+        "table": "purchasing_purchaselineclosure",
+        "type": "table"
+      },
+      {
         "name": "sqlite_sequence",
         "sql_sha256": "6589f13dd8db97a6c0ba1fee76a84cb71451469f3d7f749b4544e07b2869e0e6",
         "table": "sqlite_sequence",
+        "type": "table"
+      },
+      {
+        "name": "stock_stockreservationpresencerelease",
+        "sql_sha256": "dbfc18b415f260986c76e17a28f7be93083649bc035f82f8fd9affb94e59b61e",
+        "table": "stock_stockreservationpresencerelease",
         "type": "table"
       },
       {
@@ -4825,6 +5231,12 @@
         "type": "table"
       },
       {
+        "name": "stock_stocktransferlineclosure",
+        "sql_sha256": "0d7d2c76cbeb9e61ed369626e71af82488e12fe8cce18ba809d016de04343d8d",
+        "table": "stock_stocktransferlineclosure",
+        "type": "table"
+      },
+      {
         "name": "stock_stocktransferreceipt",
         "sql_sha256": "975b6baff62f1ff312bcb0e2e7d55469bcc7de1cee5b6ccc26126195e55b6c33",
         "table": "stock_stocktransferreceipt",
@@ -4834,6 +5246,18 @@
         "name": "stock_stocktransferreceiptline",
         "sql_sha256": "5a9598cdfbedd955fd6a984fc840625ecf0416b688b632bbb0c3660dcdfcc038",
         "table": "stock_stocktransferreceiptline",
+        "type": "table"
+      },
+      {
+        "name": "sync_changefeedentry",
+        "sql_sha256": "261ec3e05c140f37e60ba14b6850b80f600a247e2eb12bd7eed50b4104843d63",
+        "table": "sync_changefeedentry",
+        "type": "table"
+      },
+      {
+        "name": "sync_shopchangesequence",
+        "sql_sha256": "3496207d4efc167ff8176fde582d72352d2b6927ccfa1bc8e292987f77395f57",
+        "table": "sync_shopchangesequence",
         "type": "table"
       },
       {
@@ -4921,7 +5345,7 @@
         "type": "trigger"
       }
     ],
-    "sha256": "373cd363f70b6b22f1daea79034b0e5e1b0b8ddea389f86f76b60112bc1270b9"
+    "sha256": "d485e612c9b2770733a73f7fd400a12340a3ed42fbfa6e3a888a0fb367821a5d"
   },
   "worker_sha256": "a56c927e06d4c087977682bf68483c0307523f15c438f978ef28c84d1202f6c1"
 }

@@ -4,11 +4,16 @@ from io import StringIO
 from django.utils.translation import gettext_lazy
 from common.services.operations import json_value
 
+MAX_DATA_ROWS = 5000  # G20
+
 
 def read_source(record, required, optional):
     rows, errors = [], []
     try:
-        reader = csv.reader(StringIO(bytes(record.source).decode("utf-8-sig"), newline=""), strict=True)
+        text = bytes(record.source).decode("utf-8-sig")
+        # G20: the separator is read from the header line, which never contains free text.
+        delimiter = ";" if ";" in text.split("\n", 1)[0] else ","
+        reader = csv.reader(StringIO(text, newline=""), delimiter=delimiter, strict=True)
         header = next(reader, [])
         if not required.issubset(header) or set(header) - (required | optional) or len(header) != len(set(header)):
             errors.append({"code": "invalid_header", "detail": gettext_lazy("En-tête CSV invalide. Utiliser le modèle fourni.")})
@@ -20,8 +25,8 @@ def read_source(record, required, optional):
                     break
                 if not values:
                     continue
-                if len(rows) == 1000:
-                    errors.append({"code": "too_many_rows", "detail": gettext_lazy("Limiter chaque fichier à 1000 lignes de données.")})
+                if len(rows) == MAX_DATA_ROWS:
+                    errors.append({"code": "too_many_rows", "detail": gettext_lazy("Limiter chaque fichier à 5000 lignes de données.")})
                     break
                 if len(values) != len(header):
                     rows.append({"line": line, "data": values, "errors": {"row": gettext_lazy("Nombre de colonnes incorrect.")}})

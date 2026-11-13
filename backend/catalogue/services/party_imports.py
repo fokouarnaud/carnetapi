@@ -8,19 +8,26 @@ from common.services.operations import json_value
 from customers.services.client_services import create_client
 from customers.api.debts import OpenDebtSerializer
 from customers.services.debt_services import open_debt
+from customers.models import Customer
 from purchasing.api.suppliers import CreateSupplierSerializer, create_supplier
+from purchasing.models import Supplier
 from purchasing.api.purchases import OpeningDebtInput, open_supplier_debt
 from purchasing.api.supplier_credits import OpeningBalanceInput, open_supplier_balance
 
 
 def preview_parties(record):
-    optional = {"phone", "opening_debt_fcfa", "opening_occurred_at", "opening_reason"}
+    optional = {"phone", "opening_debt_fcfa", "opening_occurred_at", "opening_reason", "ref_import"}
     if record.kind == "customers":
         optional.add("due_date")
     else:
         optional.update({"opening_advance_fcfa", "opening_credit_fcfa"})
     rows, file_errors = read_source(record, {"name"}, optional)
     candidates = []
+    # G20: a reference is unique per shop and type, inside the file and against existing records.
+    model = Customer if record.kind == "customers" else Supplier
+    references = [row["data"].get("ref_import") for row in rows if not row["errors"] and row["data"].get("ref_import")]
+    repeated = {reference for reference in references if references.count(reference) > 1}
+    taken = set(model.objects.filter(shop_id=record.shop_id, import_reference__in=references).values_list("import_reference", flat=True))
     for row in rows:
         if row["errors"]:
             continue
@@ -75,8 +82,13 @@ def preview_parties(record):
                 errors["opening_debt"] = debt_serializer.errors
         elif not opening_balances and not errors and any(raw.get(field) for field in ("opening_occurred_at", "opening_reason", "due_date")):
             errors["opening_debt_fcfa"] = gettext_lazy("Une dette positive est requise pour ces champs d'ouverture.")
+        reference = raw.get("ref_import") or None
+        if reference is not None and (len(reference) > 80 or reference in repeated or reference in taken):
+            errors["ref_import"] = gettext_lazy("Référence d'import déjà utilisée ou invalide.")
         if not errors:
             candidate = {"record": serializer.validated_data, "opening_debt": debt_data, "opening_balances": opening_balances}
+            if reference is not None:
+                candidate["import_reference"] = reference
             candidates.append(candidate)
             row["data"] = json_value(candidate)
         row["errors"] = errors
@@ -88,6 +100,9 @@ def apply_party(kind, shop, request, candidate):
         receipt, _ = create_client(shop.id, request.user, request.device_session.installation, candidate["record"], request.device_session.id)
     else:
         receipt, _ = create_supplier(shop.id, request, candidate["record"])
+    if candidate.get("import_reference"):
+        model = Customer if kind == "customers" else Supplier
+        model.objects.filter(shop=shop, id=receipt["id"]).update(import_reference=candidate["import_reference"])
     debt_id = None
     if candidate["opening_debt"] is not None:
         if kind == "customers":

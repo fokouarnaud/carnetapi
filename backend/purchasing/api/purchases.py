@@ -1,5 +1,6 @@
 """Atomic, manager-only purchase obligations with immutable invoice snapshots."""
 import uuid
+from common.services.backdating import require_allowed_backdate
 from django.db import transaction
 from django.db.models import F,Q
 from purchasing.services.supplier_ledger import append_supplier_ledger
@@ -16,7 +17,7 @@ from common.models import Activity
 from common.services.origins import with_public_origin,OriginReferenceConflict
 from common.api.errors import OriginReferenceError
 from catalogue.models import Product, ProductPack
-from purchasing.models import PurchaseDocument, PurchaseLine, PurchaseReceipt, Supplier, SupplierDebt, SupplierLedgerEntry
+from purchasing.models import PurchaseDocument, PurchaseLine, PurchaseReceipt, Supplier, SupplierDebt, SupplierLedgerEntry, PurchaseLineClosure
 from sales.services.pricing import MAX_FCFA
 from purchasing.api.suppliers import supplier_shop
 from purchasing.api.purchase_receipt_serializers import ReceiptLineSerializer, ReceiptSerializer
@@ -28,6 +29,7 @@ class EventSerializer(StrictSerializer):
     operation_id = serializers.UUIDField()
     occurred_at = serializers.DateTimeField()
     reason = serializers.CharField(max_length=2000, allow_blank=False)
+    backdate_reason = serializers.CharField(max_length=2000, allow_blank=False, required=False)  # G15
 
     def validate_occurred_at(self, value):
         if value > timezone.now():
@@ -67,6 +69,11 @@ class SupplierDebtSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
+def closed_quantity(line):
+    """G17: quantity explicitly closed as never to be received."""
+    return PurchaseLineClosure.objects.filter(line_id=line.id).values_list("quantity_milli", flat=True).first() or 0
+
+
 class PurchaseLineSerializer(serializers.ModelSerializer):
     received_quantity_milli = serializers.SerializerMethodField()
     awaiting_quantity_milli = serializers.SerializerMethodField()
@@ -77,7 +84,7 @@ class PurchaseLineSerializer(serializers.ModelSerializer):
 
     @extend_schema_field(serializers.IntegerField())
     def get_awaiting_quantity_milli(self, obj):
-        return obj.quantity_milli - self.get_received_quantity_milli(obj)
+        return obj.quantity_milli - self.get_received_quantity_milli(obj) - closed_quantity(obj)
 
     class Meta:
         model = PurchaseLine
@@ -291,6 +298,7 @@ def receive_purchase(shop_id, supplier_id, document_id, request, data):
     original = original_receipt(data["operation_id"], shop, request.user, "purchase_received", canonical)
     if original is not None:
         return original, False
+    require_allowed_backdate(shop, request.user, data["occurred_at"], data.get("backdate_reason"))
     if PurchaseReceipt.objects.filter(id=data["id"]).exists():
         raise OperationConflict()
     prepared = []
@@ -298,7 +306,7 @@ def receive_purchase(shop_id, supplier_id, document_id, request, data):
         line = get_object_or_404(PurchaseLine, id=item["line_id"], document=document)
         received = sum(part.quantity_milli for part in line.receipt_lines.all())
         quantity = item["quantity_milli"]
-        if received + quantity > line.quantity_milli:
+        if received + closed_quantity(line) + quantity > line.quantity_milli:  # G17: closed remainder
             raise serializers.ValidationError({"lines": "La réception dépasse le reliquat de facture."})
         scaled = quantity * line.factor_milli
         if scaled % 1000 or (line.product.unit_kind == "piece" and scaled % 1000000):

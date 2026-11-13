@@ -2,10 +2,12 @@
 from django.urls import include, path
 from identity.api.views import ShopViewSet
 from identity.api.token_refresh import DeviceTokenRefreshView
+from identity.api.otp_login import OtpRequestView, OtpVerifyView, RecoveryCodesView
 from identity.api.team import TeamViewSet
 from identity.api.language_preferences import LanguagePreferenceViewSet
 from identity.api.restore_seller_access import RestoreSellerAccessView
 from rest_framework.routers import SimpleRouter
+from identity.api.account_recovery import OwnershipTransferView, RecoveryCaseCompleteView, RecoveryCaseListView
 
 router = SimpleRouter()
 router.register("shops", ShopViewSet, basename="shop")
@@ -18,4 +20,10 @@ urlpatterns = [
     path("shops/<uuid:shop_id>/team/<uuid:pk>/", TeamViewSet.as_view({"get": "retrieve", "patch": "partial_update"}), name="team-detail"),
     path("", include(router.urls)),
     path("auth/refresh/", DeviceTokenRefreshView.as_view(), name="token-refresh"),
+    path("auth/otp/request/", OtpRequestView.as_view(), name="otp-request"),
+    path("auth/otp/verify/", OtpVerifyView.as_view(), name="otp-verify"),
+    path("account/recovery-codes/", RecoveryCodesView.as_view(), name="account-recovery-codes"),
+    path("technical/recovery-cases/", RecoveryCaseListView.as_view(), name="recovery-case-list"),
+    path("technical/shops/<uuid:shop_id>/ownership-transfer/", OwnershipTransferView.as_view(), name="ownership-transfer"),
+    path("technical/recovery-cases/<uuid:pk>/complete/", RecoveryCaseCompleteView.as_view(), name="recovery-case-complete"),
 ]

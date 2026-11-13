@@ -23,6 +23,7 @@ class AccessLeaseSerializer(serializers.Serializer):
     permissions = serializers.DictField(child=serializers.BooleanField())
     seller_discount_cap_basis_points = serializers.IntegerField(min_value=0, max_value=10000)
     discount_policy_version = serializers.IntegerField(min_value=1)
+    installation_code = serializers.CharField(help_text="G26: readable code of this installation in the shop, never reused.")
 
 
 class RevokeDeviceSerializer(serializers.Serializer):

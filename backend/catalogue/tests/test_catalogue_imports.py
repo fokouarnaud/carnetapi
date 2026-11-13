@@ -23,7 +23,7 @@ class CatalogueImportTests(TestCase):
         record = CatalogueImport.objects.create(**fields(self.source()))
         record.refresh_from_db()
         self.assertEqual(bytes(record.source), self.source())
-        for source in (b"", b"x" * 1000001):
+        for source in (b"", b"x" * 2000001):
             with self.subTest(size=len(source)), self.assertRaises(IntegrityError), transaction.atomic():
                 CatalogueImport.objects.create(**fields(source))
         with self.assertRaises(IntegrityError), transaction.atomic():
@@ -170,9 +170,14 @@ class CatalogueImportTests(TestCase):
 
     def test_upload_bounds_and_row_limit_are_technical_limits_not_partial_imports(self):
         from catalogue.models import CatalogueImport, Product
-        self.assertEqual(self.upload(b"x" * 1000001).status_code, 400)
+        # G20: 2 MB and 5 000 data rows per file.
+        self.assertEqual(self.upload(b"x" * 2000001).status_code, 400)
         self.assertFalse(CatalogueImport.objects.exists())
-        source = b"name,unit_kind,unit_label,sale_price_fcfa\n" + b"A,piece,piece,1\n" * 1001
+        self.assertEqual(self.upload(b"x" * 1500000).status_code, 201)  # within 2 MB: previewed, never partially applied
+        CatalogueImport.objects.all().delete()
+        accepted = self.upload(b"name,unit_kind,unit_label,sale_price_fcfa\n" + b"A,piece,piece,1\n" * 5000)
+        self.assertEqual((accepted.status_code, accepted.data["file_errors"]), (201, []))
+        source = b"name,unit_kind,unit_label,sale_price_fcfa\n" + b"A,piece,piece,1\n" * 5001
         preview = self.upload(source)
         self.assertEqual(preview.status_code, 201)
         self.assertTrue(preview.data["has_errors"])
@@ -274,7 +279,7 @@ class CatalogueImportTests(TestCase):
             return result
         with TemporaryDirectory() as directory, self.settings(FILE_UPLOAD_MAX_MEMORY_SIZE=0, FILE_UPLOAD_TEMP_DIR=directory):
             with patch.object(TemporaryFileUploadHandler, "receive_data_chunk", new=observe_write):
-                response = self.upload(b"x" * 2000000)
+                response = self.upload(b"x" * 3000000)  # G20: beyond the 2 MB bound
             self.assertEqual(response.status_code, 400)
-            self.assertLessEqual(max(sizes, default=0), 1000000)
+            self.assertLessEqual(max(sizes, default=0), 2000000)
             self.assertEqual(list(Path(directory).iterdir()), [])

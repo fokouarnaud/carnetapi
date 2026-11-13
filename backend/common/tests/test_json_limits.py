@@ -80,7 +80,7 @@ class JSONCommandLimitTests(TestCase):
 
     def test_exact_utf8_byte_boundary_is_accepted_and_one_extra_byte_is_refused(self):
         self.authenticate(self.owner)
-        body = json.dumps(self.payload(occurred_at="2026-01-01T09:00:00Z", reason="Pièce retrouvée"), ensure_ascii=False).encode("utf-8")
+        body = json.dumps(self.payload(occurred_at="2026-01-01T09:00:00Z", reason="Pièce retrouvée", backdate_reason="Reprise historique"), ensure_ascii=False).encode("utf-8")
         with override_settings(API_JSON_MAX_BYTES=len(body)):
             self.assertEqual(self.client.post(self.url(), body, content_type="application/json").status_code, 201)
             refused = self.client.post(self.url(), body + b' ', content_type="application/json")

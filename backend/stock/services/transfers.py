@@ -3,7 +3,7 @@ import uuid
 
 from django.db import transaction
 from django.db.models import F, OuterRef, Subquery, Exists, Prefetch, Q, Value, CharField, Func
-from django.db.models.functions import Coalesce
+from django.db.models.functions import Cast, Coalesce
 from django.shortcuts import get_object_or_404
 from rest_framework import serializers
 
@@ -13,7 +13,7 @@ from common.services.operations import original_receipt, json_value
 from common.services.errors import OperationConflict
 from identity.models import Shop
 from purchasing.api.suppliers import supplier_shop
-from stock.models import StockMovement, StockTransfer, StockTransferLine, StockTransferReceipt, StockTransferReceiptLine, StockCostSnapshot
+from stock.models import StockMovement, StockTransfer, StockTransferLine, StockTransferLineClosure, StockTransferReceipt, StockTransferReceiptLine, StockCostSnapshot
 from stock.services.movement_costs import freeze_operation_costs
 from stock.services.moving_average_cost import returned_cost_nanos
 from stock.services.stock_alert_services import observe_stock
@@ -24,10 +24,13 @@ def transfer_lines():
     received=StockTransferReceiptLine.objects.filter(transfer_line_id=OuterRef("pk")).order_by().values("transfer_line_id").annotate(
         total=StockTotal("quantity_milli")).values("total")
     revised=StockCostSnapshot.objects.filter(movement_id=OuterRef("movement_id"),version__gt=1)
+    closed=StockTransferLineClosure.objects.filter(line_id=OuterRef("pk")).values("quantity_milli")
     return StockTransferLine.objects.select_related("source_cost__movement").annotate(
         received_milli=Coalesce(Subquery(received),Value("0"),output_field=CharField()),
-        source_cost_revision_pending=Exists(revised)).annotate(in_transit_milli=Func(F("quantity_milli"),F("received_milli"),
-            function="stock_integer_subtract",output_field=CharField()))
+        closed_milli=Coalesce(Subquery(closed),Value(0)),
+        source_cost_revision_pending=Exists(revised)).annotate(in_transit_milli=Func(
+            Func(F("quantity_milli"),F("received_milli"),function="stock_integer_subtract",output_field=CharField()),
+            Cast(F("closed_milli"),CharField()),function="stock_integer_subtract",output_field=CharField()))
 
 
 def transfers_for(shop):
@@ -120,7 +123,7 @@ def receive_transfer(shop_id,identity,request,data):
             raise serializers.ValidationError({"code":"transfer_unit_mismatch"})
         _unit(product,row["quantity_milli"])
         previous=before[line.id]
-        if previous+row["quantity_milli"]>line.quantity_milli:raise OperationConflict()
+        if previous+line.closed_milli+row["quantity_milli"]>line.quantity_milli:raise OperationConflict()  # G16: closed remainder
         allocated=returned_cost_nanos(line.source_cost.total_cost_nanos_fcfa,line.quantity_milli,previous,row["quantity_milli"])
         prepared.append((row,line,product,previous,allocated))
         before[line.id]+=row["quantity_milli"]

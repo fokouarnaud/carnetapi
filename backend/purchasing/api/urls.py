@@ -1,4 +1,5 @@
 """Routes owned by the purchasing domain; external API paths remain stable."""
+from purchasing.api.line_closures import PurchaseLineClosureView
 from django.urls import include, path
 from purchasing.api.supplier_statements import SupplierStatementViewSet
 from purchasing.api.suppliers import SupplierViewSet
@@ -9,6 +10,7 @@ from purchasing.api.supplier_returns import SupplierReturnViewSet
 from purchasing.api.supplier_credits import SupplierCreditViewSet
 
 urlpatterns = [
+    path("shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/lines/<uuid:line_id>/close/", PurchaseLineClosureView.as_view(), name="purchase-line-close"),
     path("shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/charges/preview/", PurchaseChargeViewSet.as_view({"post": "preview"}), name="purchase-charge-preview"),
     path("shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/charges/", PurchaseChargeViewSet.as_view({"get": "list", "post": "create"}), name="purchase-charges"),
     path("shops/<uuid:shop_id>/suppliers/<uuid:supplier_id>/invoices/<uuid:document_id>/charges/<uuid:pk>/", PurchaseChargeViewSet.as_view({"get": "retrieve"}), name="purchase-charge"),

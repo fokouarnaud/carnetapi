@@ -144,8 +144,22 @@ class CatalogueImport(UUIDRecord):
             models.CheckConstraint(condition=(
                 Exact(models.Func(models.F("source"), function="typeof", output_field=models.CharField()), models.Value("blob"))
                 & GreaterThan(models.Func(models.F("source"), function="length", output_field=models.IntegerField()), models.Value(0))
-                & LessThanOrEqual(models.Func(models.F("source"), function="length", output_field=models.IntegerField()), models.Value(1000000))),
+                & LessThanOrEqual(models.Func(models.F("source"), function="length", output_field=models.IntegerField()), models.Value(2000000))),
                 name="catalogue_import_bounded_source"),
             models.CheckConstraint(condition=(models.Q(applied_operation__isnull=True, response__isnull=True)
                 | models.Q(applied_operation__isnull=False, response__isnull=False)), name="catalogue_import_receipt_pair"),
         ]
+
+
+class BarcodeCodeConflict(UUIDRecord):
+    """US-11 / G14: a duplicate code recorded offline waits for a manager; scanning never picks one silently."""
+    shop = models.ForeignKey('identity.Shop', on_delete=models.PROTECT, related_name="barcode_conflicts")
+    code = models.CharField(max_length=200)
+    product = models.ForeignKey('catalogue.Product', on_delete=models.PROTECT, related_name="barcode_conflicts")
+    pack = models.ForeignKey('catalogue.ProductPack', on_delete=models.PROTECT, null=True, blank=True, related_name="barcode_conflicts")
+    operation = models.OneToOneField('core.Activity', on_delete=models.PROTECT, related_name="barcode_conflict")
+    state = models.CharField(max_length=10, default="pending", choices=[("pending", _("Pending")), ("resolved", _("Resolved"))])
+
+    class Meta:
+        indexes = [models.Index(fields=["shop", "code", "state"], name="barcode_conflict_lookup")]
+        constraints = [models.CheckConstraint(condition=models.Q(state__in=["pending", "resolved"]), name="barcode_conflict_state")]

@@ -12,11 +12,17 @@ class Customer(UUIDRecord):
     name = models.CharField(max_length=150)
     phone = models.CharField(max_length=16, null=True, blank=True, validators=[RegexValidator(r"^\+[1-9][0-9]{7,14}$")])
     version = models.PositiveBigIntegerField(default=1)
+    # G20: optional reference from a template CSV, unique per shop for this type.
+    import_reference = models.CharField(max_length=80, null=True, blank=True)
+    # G18: a merged record keeps its identity; operations received later follow this redirection.
+    merged_into = models.ForeignKey('customers.Customer', on_delete=models.PROTECT, null=True, blank=True, related_name="merged_sources")
 
     class Meta:
         db_table = "core_customer"
         ordering = ["created_at", "id"]
-        constraints = [models.CheckConstraint(condition=models.Q(version__gt=0) & _integer_columns("version"),
+        constraints = [models.UniqueConstraint(fields=["shop", "import_reference"], condition=models.Q(import_reference__isnull=False),
+                                               name="customer_import_reference_once"),
+                       models.CheckConstraint(condition=models.Q(version__gt=0) & _integer_columns("version"),
                                              name="customer_positive_integer_version")]
         indexes = [
             models.Index(fields=["shop", "created_at", "id"], name="core_custom_shop_id_71994d_idx"),
@@ -29,6 +35,8 @@ class CustomerDebt(UUIDRecord):
     """An outstanding credit portion; money received is stored in separate events."""
     shop = models.ForeignKey('identity.Shop', on_delete=models.PROTECT, related_name="customer_debts")
     customer = models.ForeignKey('customers.Customer', on_delete=models.PROTECT, related_name="debts")
+    # G18: the merged record that received this debt when it was redirected to `customer`.
+    received_for = models.ForeignKey('customers.Customer', on_delete=models.PROTECT, null=True, blank=True, related_name="redirected_debts")
     sale = models.OneToOneField('sales.Sale', on_delete=models.PROTECT, related_name="debt", null=True, blank=True)
     actor = models.ForeignKey('core.User', on_delete=models.PROTECT, related_name="customer_debts")
     installation = models.ForeignKey('identity.Installation', on_delete=models.PROTECT, related_name="customer_debts")

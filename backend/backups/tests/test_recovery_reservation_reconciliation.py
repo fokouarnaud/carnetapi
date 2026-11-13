@@ -45,10 +45,11 @@ class RecoveryReservationReconciliationTests(TestCase):
         reservation=StockReservation.objects.get(operation__recovery_sale_hold__source_operation_id=capture.operation_id)
         return capture,reservation
 
-    def loss(self,quantity=1000,at="2026-10-22T09:00:00Z"):
+    def loss(self,quantity=1000,at="2026-10-22T09:00:00Z",revises=None):
+        # G15: a loss dated before a validated count names the count it revises.
         response=self.client.post(f"/api/v1/shops/{self.a.id}/products/{self.product.id}/losses/",{
             "id":str(uuid.uuid4()),"operation_id":str(uuid.uuid4()),"quantity_milli":quantity,
-            "occurred_at":at,"reason":"Perte physique déjà validée"},format="json")
+            "occurred_at":at,"reason":"Perte physique déjà validée",**({"revises_count_id":revises} if revises else {})},format="json")
         self.assertEqual(response.status_code,201,response.content)
         return StockLoss.objects.get(id=response.data["id"]).movement
 
@@ -272,7 +273,7 @@ class RecoveryReservationReconciliationTests(TestCase):
         self.assertEqual(adjusted.status_code,201,adjusted.content)
         movement=StockMovement.objects.get(kind="inventory_adjustment")
         self.assertEqual(self.reconcile(capture,reservation,movement)[0].status_code,201)
-        self.loss(at="2026-10-22T09:30:00Z")
+        self.loss(at="2026-10-22T09:30:00Z",revises=count.data["id"])
         revised=self.client.post(confirm,{"operation_id":str(uuid.uuid4()),"expected_milli":2000,
             "applied_adjustment_milli":-2000,"reason":"Arrivée tardive rapprochée"},format="json")
         self.assertEqual(revised.status_code,201,revised.content)

@@ -14,11 +14,12 @@ from common.api.fields import StrictSerializer
 from common.services.operations import current_shop, json_value, original_receipt, require_manager
 from common.services.errors import OperationConflict
 from common.models import Activity
-from cash.models import CashMovement
+from cash.models import EXPENSE_CATEGORIES, CashCount, CashMovement
 from sales.api.sale_serializers import DeclaredPaymentSerializer
 from backups.api.recovery_metadata import RecoveryReportSerializer
 from common.services.origins import public_identity,with_public_origin
 from common.api.errors import OriginReferenceError
+from common.services.backdating import require_allowed_backdate
 from drf_spectacular.utils import extend_schema_field
 
 
@@ -27,14 +28,33 @@ class CreateCashSerializer(DeclaredPaymentSerializer):
     kind = serializers.ChoiceField(choices=CashMovement._meta.get_field("manual_kind").choices)
     occurred_at = serializers.DateTimeField()
     reason = serializers.CharField(max_length=200, allow_blank=False)
+    expense_category = serializers.ChoiceField(choices=CashMovement._meta.get_field("expense_category").choices, required=False)
+    expense_label = serializers.CharField(max_length=80, required=False, allow_blank=False)
+    backdate_reason = serializers.CharField(max_length=200, required=False, allow_blank=False)
+    revises_count_id = serializers.UUIDField(required=False)  # G15: explicit revision of a validated count
 
     def validate_occurred_at(self, value):
         if value > timezone.now():
             raise serializers.ValidationError("Date future non autorisée.")
         return value
 
+    def validate(self, data):
+        data = super().validate(data)
+        category = data.get("expense_category")
+        if data["kind"] == "expense" and category is None:
+            raise serializers.ValidationError({"expense_category": "Catégorie de dépense obligatoire."})
+        if data["kind"] != "expense" and (category is not None or "expense_label" in data):
+            raise serializers.ValidationError({"expense_category": "Catégorie réservée aux dépenses."})
+        if category == "other" and not data.get("expense_label"):
+            raise serializers.ValidationError({"expense_label": "Libellé obligatoire pour « autre »."})
+        if category != "other" and "expense_label" in data:
+            raise serializers.ValidationError({"expense_label": "Libellé réservé à la catégorie « autre »."})
+        return data
+
 
 class CashSerializer(serializers.ModelSerializer):
+    # G23: "" for non-expenses and legacy expenses; documented in the enum so OpenAPI matches real bodies.
+    expense_category = serializers.ChoiceField(choices=[("", ""), *EXPENSE_CATEGORIES], read_only=True)
     actor_id = serializers.SerializerMethodField()
     installation_id = serializers.SerializerMethodField()
     operation_id = serializers.UUIDField(read_only=True)
@@ -78,7 +98,7 @@ class CashSerializer(serializers.ModelSerializer):
     class Meta:
         model = CashMovement
         fields = ["id", "actor_id", "installation_id", "operation_id", "kind", "method", "other_name",
-                  "external_reference", "amount_fcfa", "occurred_at", "recorded_at", "reason"]
+                  "external_reference", "expense_category", "expense_label", "amount_fcfa", "occurred_at", "recorded_at", "reason"]
         read_only_fields = fields
 
 
@@ -112,6 +132,13 @@ def create_cash(shop_id, actor, installation, session_id, data):
     require_manager(shop, actor)
     canonical = json_value({**data, "installation_id": installation.id})
     original = original_receipt(data["operation_id"], shop, actor, "cash_manual_created", canonical)
+    if original is None and data["kind"] != "opening":  # the opening fund is a takeover, like other openings
+        require_allowed_backdate(shop, actor, data["occurred_at"], data.get("backdate_reason"))
+        later_count = CashCount.objects.filter(shop=shop, method=data["method"], other_name=data["other_name"],
+                                               counted_at__gte=data["occurred_at"]).order_by("-counted_at", "-id").first()
+        if later_count is not None and data.get("revises_count_id") != later_count.id:
+            raise serializers.ValidationError({"revises_count_id": "Opération antérieure à un comptage validé : "
+                                               "désigner explicitement le dernier comptage révisé."})
     if original is not None:
         return original, False
     if CashMovement.objects.filter(id=data["id"]).exists():
@@ -122,7 +149,9 @@ def create_cash(shop_id, actor, installation, session_id, data):
     signed_amount = -data["amount_fcfa"] if data["kind"] in ("withdrawal", "expense") else data["amount_fcfa"]
     movement = CashMovement.objects.create(id=data["id"], shop=shop, actor=actor, installation=installation, operation=event,
                                            manual_kind=data["kind"], method=data["method"], other_name=data["other_name"],
-                                           external_reference=data["external_reference"], amount_fcfa=signed_amount,
+                                           external_reference=data["external_reference"],
+                                           expense_category=data.get("expense_category", ""), expense_label=data.get("expense_label", ""),
+                                           amount_fcfa=signed_amount,
                                            occurred_at=data["occurred_at"], reason=data["reason"])
     receipt = json_value(CashSerializer(movement).data)
     event.details["response"] = receipt

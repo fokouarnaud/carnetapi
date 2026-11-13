@@ -1,6 +1,6 @@
 """Current managers review competing product prices without stock or cash effects."""
 from django.db import transaction
-from django.db.models import BigIntegerField,OuterRef,Subquery,UUIDField
+from django.db.models import BigIntegerField, Count, OuterRef, Prefetch, Subquery, UUIDField
 from django.shortcuts import get_object_or_404
 from drf_spectacular.utils import extend_schema
 from rest_framework import serializers,viewsets
@@ -162,7 +162,9 @@ class ProductPriceConflictSerializer(serializers.Serializer):
     version=serializers.IntegerField(min_value=1)
     product_version=serializers.IntegerField(min_value=1)
     created_at=serializers.DateTimeField()
-    proposals=PriceProposalSerializer(many=True)
+    proposals=serializers.ListField(child=PriceProposalSerializer(), max_length=25)
+    proposals_count=serializers.IntegerField(min_value=0)
+    proposals_url=serializers.CharField()
     resolution=PriceResolutionSerializer(allow_null=True)
 
 
@@ -172,10 +174,18 @@ class PriceConflictPreviewSerializer(ProductPriceConflictSerializer):
 
 
 class ProductPriceOperationReceiptSerializer(ProductPriceConflictSerializer):
+    # Old cached writes could embed the entire history and had no page metadata.
+    # Their exact 200 receipts remain valid; new 201 receipts are always bounded.
+    proposals = PriceProposalSerializer(many=True)
+    proposals_count = serializers.IntegerField(min_value=0, required=False)
+    proposals_url = serializers.CharField(required=False)
     operation_snapshot = PriceOperationSnapshotSerializer(required=False)
 
 
 class CreatedProductPriceOperationReceiptSerializer(ProductPriceOperationReceiptSerializer):
+    proposals = serializers.ListField(child=PriceProposalSerializer(), max_length=25)
+    proposals_count = serializers.IntegerField(min_value=0)
+    proposals_url = serializers.CharField()
     operation_snapshot = PriceOperationSnapshotSerializer()
 
 
@@ -191,10 +201,24 @@ class ProductPriceConflictViewSet(viewsets.GenericViewSet):
         return shop,get_object_or_404(Product,shop=shop,id=self.kwargs['product_id'])
 
     def get_queryset(self):
-        from catalogue.models import ProductPriceConflict
+        from catalogue.models import ProductPriceConflict, ProductPriceProposal
         if getattr(self,'swagger_fake_view',False):return ProductPriceConflict.objects.none()
         shop,product=self.context()
-        return ProductPriceConflict.objects.filter(shop=shop,product=product).select_related('product','resolution').prefetch_related('proposals').order_by('created_at','id')
+        return ProductPriceConflict.objects.filter(shop=shop,product=product).annotate(
+            receipt_proposals_count=Count('proposals'),
+        ).select_related('product','resolution').prefetch_related(Prefetch('proposals',
+            queryset=ProductPriceProposal.objects.order_by('created_at','id')[:25],
+            to_attr='receipt_proposals')).order_by('created_at','id')
+
+    @extend_schema(responses=PriceProposalSerializer(many=True))
+    @transaction.atomic
+    def proposals(self, request, *args, **kwargs):
+        from catalogue.models import ProductPriceConflict, ProductPriceProposal
+        shop, product = self.context()
+        conflict = get_object_or_404(ProductPriceConflict.objects.only('id'),
+            shop=shop, product=product, id=self.kwargs['pk'])
+        rows = ProductPriceProposal.objects.filter(conflict=conflict).order_by('created_at','id')
+        return self.get_paginated_response(PriceProposalSerializer(self.paginate_queryset(rows), many=True).data)
 
     @extend_schema(responses=ProductPriceConflictSerializer(many=True))
     @transaction.atomic

@@ -419,5 +419,5 @@ class ReturnCostReconstruction(UUIDRecord):
             _integer_columns("previous_legacy_unit_cost_micros"), name="return_reconstruction_integer")]
 
 
-from stock.reconciliation_models import StockReservationReconciliation  # noqa: E402,F401
-from stock.transfer_models import StockTransfer, StockTransferLine, StockTransferReceipt, StockTransferReceiptLine  # noqa: E402,F401
+from stock.reconciliation_models import StockReservationPresenceRelease, StockReservationReconciliation  # noqa: E402,F401
+from stock.transfer_models import StockTransfer, StockTransferLine, StockTransferLineClosure, StockTransferReceipt, StockTransferReceiptLine  # noqa: E402,F401

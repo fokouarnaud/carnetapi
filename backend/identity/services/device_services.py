@@ -13,6 +13,7 @@ from common.services.operations import current_shop
 from backups.services.access_guard import require_confirmed_access
 from common.models import Activity
 from identity.models import Installation, Membership, ShopDeviceAccess
+from identity.services.installation_codes import assign_installation_code
 
 
 @transaction.atomic
@@ -34,6 +35,7 @@ def verify_access(shop, installation, user, session_id):
         "role": role, "permissions": permissions,
         "seller_discount_cap_basis_points": shop.seller_discount_cap_basis_points,
         "discount_policy_version": shop.discount_policy_version,
+        "installation_code": assign_installation_code(shop, installation).label,
     }
 
 

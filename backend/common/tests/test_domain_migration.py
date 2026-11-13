@@ -45,7 +45,8 @@ class DomainMigrationTests(TransactionTestCase):
         # Freeze the independent backup schema at its last pre-domain dependency.
         # backups.0017 requires identity.0001 and would silently pull the split
         # into the supposedly core.0080 historical fixture's project state.
-        unchanged_targets = [node for node in latest if node[0] not in domain_labels | {"backups"}]
+        # The sync app (US-48) is created after the domain split and depends on identity: leave it out too.
+        unchanged_targets = [node for node in latest if node[0] not in domain_labels | {"backups", "sync"}]
         unchanged_targets.append(("backups", "0016_imported_archive_quarantine_updated"))
         try:
             executor.migrate(PREVIOUS)

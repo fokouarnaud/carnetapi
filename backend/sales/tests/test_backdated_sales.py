@@ -8,8 +8,13 @@ from sales.tests import test_sales as sale_tests
 class BackdatedSaleTests(TestCase):
     setUp = sale_tests.CashSaleTests.setUp
     authenticate = sale_tests.CashSaleTests.authenticate
-    payload = sale_tests.CashSaleTests.payload
     url = sale_tests.CashSaleTests.url
+
+    def payload(self, **changes):
+        # G15: these historical dates exceed 30 days; the owner records them with a second reason.
+        if "occurred_at" in changes:
+            changes.setdefault("backdate_reason", "Reprise historique vérifiée")
+        return sale_tests.CashSaleTests.payload(self, **changes)
 
     def test_manager_date_and_reason_reach_sale_stock_cash_and_durable_receipt_once(self):
         from sales.models import Sale
@@ -73,7 +78,8 @@ class BackdatedSaleTests(TestCase):
         from identity.models import Membership
         self.member.role = Membership.Role.MANAGER
         self.member.save(update_fields=["role"])
-        data = self.payload(occurred_at="2026-01-01T09:00:00Z", reason="Vente oubliée")
+        # A member manager stays within the 30-day bound (G15).
+        data = self.payload(occurred_at=(timezone.now() - timedelta(days=2)).isoformat(), reason="Vente oubliée")
         first = self.client.post(self.url(), data, format="json")
         self.assertEqual(first.status_code, 201)
         self.member.role = Membership.Role.SELLER

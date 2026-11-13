@@ -18,6 +18,8 @@ from common.services.errors import OperationConflict
 from common.services.dates import due_at_utc
 from common.models import Activity
 from cash.models import CashMovement
+from common.services.backdating import require_allowed_backdate
+from customers.services.merges import resolve_customer
 from customers.models import Customer, CustomerCredit, CustomerDebt
 from catalogue.models import Product, ProductPack
 from sales.models import Sale, SaleLine, SalePayment
@@ -60,14 +62,18 @@ def create_sale(shop_id, actor, installation, validated_data, session_id):
     receipt = original_receipt(data["operation_id"], shop, actor, "sale_created", canonical)
     if receipt is not None:
         return receipt, False
+    if "occurred_at" in data:
+        require_allowed_backdate(shop, actor, data["occurred_at"], data.get("backdate_reason"))
     from backups.models import RecoverySaleHold
     if RecoverySaleHold.objects.filter(Q(source_operation_id=data["operation_id"])|Q(sale_id=data["id"])).exists():
         raise OperationConflict()
     customer = get_object_or_404(Customer, shop=shop, id=data["customer_id"]) if data["customer_id"] else None
     if data["mode"] == "credit" and customer is None:
         raise ValidationError({"customer_id": "Client obligatoire pour une vente à crédit."})
+    # G18: the sale keeps the customer it was recorded for; receivables follow a merge redirection.
+    account = resolve_customer(customer) if customer is not None else None
     if data["mode"] == "credit":
-        known = sum(CustomerDebt.objects.filter(shop=shop, customer=customer).values_list("remaining_fcfa", flat=True))
+        known = sum(CustomerDebt.objects.filter(shop=shop, customer=account).values_list("remaining_fcfa", flat=True))
         if known and data["confirmed_debt_fcfa"] != known:
             raise DebtConfirmationRequired(known)
     due_at = due_at_utc(data["due_date"], shop.timezone)
@@ -134,6 +140,7 @@ def _persist_sale(*, shop, actor, installation, data, canonical, snapshots, bask
     """
     paid = sum(payment["amount_fcfa"] for payment in data["payments"])
     excess = max(0, paid - basket.net_total_fcfa)
+    account = resolve_customer(customer) if customer is not None else None  # G18 redirection
     audit = Activity.objects.create(
         id=data["operation_id"], shop=shop, actor=actor, action="sale_created", target_id=data["id"],
         reason=data.get("reason") or ("Vente à crédit" if data["mode"] == "credit" else "Vente comptant"), details={"request": canonical},
@@ -175,7 +182,8 @@ def _persist_sale(*, shop, actor, installation, data, canonical, snapshots, bask
         )
     if basket.net_total_fcfa > paid:
         CustomerDebt.objects.create(
-            id=uuid.uuid5(sale.id, "customer-debt"), shop=shop, customer=customer, sale=sale,
+            id=uuid.uuid5(sale.id, "customer-debt"), shop=shop, customer=account, sale=sale,
+            received_for=customer if account is not None and account.id != customer.id else None,
             actor=actor, installation=installation, operation=audit,
             amount_fcfa=basket.net_total_fcfa - paid, remaining_fcfa=basket.net_total_fcfa - paid,
             occurred_at=effective_at, due_at=due_at,
@@ -183,13 +191,13 @@ def _persist_sale(*, shop, actor, installation, data, canonical, snapshots, bask
     if customer is not None:
         if excess:
             CustomerCredit.objects.create(
-                id=uuid.uuid5(sale.id, "customer-credit"), shop=shop, customer=customer, sale=sale, operation=audit,
+                id=uuid.uuid5(sale.id, "customer-credit"), shop=shop, customer=account, sale=sale, operation=audit,
                 amount_fcfa=excess, remaining_fcfa=excess, occurred_at=effective_at,
             )
-        append_customer_ledger(shop, customer, audit, sale.id, "sale", effective_at, basket.net_total_fcfa,
+        append_customer_ledger(shop, account, audit, sale.id, "sale", effective_at, basket.net_total_fcfa,
                                debt_delta_fcfa=max(0, basket.net_total_fcfa - paid), credit_delta_fcfa=excess)
         for position, payment in enumerate(sale.payments.all()):
-            append_customer_ledger(shop, customer, audit, payment.id, "sale_payment", effective_at,
+            append_customer_ledger(shop, account, audit, payment.id, "sale_payment", effective_at,
                                    -payment.amount_fcfa, sequence=position + 1)
     receipt = json_value(SaleSerializer(sale, context=context).data)
     audit.details["response"] = receipt

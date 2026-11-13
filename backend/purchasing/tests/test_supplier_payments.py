@@ -16,7 +16,7 @@ class SupplierPaymentTests(TestCase):
     invoice_payload = test_purchases.PurchaseTests.payload
 
     def payment_payload(self):
-        return {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": "2026-01-01T00:00:00Z",
+        return {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": "2026-01-01T00:00:00Z", "backdate_reason": "Reprise historique",
                 "reason": "Avance réellement versée", "parts": [
                     {"id": str(uuid.uuid4()), "method": "cash", "amount_fcfa": 10000},
                     {"id": str(uuid.uuid4()), "method": "orange", "amount_fcfa": 20000}]}

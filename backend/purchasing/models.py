@@ -14,10 +14,14 @@ class Supplier(UUIDRecord):
     name = models.CharField(max_length=150)
     phone = models.CharField(max_length=16, null=True, blank=True, validators=[RegexValidator(r"^\+[1-9][0-9]{7,14}$")])
     version = models.PositiveBigIntegerField(default=1)
+    # G20: optional reference from a template CSV, unique per shop for this type.
+    import_reference = models.CharField(max_length=80, null=True, blank=True)
 
     class Meta:
         db_table = "core_supplier"
-        constraints = [models.CheckConstraint(condition=models.Q(version__gt=0) & _integer_columns("version"),
+        constraints = [models.UniqueConstraint(fields=["shop", "import_reference"], condition=models.Q(import_reference__isnull=False),
+                                               name="supplier_import_reference_once"),
+                       models.CheckConstraint(condition=models.Q(version__gt=0) & _integer_columns("version"),
                                              name="supplier_positive_integer_version")]
         indexes = [models.Index(fields=["shop", "created_at", "id"], name="core_suppli_shop_id_dd8254_idx")]
 
@@ -366,3 +370,17 @@ class PurchaseChargeAllocation(UUIDRecord):
             models.UniqueConstraint(fields=["revision", "line"], name="purchase_charge_line_once"),
             models.CheckConstraint(condition=_integer_columns("amount_fcfa"), name="purchase_charge_allocation_integer"),
         ]
+
+
+class PurchaseLineClosure(UUIDRecord):
+    """US-28 / G17: an unreceived invoice remainder is closed explicitly; debt and stock are unchanged."""
+    line = models.OneToOneField('purchasing.PurchaseLine', on_delete=models.PROTECT, related_name="closure")
+    operation = models.OneToOneField('core.Activity', on_delete=models.PROTECT, related_name="purchase_line_closure")
+    installation = models.ForeignKey('identity.Installation', on_delete=models.PROTECT, related_name="purchase_line_closures")
+    quantity_milli = models.PositiveBigIntegerField()
+    reason = models.TextField()
+
+    class Meta:
+        constraints = [models.CheckConstraint(condition=models.Q(quantity_milli__gt=0) & _integer_columns("quantity_milli"),
+                                              name="purchase_closure_quantity"),
+                       models.CheckConstraint(condition=~models.Q(reason=""), name="purchase_closure_reason")]

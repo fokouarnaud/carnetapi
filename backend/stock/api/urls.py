@@ -12,8 +12,12 @@ from stock.api.sale_cost_issues import SaleCostIssueViewSet
 from stock.api.stock_shortage_reviews import StockShortageReviewViewSet
 from stock.api.stock_notifications import StockAlertEventViewSet, StockNotificationPreferenceViewSet
 from stock.api.transfers import StockTransferViewSet, StockTransferReceiptViewSet
+from stock.api.presence_releases import PresenceReleaseView
+from stock.api.transfer_closures import TransferLineClosureView
 
 urlpatterns = [
+    path("shops/<uuid:shop_id>/transfers/<uuid:transfer_id>/lines/<uuid:line_id>/close/", TransferLineClosureView.as_view(), name="stock-transfer-line-close"),
+    path("shops/<uuid:shop_id>/reservations/<uuid:reservation_id>/presence-release/", PresenceReleaseView.as_view(), name="reservation-presence-release"),
     path("shops/<uuid:shop_id>/transfers/",StockTransferViewSet.as_view({"get":"list","post":"create"}),name="stock-transfer-list"),
     path("shops/<uuid:shop_id>/transfers/<uuid:pk>/",StockTransferViewSet.as_view({"get":"retrieve"}),name="stock-transfer-detail"),
     path("shops/<uuid:shop_id>/transfers/<uuid:pk>/receipts/",StockTransferReceiptViewSet.as_view({"get":"list","post":"create"}),name="stock-transfer-receipts"),

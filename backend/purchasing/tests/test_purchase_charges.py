@@ -41,7 +41,7 @@ class PurchaseChargeTests(TestCase):
         document = self.invoice()
         expense = self.client.post(f"/api/v1/shops/{self.shop.id}/cash/", {"id": str(uuid.uuid4()),
             "operation_id": str(uuid.uuid4()), "occurred_at": timezone.now().isoformat(), "reason": "Transport payé",
-            "kind": "expense", "method": "cash", "amount_fcfa": 4000}, format="json")
+            "kind": "expense", "method": "cash", "amount_fcfa": 4000, "expense_category": "transport"}, format="json")  # G23
         self.assertEqual(expense.status_code, 201)
         body = self.charge_payload(document)
         created = self.client.post(self.path(document), body, format="json")

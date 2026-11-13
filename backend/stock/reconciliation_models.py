@@ -17,3 +17,18 @@ class StockReservationReconciliation(UUIDRecord):
         verbose_name_plural=_("Stock reservation reconciliations")
         constraints=[models.CheckConstraint(condition=models.Q(quantity_milli__gt=0)&_integer_columns("quantity_milli"),
             name="reservation_reconciliation_qty")]
+
+
+class StockReservationPresenceRelease(UUIDRecord):
+    """G19: a refused sale whose goods are still present frees its reservation; no movement is created."""
+    reservation=models.ForeignKey("stock.StockReservation",on_delete=models.PROTECT,related_name="presence_releases")
+    operation=models.OneToOneField("core.Activity",on_delete=models.PROTECT,related_name="reservation_presence_release")
+    installation=models.ForeignKey("identity.Installation",on_delete=models.PROTECT,related_name="reservation_presence_releases")
+    quantity_milli=models.PositiveBigIntegerField()
+    reason=models.TextField()
+
+    class Meta:
+        ordering=["created_at","id"]
+        constraints=[models.CheckConstraint(condition=models.Q(quantity_milli__gt=0)&_integer_columns("quantity_milli"),
+            name="reservation_presence_release_qty"),
+            models.CheckConstraint(condition=~models.Q(reason=""),name="reservation_presence_release_reason")]

@@ -39,7 +39,9 @@ class CashTests(TestCase):
 
     def payload(self, **changes):
         return {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "kind": "opening", "method": "cash",
-                "amount_fcfa": 50000, "occurred_at": "2026-01-01T00:00:00Z", "reason": "Fonds compté", **changes}
+                "amount_fcfa": 50000, "occurred_at": "2026-01-01T00:00:00Z", "reason": "Fonds compté",
+                # G15: historical dates are beyond 30 days, recorded by the owner with a second reason.
+                "backdate_reason": "Reprise historique", **changes}
 
     def create(self, data):
         return self.client.post(self.url(), data, format="json")
@@ -48,7 +50,8 @@ class CashTests(TestCase):
         entries = [("opening", 50000, "cash"), ("addition", 10000, "orange"),
                    ("withdrawal", 2000, "cash"), ("expense", 3000, "cash")]
         for kind, amount, method in entries:
-            response = self.create(self.payload(kind=kind, amount_fcfa=amount, method=method))
+            category = {"expense_category": "transport"} if kind == "expense" else {}  # G23
+            response = self.create(self.payload(kind=kind, amount_fcfa=amount, method=method, **category))
             self.assertEqual(response.status_code, 201)
             self.assertEqual(response.data["amount_fcfa"], -amount if kind in ("withdrawal", "expense") else amount)
             self.assertEqual(response.data["actor_id"], str(self.owner.id))

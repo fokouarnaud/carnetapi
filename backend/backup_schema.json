@@ -180,6 +180,10 @@
     "0002_cashcount_cash_count_integral_physical_and_more"
   ],
   [
+    "cash",
+    "0003_cashmovement_expense_category_and_more"
+  ],
+  [
     "catalogue",
     "0001_domain_state"
   ],
@@ -198,6 +202,14 @@
   [
     "catalogue",
     "0005_pack_price_conflicts"
+  ],
+  [
+    "catalogue",
+    "0006_remove_catalogueimport_catalogue_import_bounded_source_and_more"
+  ],
+  [
+    "catalogue",
+    "0007_barcodecodeconflict"
   ],
   [
     "contenttypes",
@@ -548,6 +560,18 @@
     "0004_customer_customer_positive_integer_version_and_more"
   ],
   [
+    "customers",
+    "0005_customer_merged_into"
+  ],
+  [
+    "customers",
+    "0006_customerdebt_received_for"
+  ],
+  [
+    "customers",
+    "0007_customer_import_reference_and_more"
+  ],
+  [
     "identity",
     "0001_domain_state"
   ],
@@ -556,12 +580,40 @@
     "0002_membership_membership_integral_version_and_more"
   ],
   [
+    "identity",
+    "0003_shopinstallationcode"
+  ],
+  [
+    "identity",
+    "0004_ownershiptransfer"
+  ],
+  [
+    "identity",
+    "0005_accountrecoverycase"
+  ],
+  [
+    "identity",
+    "0006_otpchallenge"
+  ],
+  [
+    "identity",
+    "0007_recoverycode"
+  ],
+  [
     "purchasing",
     "0001_domain_state"
   ],
   [
     "purchasing",
     "0002_purchasedocument_purchase_document_integral_total_and_more"
+  ],
+  [
+    "purchasing",
+    "0003_supplier_import_reference_and_more"
+  ],
+  [
+    "purchasing",
+    "0004_purchaselineclosure"
   ],
   [
     "sales",
@@ -598,6 +650,18 @@
   [
     "stock",
     "0005_transfer_movement_kinds"
+  ],
+  [
+    "stock",
+    "0006_stockreservationpresencerelease"
+  ],
+  [
+    "stock",
+    "0007_stocktransferlineclosure"
+  ],
+  [
+    "sync",
+    "0001_initial"
   ],
   [
     "token_blacklist",

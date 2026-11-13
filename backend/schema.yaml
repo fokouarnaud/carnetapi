@@ -88,6 +88,143 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/account/recovery-codes/:
+    post:
+      operationId: account_recovery_codes_create
+      description: Authenticated holder only; codes are shown once and replace any
+        unused earlier batch.
+      tags:
+      - account
+      security:
+      - deviceJWT: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryCodesOutput'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/auth/otp/request/:
+    post:
+      operationId: auth_otp_request_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OtpRequestInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OtpRequestInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OtpRequestInputRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '202':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpRequestOutput'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/auth/otp/verify/:
+    post:
+      operationId: auth_otp_verify_create
+      tags:
+      - auth
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OtpVerifyInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OtpVerifyInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OtpVerifyInputRequest'
+        required: true
+      security:
+      - {}
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OtpVerifyOutput'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/auth/refresh/:
     post:
       operationId: auth_refresh_create
@@ -2303,6 +2440,76 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/barcode-conflicts/{id}/resolve/:
+    post:
+      operationId: shops_barcode_conflicts_resolve_create
+      description: 'US-11 / G14: a manager keeps the registered format or moves the
+        code to the offline proposal.'
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ConflictResolutionInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/ConflictResolutionInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/ConflictResolutionInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Barcode'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Barcode'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/shops/{shop_id}/barcode-lookup/:
     get:
       operationId: shops_barcode_lookup_retrieve
@@ -3118,6 +3325,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/changes/:
+    get:
+      operationId: shops_changes_list
+      parameters:
+      - in: query
+        name: after
+        schema:
+          type: integer
+          minimum: 0
+        required: true
+      - in: query
+        name: limit
+        schema:
+          type: integer
+          minimum: 1
+          default: 100
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChangeEntry'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/shops/{shop_id}/clients/:
     get:
       operationId: shops_clients_list
@@ -3766,6 +4031,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OriginReferenceError'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/clients/{client_id}/merge/:
+    post:
+      operationId: shops_clients_merge_create
+      parameters:
+      - in: path
+        name: client_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MergeInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/MergeInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/MergeInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MergeReceipt'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MergeReceipt'
           description: ''
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
@@ -6997,6 +7330,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PriceConflictPreview'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/products/{product_id}/price-conflicts/{id}/proposals/:
+    get:
+      operationId: shops_products_price_conflicts_proposals_list
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - name: page
+        required: false
+        in: query
+        description: Un numéro de page de l'ensemble des résultats.
+        schema:
+          type: integer
+      - name: page_size
+        required: false
+        in: query
+        description: Nombre de résultats à retourner par page.
+        schema:
+          type: integer
+      - in: path
+        name: product_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedPriceProposalList'
           description: ''
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
@@ -10310,6 +10711,74 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/reservations/{reservation_id}/presence-release/:
+    post:
+      operationId: shops_reservations_presence_release_create
+      parameters:
+      - in: path
+        name: reservation_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PresenceReleaseInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/PresenceReleaseInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/PresenceReleaseInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PresenceReleaseReceipt'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PresenceReleaseReceipt'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/shops/{shop_id}/sale-cost-issues/:
     get:
       operationId: shops_sale_cost_issues_list
@@ -13582,6 +14051,86 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/suppliers/{supplier_id}/invoices/{document_id}/lines/{line_id}/close/:
+    post:
+      operationId: shops_suppliers_invoices_lines_close_create
+      parameters:
+      - in: path
+        name: document_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: line_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: supplier_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LineClosureInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/LineClosureInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/LineClosureInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineClosureReceipt'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LineClosureReceipt'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/shops/{shop_id}/suppliers/{supplier_id}/invoices/{document_id}/receipts/:
     get:
       operationId: shops_suppliers_invoices_receipts_list
@@ -15572,6 +16121,80 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/transfers/{transfer_id}/lines/{line_id}/close/:
+    post:
+      operationId: shops_transfers_lines_close_create
+      parameters:
+      - in: path
+        name: line_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: path
+        name: transfer_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TransferClosureInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/TransferClosureInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/TransferClosureInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferClosureReceipt'
+          description: ''
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TransferClosureReceipt'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/shops/{shop_id}/unsellable-stock/:
     get:
       operationId: shops_unsellable_stock_list
@@ -15612,6 +16235,157 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaginatedNonSellableStockList'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/technical/recovery-cases/:
+    post:
+      operationId: technical_recovery_cases_create
+      tags:
+      - technical
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OpenRecoveryInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OpenRecoveryInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OpenRecoveryInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryCase'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/technical/recovery-cases/{id}/complete/:
+    post:
+      operationId: technical_recovery_cases_complete_create
+      parameters:
+      - in: path
+        name: id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - technical
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecoveryCase'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/technical/shops/{shop_id}/ownership-transfer/:
+    post:
+      operationId: technical_shops_ownership_transfer_create
+      description: 'US-47 / G24: superadmin-only reassignment of a shop, with reason
+        and G22 proofs.'
+      parameters:
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - technical
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OwnershipTransferInputRequest'
+          application/x-www-form-urlencoded:
+            schema:
+              $ref: '#/components/schemas/OwnershipTransferInputRequest'
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/OwnershipTransferInputRequest'
+        required: true
+      security:
+      - deviceJWT: []
+      responses:
+        '201':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OwnershipTransferReceipt'
           description: ''
         '503':
           description: 'FR : Service temporairement indisponible avant authentification
@@ -15686,8 +16460,13 @@ components:
         discount_policy_version:
           type: integer
           minimum: 1
+        installation_code:
+          type: string
+          description: 'G26: readable code of this installation in the shop, never
+            reused.'
       required:
       - discount_policy_version
+      - installation_code
       - installation_id
       - offline_expires_at
       - permissions
@@ -15901,6 +16680,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -16425,6 +17208,14 @@ components:
         external_reference:
           type: string
           readOnly: true
+        expense_category:
+          readOnly: true
+          oneOf:
+          - $ref: '#/components/schemas/ExpenseCategoryEnum'
+          - $ref: '#/components/schemas/BlankEnum'
+        expense_label:
+          type: string
+          readOnly: true
         amount_fcfa:
           type: integer
           readOnly: true
@@ -16442,6 +17233,8 @@ components:
       required:
       - actor_id
       - amount_fcfa
+      - expense_category
+      - expense_label
       - external_reference
       - id
       - installation_id
@@ -16718,6 +17511,42 @@ components:
       - operation_id
       - reason
       - seller_discount_cap_basis_points
+    ChangeEntry:
+      type: object
+      properties:
+        seq:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        object_type:
+          type: string
+          maxLength: 80
+        object_id:
+          type: string
+          format: uuid
+        kind:
+          $ref: '#/components/schemas/ChangeEntryKindEnum'
+        created_at:
+          type: string
+          format: date-time
+          readOnly: true
+      required:
+      - created_at
+      - kind
+      - object_id
+      - object_type
+      - seq
+    ChangeEntryKindEnum:
+      enum:
+      - upsert
+      - revoke
+      - archive
+      type: string
+      description: |-
+        * `upsert` - upsert
+        * `revoke` - revoke
+        * `archive` - archive
     Charge:
       type: object
       properties:
@@ -16802,6 +17631,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -17092,6 +17925,22 @@ components:
       required:
       - applied_adjustment_milli
       - expected_milli
+      - operation_id
+      - reason
+    ConflictResolutionInputRequest:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        decision:
+          $ref: '#/components/schemas/DecisionEnum'
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required:
+      - decision
       - operation_id
       - reason
     CorrectionReceipt:
@@ -17768,6 +18617,19 @@ components:
           type: string
           minLength: 1
           maxLength: 200
+        expense_category:
+          $ref: '#/components/schemas/ExpenseCategoryEnum'
+        expense_label:
+          type: string
+          minLength: 1
+          maxLength: 80
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 200
+        revises_count_id:
+          type: string
+          format: uuid
       required:
       - amount_fcfa
       - id
@@ -17992,6 +18854,10 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
         id:
           type: string
           format: uuid
@@ -18116,6 +18982,11 @@ components:
           items:
             $ref: '#/components/schemas/PriceProposal'
           maxItems: 25
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -18129,11 +19000,6 @@ components:
         pack_version:
           type: integer
           minimum: 1
-        proposals_count:
-          type: integer
-          minimum: 0
-        proposals_url:
-          type: string
         recorded_proposal:
           $ref: '#/components/schemas/PriceProposal'
         operation_snapshot:
@@ -18194,6 +19060,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PriceProposal'
+          maxItems: 25
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -18209,6 +19081,8 @@ components:
       - product_id
       - product_version
       - proposals
+      - proposals_count
+      - proposals_url
       - resolution
       - source_change_id
       - state
@@ -18363,6 +19237,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -18661,6 +19539,14 @@ components:
       - created_at
       - id
       - reason
+    DecisionEnum:
+      enum:
+      - keep
+      - reassign
+      type: string
+      description: |-
+        * `keep` - keep
+        * `reassign` - reassign
     DeclaredPaymentRequest:
       type: object
       properties:
@@ -18768,6 +19654,10 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
       required:
       - id
       - occurred_at
@@ -18783,6 +19673,17 @@ components:
         * `known` - known
         * `provisional` - provisional
         * `unknown` - unknown
+    ExpenseCategoryEnum:
+      enum:
+      - transport
+      - rent
+      - salaries
+      - supplies
+      - bills
+      - other
+      type: string
+      description: "* `` - \n* `transport` - Transport\n* `rent` - Rent\n* `salaries`
+        - Salaries\n* `supplies` - Supplies\n* `bills` - Bills\n* `other` - Autre"
     ExpirationStateEnum:
       enum:
       - unknown
@@ -21341,6 +22242,34 @@ components:
       description: |-
         * `2` - 2
         * `7` - 7
+    LineClosureInputRequest:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required:
+      - operation_id
+      - reason
+    LineClosureReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        line_id:
+          type: string
+          format: uuid
+        quantity_milli:
+          type: integer
+      required:
+      - id
+      - line_id
+      - quantity_milli
     Loss:
       type: object
       properties:
@@ -21417,11 +22346,18 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
         quantity_milli:
           type: integer
           format: int64
           maximum: 9223372036854775807
           minimum: 1
+        revises_count_id:
+          type: string
+          format: uuid
       required:
       - id
       - occurred_at
@@ -21500,6 +22436,38 @@ components:
       description: |-
         * `manager` - Responsable
         * `seller` - Vendeur
+    MergeInputRequest:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        target_id:
+          type: string
+          format: uuid
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required:
+      - operation_id
+      - reason
+      - target_id
+    MergeReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        merged_into:
+          type: string
+          format: uuid
+        version:
+          type: integer
+      required:
+      - id
+      - merged_into
+      - version
     MethodEnum:
       enum:
       - cash
@@ -21778,6 +22746,10 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
         kind:
           $ref: '#/components/schemas/NonSellableDecisionKindEnum'
         quantity_milli:
@@ -21900,6 +22872,38 @@ components:
       - occurred_at
       - operation_id
       - reason
+    OpenRecoveryInputRequest:
+      type: object
+      properties:
+        account_id:
+          type: string
+          format: uuid
+        new_phone:
+          type: string
+          minLength: 1
+          pattern: ^\+[1-9][0-9]{7,14}$
+        identity_reference:
+          type: string
+          minLength: 1
+          maxLength: 120
+        facts_checked:
+          type: integer
+          maximum: 100
+          minimum: 0
+        confirming_member_id:
+          type: string
+          format: uuid
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required:
+      - account_id
+      - confirming_member_id
+      - facts_checked
+      - identity_reference
+      - new_phone
+      - reason
     OpeningBalanceInputRequest:
       type: object
       properties:
@@ -21913,6 +22917,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -21943,6 +22951,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -21997,6 +23009,120 @@ components:
       - origin_reference_conflict
       type: string
       description: '* `origin_reference_conflict` - origin_reference_conflict'
+    OtpRequestInputRequest:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        phone:
+          type: string
+          minLength: 1
+          maxLength: 16
+        purpose:
+          type: string
+          minLength: 1
+          maxLength: 20
+        language:
+          allOf:
+          - $ref: '#/components/schemas/LanguageEnum'
+          default: fr
+        old_phone:
+          type: string
+          minLength: 1
+          maxLength: 16
+        recovery_code:
+          type: string
+          minLength: 1
+          maxLength: 20
+      required:
+      - operation_id
+      - phone
+      - purpose
+    OtpRequestOutput:
+      type: object
+      properties:
+        challenge_id:
+          type: string
+          format: uuid
+        expires_at:
+          type: string
+          format: date-time
+      required:
+      - challenge_id
+      - expires_at
+    OtpVerifyInputRequest:
+      type: object
+      properties:
+        challenge_id:
+          type: string
+          format: uuid
+        code:
+          type: string
+          minLength: 1
+          maxLength: 6
+        installation_label:
+          type: string
+          default: ''
+          maxLength: 120
+      required:
+      - challenge_id
+      - code
+    OtpVerifyOutput:
+      type: object
+      properties:
+        user_id:
+          type: string
+          format: uuid
+        installation_id:
+          type: string
+          format: uuid
+        access:
+          type: string
+        refresh:
+          type: string
+      required:
+      - access
+      - installation_id
+      - refresh
+      - user_id
+    OwnershipTransferInputRequest:
+      type: object
+      properties:
+        new_owner_id:
+          type: string
+          format: uuid
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        proofs:
+          type: object
+          additionalProperties: {}
+      required:
+      - new_owner_id
+      - proofs
+      - reason
+    OwnershipTransferReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        shop_id:
+          type: string
+          format: uuid
+        previous_owner_id:
+          type: string
+          format: uuid
+        new_owner_id:
+          type: string
+          format: uuid
+      required:
+      - id
+      - new_owner_id
+      - previous_owner_id
+      - shop_id
     Pack:
       type: object
       properties:
@@ -22134,6 +23260,11 @@ components:
           items:
             $ref: '#/components/schemas/PriceProposal'
           maxItems: 25
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -22147,11 +23278,6 @@ components:
         pack_version:
           type: integer
           minimum: 1
-        proposals_count:
-          type: integer
-          minimum: 0
-        proposals_url:
-          type: string
       required:
       - base_quantity_milli
       - base_version
@@ -22207,6 +23333,11 @@ components:
           items:
             $ref: '#/components/schemas/PriceProposal'
           maxItems: 25
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -22220,11 +23351,6 @@ components:
         pack_version:
           type: integer
           minimum: 1
-        proposals_count:
-          type: integer
-          minimum: 0
-        proposals_url:
-          type: string
         preview_token:
           type: string
           nullable: true
@@ -22288,6 +23414,11 @@ components:
           items:
             $ref: '#/components/schemas/PriceProposal'
           maxItems: 25
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -22301,11 +23432,6 @@ components:
         pack_version:
           type: integer
           minimum: 1
-        proposals_count:
-          type: integer
-          minimum: 0
-        proposals_url:
-          type: string
         recorded_proposal:
           $ref: '#/components/schemas/PriceProposal'
         operation_snapshot:
@@ -22365,6 +23491,11 @@ components:
           items:
             $ref: '#/components/schemas/PriceProposal'
           maxItems: 25
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -22378,11 +23509,6 @@ components:
         pack_version:
           type: integer
           minimum: 1
-        proposals_count:
-          type: integer
-          minimum: 0
-        proposals_url:
-          type: string
         operation_snapshot:
           $ref: '#/components/schemas/PriceOperationSnapshot'
       required:
@@ -24547,6 +25673,8 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        recorded_offline:
+          type: boolean
     PatchedBackupConfigurationInputRequest:
       type: object
       properties:
@@ -24850,6 +25978,10 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
         parts:
           type: array
           items:
@@ -25112,6 +26244,43 @@ components:
       - operation_id
       - reason
       - recipient
+    PresenceReleaseInputRequest:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        quantity_milli:
+          type: integer
+          format: int64
+          maximum: 9223372036854775807
+          minimum: 1
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required:
+      - operation_id
+      - quantity_milli
+      - reason
+    PresenceReleaseReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        reservation_id:
+          type: string
+          format: uuid
+        quantity_milli:
+          type: integer
+        remaining_reserved_milli:
+          type: integer
+      required:
+      - id
+      - quantity_milli
+      - remaining_reserved_milli
+      - reservation_id
     PriceCatalogueRevision:
       type: object
       properties:
@@ -25198,6 +26367,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PriceProposal'
+          maxItems: 25
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -25218,6 +26393,8 @@ components:
       - product_id
       - product_version
       - proposals
+      - proposals_count
+      - proposals_url
       - resolution
       - source_change_id
       - state
@@ -25555,6 +26732,12 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PriceProposal'
+          maxItems: 25
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -25567,6 +26750,8 @@ components:
       - product_id
       - product_version
       - proposals
+      - proposals_count
+      - proposals_url
       - resolution
       - source_change_id
       - state
@@ -25616,6 +26801,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PriceProposal'
+        proposals_count:
+          type: integer
+          minimum: 0
+        proposals_url:
+          type: string
         resolution:
           allOf:
           - $ref: '#/components/schemas/PriceResolution'
@@ -26064,6 +27254,10 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
         external_reference:
           type: string
           default: ''
@@ -26257,6 +27451,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -26733,6 +27931,42 @@ components:
       - $ref: '#/components/schemas/TransferReceipt'
       - $ref: '#/components/schemas/CostProduct'
       - $ref: '#/components/schemas/Pack'
+    RecoveryCase:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+          readOnly: true
+        account:
+          type: string
+          format: uuid
+        new_phone:
+          type: string
+          pattern: ^\+[1-9][0-9]{7,14}$
+          maxLength: 16
+        facts_checked:
+          type: integer
+          maximum: 9223372036854775807
+          minimum: 0
+          format: int64
+        effective_after:
+          type: string
+          format: date-time
+        completed_at:
+          type: string
+          format: date-time
+          nullable: true
+        state:
+          type: string
+          readOnly: true
+      required:
+      - account
+      - effective_after
+      - facts_checked
+      - id
+      - new_phone
+      - state
     RecoveryClosureInputKindEnum:
       enum:
       - partial
@@ -26855,6 +28089,15 @@ components:
       - closed_partial
       type: string
       description: '* `closed_partial` - closed_partial'
+    RecoveryCodesOutput:
+      type: object
+      properties:
+        codes:
+          type: array
+          items:
+            type: string
+      required:
+      - codes
     RecoveryCollectionReviewInputRequest:
       type: object
       properties:
@@ -28063,6 +29306,10 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
         method:
           $ref: '#/components/schemas/MethodEnum'
         amount_fcfa:
@@ -28358,6 +29605,10 @@ components:
           type: string
           minLength: 1
           maxLength: 2000
+        backdate_reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
         allocations:
           type: array
           items:
@@ -28381,6 +29632,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -28512,6 +29767,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -28647,6 +29906,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000
@@ -30525,6 +31788,48 @@ components:
       - operation_id
       - reason
       - source_shop_id
+    TransferClosureInputOutcomeEnum:
+      enum:
+      - lost
+      - damaged
+      type: string
+      description: |-
+        * `lost` - lost
+        * `damaged` - damaged
+    TransferClosureInputRequest:
+      type: object
+      properties:
+        operation_id:
+          type: string
+          format: uuid
+        outcome:
+          $ref: '#/components/schemas/TransferClosureInputOutcomeEnum'
+        reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+      required:
+      - operation_id
+      - outcome
+      - reason
+    TransferClosureReceipt:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        line_id:
+          type: string
+          format: uuid
+        outcome:
+          type: string
+        quantity_milli:
+          type: integer
+      required:
+      - id
+      - line_id
+      - outcome
+      - quantity_milli
     TransferInputRequest:
       type: object
       properties:
@@ -30538,6 +31843,10 @@ components:
           type: string
           format: date-time
         reason:
+          type: string
+          minLength: 1
+          maxLength: 2000
+        backdate_reason:
           type: string
           minLength: 1
           maxLength: 2000

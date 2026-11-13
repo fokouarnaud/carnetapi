@@ -1,4 +1,5 @@
 """Physical losses have exactly one stock effect and no automatic money effect."""
+from common.services.backdating import require_allowed_backdate
 from stock.services.stock_alert_services import observe_stock
 from django.db import transaction
 from django.db.models import OuterRef, Prefetch, Subquery
@@ -12,7 +13,7 @@ from common.services.operations import current_shop, json_value, original_receip
 from common.services.errors import OperationConflict
 from common.models import Activity
 from catalogue.models import Product
-from stock.models import StockCostSnapshot, StockLoss, StockMovement
+from stock.models import StockCostSnapshot, StockCount, StockLoss, StockMovement
 from stock.services.movement_costs import freeze_physical_cost
 from stock.api.stock_cost_serializers import MovementCostSerializer
 from sales.services.pricing import MAX_FCFA
@@ -21,6 +22,7 @@ from purchasing.api.purchases import EventSerializer
 
 class LossInput(EventSerializer):
     quantity_milli = ExactIntegerField(min_value=1, max_value=MAX_FCFA)
+    revises_count_id = serializers.UUIDField(required=False)  # G15: explicit revision of a validated count
 
 
 class LossSerializer(serializers.ModelSerializer):
@@ -60,6 +62,11 @@ def record_loss(shop_id, product_id, request, data):
     original = original_receipt(data["operation_id"], shop, request.user, "stock_loss_recorded", canonical)
     if original is not None:
         return original, False
+    require_allowed_backdate(shop, request.user, data["occurred_at"], data.get("backdate_reason"))  # G15
+    later_count = StockCount.objects.filter(product=product, counted_at__gte=data["occurred_at"]).order_by("-counted_at", "-id").first()
+    if later_count is not None and data.get("revises_count_id") != later_count.id:
+        raise serializers.ValidationError({"revises_count_id": "Perte antérieure à un comptage validé : "
+                                           "désigner explicitement le dernier comptage révisé."})
     if StockLoss.objects.filter(id=data["id"]).exists():
         raise OperationConflict()
     quantity = data["quantity_milli"]

@@ -34,10 +34,14 @@ class CashCountTests(TestCase):
     def url(self):
         return f"/api/v1/shops/{self.shop.id}/cash-counts/"
 
-    def cash(self, amount, at="2026-01-01T00:00:00Z", kind="opening"):
+    def cash(self, amount, at="2026-01-01T00:00:00Z", kind="opening", revises=None):
         response = self.client.post(f"/api/v1/shops/{self.shop.id}/cash/", {
             "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "kind": kind, "method": "cash",
-            "amount_fcfa": amount, "occurred_at": at, "reason": "Mouvement réel"}, format="json")
+            "amount_fcfa": amount, "occurred_at": at, "reason": "Mouvement réel", "backdate_reason": "Reprise historique",  # G15
+            # G23: an expense always carries a fixed category.
+            **({"expense_category": "supplies"} if kind == "expense" else {}),
+            # G15: a movement dated before a validated count names the count it revises.
+            **({"revises_count_id": revises} if revises else {})}, format="json")
         self.assertEqual(response.status_code, 201)
 
     def payload(self, **changes):
@@ -69,7 +73,7 @@ class CashCountTests(TestCase):
         initial = self.client.post(self.url(), data, format="json")
         self.assertEqual(initial.status_code, 201)
         self.cash(7000, at="2026-01-03T00:00:00Z", kind="addition")
-        self.cash(3000, kind="expense")
+        self.cash(3000, kind="expense", revises=data["id"])
         count = self.client.get(self.url() + data["id"] + "/")
         self.assertEqual(count.status_code, 200)
         self.assertEqual(count.data["expected_fcfa"], 47000)

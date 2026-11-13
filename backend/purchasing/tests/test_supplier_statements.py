@@ -68,7 +68,7 @@ class SupplierStatementTests(TestCase):
         self.post("invoices/", data)
         debt = self.client.get(self.url("debts/")).data["results"][0]
         payment = self.post("payments/", {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()),
-            "occurred_at": "2026-01-02T10:00:00Z", "reason": "Paiement réel", "parts": [
+            "occurred_at": "2026-01-02T10:00:00Z", "backdate_reason": "Reprise historique", "reason": "Paiement réel", "parts": [
                 {"id": str(uuid.uuid4()), "method": "cash", "amount_fcfa": 2000},
                 {"id": str(uuid.uuid4()), "method": "orange", "amount_fcfa": 3000}]})
         self.post(f"payments/{payment['id']}/allocate/", {"operation_id": str(uuid.uuid4()), "reason": "Paiement affecté",

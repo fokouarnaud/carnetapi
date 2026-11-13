@@ -140,7 +140,7 @@ class PurchaseTests(TestCase):
         self.assertEqual(result.data["total_fcfa"], 125)
 
     def receipt_payload(self, invoice, quantity=6000):
-        return {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": "2026-01-02T00:00:00Z",
+        return {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": "2026-01-02T00:00:00Z", "backdate_reason": "Reprise historique",
                 "reason": "Marchandises comptées", "lines": [{"line_id": invoice["lines"][0]["id"], "quantity_milli": quantity}]}
 
     def test_partial_receipt_adds_only_six_cartons_and_retry_never_adds_twice(self):

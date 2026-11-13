@@ -1,7 +1,7 @@
 """Exact SQLite stock aggregates, kept in SQL for filtering and pagination."""
 from django.db.models import Aggregate, BooleanField, CharField, F, Func, OuterRef, Subquery, Value
 from django.db.models.functions import Coalesce
-from stock.models import StockMovement, StockReservation, StockReservationReconciliation
+from stock.models import StockMovement, StockReservation, StockReservationPresenceRelease, StockReservationReconciliation
 
 
 class IntegerTotal:
@@ -38,11 +38,18 @@ def with_stock(queryset):
     reservations = reservations.order_by().values("product_id").annotate(total=StockTotal("quantity_milli")).values("total")
     reconciled = StockReservationReconciliation.objects.filter(reservation__product_id=OuterRef("pk"),
         reservation__state="rejected").order_by().values("reservation__product_id").annotate(total=StockTotal("quantity_milli")).values("total")
+    released = StockReservationPresenceRelease.objects.filter(reservation__product_id=OuterRef("pk"),
+        reservation__state="rejected").order_by().values("reservation__product_id").annotate(total=StockTotal("quantity_milli")).values("total")
     return queryset.annotate(
         stock_validated_milli=Coalesce(Subquery(movements), Value("0"), output_field=CharField()),
         stock_reserved_original_milli=Coalesce(Subquery(reservations), Value("0"), output_field=CharField()),
         stock_rejected_original_milli=Coalesce(Subquery(rejected), Value("0"), output_field=CharField()),
-        stock_reconciled_reserved_milli=Coalesce(Subquery(reconciled), Value("0"), output_field=CharField()),
+        stock_movement_reconciled_milli=Coalesce(Subquery(reconciled), Value("0"), output_field=CharField()),
+        stock_presence_released_milli=Coalesce(Subquery(released), Value("0"), output_field=CharField()),
+    ).annotate(  # G19: presence releases free a refused reservation exactly like movement reconciliations.
+        stock_reconciled_reserved_milli=Func(F("stock_movement_reconciled_milli"),
+            Func(Value("0"), F("stock_presence_released_milli"), function="stock_integer_subtract", output_field=CharField()),
+            function="stock_integer_subtract", output_field=CharField()),
     ).annotate(stock_reserved_milli=Func(F("stock_reserved_original_milli"), F("stock_reconciled_reserved_milli"),
                                       function="stock_integer_subtract", output_field=CharField()),
                stock_rejected_reserved_milli=Func(F("stock_rejected_original_milli"), F("stock_reconciled_reserved_milli"),

@@ -27,6 +27,9 @@ from catalogue.models import Barcode, CatalogueImport, Category
 from catalogue.services.catalogue_services import create_product, product_request_value
 
 
+IMPORT_BYTE_LIMIT = 2000000  # G20: 2 MB per CSV file
+
+
 class ImportUploadInput(StrictSerializer):
     id = serializers.UUIDField()
     file = serializers.FileField()
@@ -173,8 +176,8 @@ class CsvTemplateRenderer(JSONRenderer):
 
 class CatalogueImportViewSet(BoundedUploadMixin, viewsets.GenericViewSet):
     kind = "products"
-    upload_byte_limit = 1000000
-    upload_size_error = {"file": gettext_lazy("Fichier limité à 1000000 octets.")}
+    upload_byte_limit = IMPORT_BYTE_LIMIT
+    upload_size_error = {"file": gettext_lazy("Fichier limité à 2000000 octets.")}
     queryset = CatalogueImport.objects.none()
     serializer_class = ImportPreviewSerializer
     parser_classes = [MultiPartParser, BoundedJSONParser]
@@ -191,9 +194,9 @@ class CatalogueImportViewSet(BoundedUploadMixin, viewsets.GenericViewSet):
         serializer = ImportUploadInput(data=self.bounded_payload(request))
         serializer.is_valid(raise_exception=True)
         upload = serializer.validated_data["file"]
-        source = upload.read(1000001)
-        if len(source) > 1000000:
-            raise ValidationError({"file": gettext_lazy("Fichier limité à 1000000 octets.")})
+        source = upload.read(IMPORT_BYTE_LIMIT + 1)
+        if len(source) > IMPORT_BYTE_LIMIT:
+            raise ValidationError({"file": gettext_lazy("Fichier limité à 2000000 octets.")})
         identifier = serializer.validated_data["id"]
         existing = CatalogueImport.objects.filter(id=identifier).first()
         if existing is not None:

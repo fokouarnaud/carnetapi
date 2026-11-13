@@ -82,3 +82,20 @@ class StockTransferReceiptLine(UUIDRecord):
                 (models.Q(cost_state__in=["known","provisional"],total_cost_nanos_fcfa__isnull=False)
                  & Exact(models.Func(models.F("total_cost_nanos_fcfa"),function="JSON_TYPE",output_field=models.CharField()),models.Value("integer"))
                  & GreaterThanOrEqual(Cast("total_cost_nanos_fcfa",models.BigIntegerField()),models.Value(0))),name="transfer_receipt_exact_cost")]
+
+
+class StockTransferLineClosure(UUIDRecord):
+    """G16: the destination manager closes a lost or damaged remainder; no stock returns to the source."""
+    line=models.OneToOneField(StockTransferLine,on_delete=models.PROTECT,related_name="closure")
+    operation=models.OneToOneField("core.Activity",on_delete=models.PROTECT,related_name="stock_transfer_closure")
+    installation=models.ForeignKey("identity.Installation",on_delete=models.PROTECT,related_name="transfer_closures")
+    quantity_milli=models.PositiveBigIntegerField()
+    outcome=models.CharField(max_length=8,choices=[("lost",_("Lost")),("damaged",_("Damaged"))])
+    reason=models.TextField()
+
+    class Meta:
+        verbose_name=_("Stock transfer remainder closure")
+        verbose_name_plural=_("Stock transfer remainder closures")
+        constraints=[models.CheckConstraint(condition=models.Q(quantity_milli__gt=0)&_integer_columns("quantity_milli"),name="transfer_closure_quantity"),
+            models.CheckConstraint(condition=models.Q(outcome__in=["lost","damaged"]),name="transfer_closure_outcome"),
+            models.CheckConstraint(condition=~models.Q(reason=""),name="transfer_closure_reason")]

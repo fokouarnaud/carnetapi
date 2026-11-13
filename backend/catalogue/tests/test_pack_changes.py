@@ -167,7 +167,7 @@ class PackChangeTests(TestCase):
         self.assertEqual(self.client.patch(self.detail(pack), self.change(name="Douzaine", base_quantity_milli=12000), format="json").status_code, 200)
         reception = self.client.post(invoices + str(invoice.data["id"]) + "/receipts/", {
             "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": "2026-01-02T00:00:00Z",
-            "reason": "Carton physiquement reçu", "lines": [{"line_id": invoice.data["lines"][0]["id"], "quantity_milli": 1000}]}, format="json")
+            "reason": "Carton physiquement reçu", "backdate_reason": "Reprise historique", "lines": [{"line_id": invoice.data["lines"][0]["id"], "quantity_milli": 1000}]}, format="json")
         self.assertEqual(reception.status_code, 201, reception.content)
         self.assertEqual(StockMovement.objects.get().quantity_milli, 24000)
         original = self.client.get(invoices + str(invoice.data["id"]) + "/")

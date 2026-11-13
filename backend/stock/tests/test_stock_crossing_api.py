@@ -113,7 +113,7 @@ class PurchaseCrossingApiTests(TestCase):
         root = self.url() + invoice.data["id"] + "/"
         def quantity(amount):
             return {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()),
-                    "occurred_at": "2026-01-02T10:00:00Z", "reason": "Mouvement physique",
+                    "occurred_at": "2026-01-02T10:00:00Z", "reason": "Mouvement physique", "backdate_reason": "Reprise historique",
                     "lines": [{"line_id": invoice.data["lines"][0]["id"], "quantity_milli": amount}]}
         two = quantity(2000)
         self.assertEqual(self.client.post(root + "receipts/", two, format="json").status_code, 201)

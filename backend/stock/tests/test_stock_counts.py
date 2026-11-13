@@ -19,10 +19,11 @@ class StockCountTests(TestCase):
         return {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "counted_at": "2026-01-02T10:00:00Z",
                 "physical_milli": physical, "reason": "Comptage physique"}
 
-    def loss(self, product, at):
+    def loss(self, product, at, revises=None):
+        # G15: a loss dated before a validated count names the count it revises.
         result = self.client.post(f"/api/v1/shops/{self.shop.id}/products/{product['id']}/losses/", {
-            "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": at,
-            "quantity_milli": 1000, "reason": "Perte réelle",
+            "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": at, "backdate_reason": "Reprise historique",
+            "quantity_milli": 1000, "reason": "Perte réelle", **({"revises_count_id": revises} if revises else {}),
         }, format="json")
         self.assertEqual(result.status_code, 201)
 
@@ -49,7 +50,7 @@ class StockCountTests(TestCase):
         detail = self.url(product) + result.data["id"] + "/"
         self.loss(product, "2026-01-02T10:05:00Z")
         self.assertEqual(self.client.get(detail).data["expected_milli"], 10000)
-        self.loss(product, "2026-01-02T09:50:00Z")
+        self.loss(product, "2026-01-02T09:50:00Z", revises=result.data["id"])
         revised = self.client.get(detail)
         self.assertEqual(revised.data["physical_milli"], 8000)
         self.assertEqual(revised.data["expected_at_creation_milli"], 10000)
@@ -102,7 +103,7 @@ class StockCountTests(TestCase):
         self.assertEqual(count.status_code, 201)
         root = self.url(product) + count.data["id"] + "/"
         self.assertEqual(self.client.post(root + "confirm/", self.confirmation(), format="json").status_code, 201)
-        self.loss(product, "2026-01-02T09:50:00Z")
+        self.loss(product, "2026-01-02T09:50:00Z", revises=count.data["id"])
         revised = self.client.get(root)
         self.assertEqual(revised.data["physical_milli"], 8000)
         self.assertEqual(revised.data["expected_milli"], 9000)
@@ -143,7 +144,7 @@ class StockCountTests(TestCase):
         root = self.url(product) + count.data["id"] + "/"
         first = self.confirmation()
         self.assertEqual(self.client.post(root + "confirm/", first, format="json").status_code, 201)
-        self.loss(product, "2026-01-02T09:50:00Z")
+        self.loss(product, "2026-01-02T09:50:00Z", revises=count.data["id"])
         second = self.confirmation(9000, -2000)
         second["reason"] = "Rapprochement de la perte tardive"
         self.assertEqual(self.client.post(root + "confirm/", second, format="json").status_code, 201)

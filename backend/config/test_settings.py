@@ -12,3 +12,4 @@ EMAIL_BACKEND = "django.core.mail.backends.locmem.EmailBackend"
 # Tests normally use transient in-memory business databases. Dedicated barrier
 # tests override this with a real, separately initialized gate and SQLite file.
 RESTORE_GATE_PATH = None
+OTP_SMS_TRANSPORT = "fake"

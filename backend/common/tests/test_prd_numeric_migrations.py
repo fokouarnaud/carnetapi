@@ -8,12 +8,19 @@ from django.utils import timezone
 
 
 class PrdNumericMigrationTests(TransactionTestCase):
-    def snapshot(self, table):
+    def snapshot(self, table, columns=None):
+        # Later migrations may add columns; preservation is checked on the columns that existed before.
+        quote = connection.ops.quote_name
         with connection.cursor() as cursor:
             cursor.execute("SELECT sql FROM sqlite_master WHERE type='table' AND name=%s", [table])
             definition = cursor.fetchone()[0]
-            cursor.execute(f"SELECT * FROM {connection.ops.quote_name(table)} ORDER BY id")
+            selected = ", ".join(quote(column) for column in columns) if columns else "*"
+            cursor.execute(f"SELECT {selected} FROM {quote(table)} ORDER BY id")
             return definition, cursor.fetchall()
+
+    def columns(self, table):
+        with connection.cursor() as cursor:
+            return [row.name for row in connection.introspection.get_table_description(cursor, table)]
 
     def seed(self, registry, label):
         owner = registry.get_model("core", "User").objects.create(username=str(uuid.uuid4()))
@@ -78,7 +85,8 @@ class PrdNumericMigrationTests(TransactionTestCase):
                     MigrationExecutor(connection).migrate(previous)
                     old = MigrationExecutor(connection).loader.project_state(previous).apps
                     row, invalid, original = self.seed(old, label)
-                    valid_before = self.snapshot(row._meta.db_table)[1]
+                    before_columns = self.columns(row._meta.db_table)
+                    valid_before = self.snapshot(row._meta.db_table, before_columns)[1]
                     self.update_raw(row, invalid)
                     invalid_before = self.snapshot(row._meta.db_table)
                     with self.assertRaises(IntegrityError):
@@ -86,7 +94,7 @@ class PrdNumericMigrationTests(TransactionTestCase):
                     self.assertEqual(self.snapshot(row._meta.db_table), invalid_before)
                     self.update_raw(row, original)
                     MigrationExecutor(connection).migrate(latest)
-                    self.assertEqual(self.snapshot(row._meta.db_table)[1], valid_before)
+                    self.assertEqual(self.snapshot(row._meta.db_table, before_columns)[1], valid_before)
                     with connection.cursor() as cursor:
                         cursor.execute("PRAGMA foreign_key_check")
                         self.assertEqual(cursor.fetchall(), [])

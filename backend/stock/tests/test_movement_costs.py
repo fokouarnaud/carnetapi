@@ -31,7 +31,7 @@ class MovementCostTests(TestCase):
         for index, part in enumerate(parts):
             received = self.client.post(self.url() + invoice["id"] + "/receipts/", {
                 "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()),
-                "occurred_at": f"2026-01-{index + 2:02d}T00:00:00Z", "reason": "Réception réelle",
+                "occurred_at": f"2026-01-{index + 2:02d}T00:00:00Z", "reason": "Réception réelle", "backdate_reason": "Reprise historique",
                 "lines": [{"line_id": invoice["lines"][0]["id"], "quantity_milli": part}],
             }, format="json")
             self.assertEqual(received.status_code, 201, received.content)

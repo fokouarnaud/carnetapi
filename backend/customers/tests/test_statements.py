@@ -1,6 +1,7 @@
 """US-24/41: exact chronological balances and SQL pagination after authorization."""
 from datetime import timedelta
 import uuid
+from zoneinfo import ZoneInfo
 
 from django.test import TestCase
 from django.db import connection
@@ -87,7 +88,9 @@ class CustomerStatementTests(TestCase):
 
     def test_local_period_includes_prior_balance_and_all_filtered_movements(self):
         self.populate()
-        response = self.client.get(self.base() + "statement/", {"date_from": "2026-10-01", "date_to": "2026-10-31"})
+        # Payments are recorded "now": the period must follow the clock, not a fixed month.
+        today = timezone.localdate(timezone=ZoneInfo(self.shop.timezone)).isoformat()
+        response = self.client.get(self.base() + "statement/", {"date_from": today, "date_to": today})
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.data["opening_balance_fcfa"], 10000)
         self.assertEqual(response.data["count"], 4)

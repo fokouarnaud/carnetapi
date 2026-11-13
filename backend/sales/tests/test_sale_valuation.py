@@ -42,7 +42,8 @@ class SaleValuationTests(TestCase):
                 "quantity_milli": quantity}],
             "payments": [{"id": str(uuid.uuid4()), "method": "cash", "amount_fcfa": quantity // 10}]}
         if occurred_at is not None:
-            data.update(occurred_at=occurred_at.isoformat(), reason="Date effective vérifiée")
+            # G15: dates of this fixture may exceed 30 days; the owner gives the second reason.
+            data.update(occurred_at=occurred_at.isoformat(), reason="Date effective vérifiée", backdate_reason="Reprise historique")
         path = f"/api/v1/shops/{self.shop.id}/sales/"
         response = self.client.post(path, data, format="json")
         self.assertEqual(response.status_code, 201, response.content)

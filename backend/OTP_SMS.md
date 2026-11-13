@@ -1,9 +1,59 @@
 # OTP SMS — transport et compteur locaux
 
 État vérifié le 7 novembre 2026 : l’adaptateur Cooms, le lecteur de configuration
-privée et le compteur d’admission sont testés localement. **Le raccord OTP,
-les challenges, les endpoints API, l’authentification et le déploiement ne sont
-pas réalisés.** Aucun SMS réel n’a été envoyé pendant cette qualification.
+privée et le compteur d’admission sont testés localement. Aucun SMS réel n’a été
+envoyé pendant cette qualification.
+
+Mise à jour du 12 novembre 2026 : challenges et endpoints raccordés (voir
+« Challenges et connexion » ci-dessous), testés avec le faux transport
+uniquement. **Récupération par OTP, déploiement et preuve DOD-09 non réalisés.**
+
+## Challenges et connexion (US-01)
+
+- `POST /api/v1/auth/otp/request/` : `operation_id`, `phone` (`+237` + 9
+  chiffres), `purpose` (`signup` ou `new_device`), `language` facultatif.
+  Réponse 202 `challenge_id`/`expires_at`. Le compte est contrôlé **avant**
+  la réservation : inscription d’un numéro connu (409) ou nouvel appareil d’un
+  numéro inconnu (404) ne consomment aucun créneau. Ce choix révèle
+  l’existence d’un compte pour un numéro donné, au profit du budget de 10 SMS.
+- Même `operation_id` et même contenu : même challenge, aucun nouvel SMS.
+  Contenu différent : 409. Quota atteint : 429 avec `next_allowed_at`.
+  Transport `unavailable` : 503 et challenge inutilisable.
+- `POST /api/v1/auth/otp/verify/` : `challenge_id`, `code`,
+  `installation_label`. Code correct, non expiré, non consommé : création
+  (inscription) ou reprise (nouvel appareil) du compte, **nouvelle**
+  installation et session, jetons accès 5 min / refresh 30 jours liés à la
+  session. Erreur : 400 avec `attempts_remaining` ; cinquième erreur, code
+  expiré ou déjà utilisé : 410.
+- Seul un HMAC (clé `SECRET_KEY`, sel = UUID du challenge) est conservé.
+- Le nom d’utilisateur Django dérive de l’UUID du compte, jamais du
+  téléphone : un numéro peut changer de compte après récupération.
+
+## Codes de secours et récupération (US-07, Q154)
+
+- `POST /api/v1/account/recovery-codes/` (session vivante) : 10 codes
+  `XXXX-XXXX-XXXX` (base32 Crockford, 60 bits) affichés **une seule fois** ;
+  seuls des HMAC sont stockés et les codes inutilisés du lot précédent sont
+  révoqués.
+- `POST /api/v1/auth/otp/request/` avec `purpose=recovery`, `phone` (nouveau
+  numéro), `old_phone` et `recovery_code` : code et ancien numéro contrôlés
+  **avant** la réservation SMS (404 sinon, aucun envoi) ; nouveau numéro déjà
+  attribué à un autre compte : 409. Les champs de récupération sont refusés
+  pour les autres finalités.
+- Vérification OTP réussie : consommation atomique du code (une seule
+  récupération par code, même concurrente), rattachement du nouveau numéro au
+  **même UUID de compte**, nouvelle installation et session. Les adhésions et
+  accès retirés ne sont pas réactivés.
+- Limites non traitées : révocation des anciennes sessions du téléphone perdu,
+  journal d’activité de la récupération, codes consommés que la restauration
+  d’une sauvegarde antérieure rendrait de nouveau utilisables, changement de
+  `SECRET_KEY` invalidant les codes existants. Tests :
+  `backend/identity/tests/test_recovery_codes.py`.
+- Réglages : `APP_OTP_SMS_TRANSPORT` (`cooms` par défaut, `fake` réservé à
+  `APP_ENV` development/test, refusé sinon) et `APP_SMS_BUDGET_PATH` (fichier
+  de contrôle privé). Le faux transport remplit une boîte en mémoire lue par
+  les tests ; il n’écrit le code dans aucun journal et ne vaut jamais preuve
+  DOD-09. Tests : `backend/identity/tests/test_otp_login.py`.
 
 ## Politique validée, à raccorder
 
@@ -124,8 +174,9 @@ du contrôle a été perdu, `fresh_deployment=False` bloque les admissions jusqu
 jour local suivant. `fresh_deployment=True` est réservé à un véritable premier
 démarrage confirmé ; ne pas l’utiliser pour réparer ou remettre un quota à zéro.
 
-Le compteur seul ne protège pas un appel HTTP effectué directement. **La liaison
-réservation → challenge → appel unique reste à implémenter et qualifier.**
+Le compteur seul ne protège pas un appel HTTP effectué directement. La liaison
+réservation → challenge → appel unique est raccordée dans `identity.services.otp` ;
+sa qualification avec Cooms reste à faire.
 
 ## Vérification locale sans envoi
 

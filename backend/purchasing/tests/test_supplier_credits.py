@@ -30,7 +30,7 @@ class SupplierCreditTests(TestCase):
         invoice, departure = self.departure()
         # A real prior payment left 3000 owed on the original invoice.
         paid = self.client.post(self.url("payments"), {
-            "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": "2026-01-03T00:00:00Z",
+            "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "occurred_at": "2026-01-03T00:00:00Z", "backdate_reason": "Reprise historique",
             "reason": "Paiement réel", "parts": [{"id": str(uuid.uuid4()), "method": "cash", "amount_fcfa": 7000}],
         }, format="json")
         self.assertEqual(paid.status_code, 201)

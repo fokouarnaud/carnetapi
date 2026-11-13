@@ -25,7 +25,7 @@ class StockLossTests(TestCase):
 
     def payload(self, quantity=2000):
         return {"id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "quantity_milli": quantity,
-                "occurred_at": "2026-01-02T10:00:00Z", "reason": "Deux unités cassées"}
+                "occurred_at": "2026-01-02T10:00:00Z", "backdate_reason": "Reprise historique", "reason": "Deux unités cassées"}
 
     def test_recorded_loss_is_durable_idempotent_and_has_no_financial_or_sales_effect(self):
         product = self.prepare()

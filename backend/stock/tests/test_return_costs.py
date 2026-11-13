@@ -21,7 +21,7 @@ class ReturnCostTests(TestCase):
         self.invoice_and_receipts(total_price=1000, quantity=1000, parts=(1000,))
         response = self.client.post(f"/api/v1/shops/{self.shop.id}/sales/", {
             "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()),
-            "occurred_at": instant.isoformat(), "reason": "Vente à sa date réelle",
+            "occurred_at": instant.isoformat(), "reason": "Vente à sa date réelle", "backdate_reason": "Reprise historique",  # G15
             "lines": [{"id": str(uuid.uuid4()), "product_id": str(self.product.id),
                 "product_version": 1, "quantity_milli": 1000}],
             "payments": [{"id": str(uuid.uuid4()), "method": "cash", "amount_fcfa": 100}],
