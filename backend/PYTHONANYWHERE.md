@@ -1,5 +1,32 @@
 # Exploitation PythonAnywhere
 
+## Mise à jour du 14 novembre 2026 — `5afa105` → `682b318`
+
+- Gate locale : suite complète pytest **1 870 tests passés** (sortie 0, 1 h 05),
+  migrations sans divergence, schéma OpenAPI validé, manifestes de schéma de
+  sauvegarde et de restauration à jour. Requirements inchangés.
+- Instantané avant déploiement : `~/app-data/pre-deploy-20261114T052224Z.sqlite3`,
+  `integrity_check` ok, aucune violation de clé étrangère, 178 migrations,
+  3 600 384 octets. À supprimer après confirmation de la version (budget disque).
+- Répétition de la seule migration nouvelle (`customers.0008_customerreminder`,
+  deux `CreateModel`) sur une copie : sortie 0, rien en attente.
+- Webapp désactivée 05:26–05:28 UTC (API en 404), `git pull --ff-only`,
+  migration réelle identique, `collectstatic` sans changement, `check --deploy`
+  limité à W005/W021.
+- Contrôles HTTP après rechargement : HTTPS 302, login admin 200, API/schéma/docs
+  401, statiques 200, détail produit 401 anonyme ; OTP sans champs obligatoires
+  400 (aucun envoi).
+- Expiration du site relue : samedi 5 décembre 2026.
+
+**Cooms injoignable depuis l'hébergement gratuit (constat du 14 novembre).**
+Depuis la console, `curl https://gw-89.cooms.app/` échoue avec « Received HTTP
+code 403 from proxy after CONNECT » (proxy `proxy.server:3128`) : le domaine
+Cooms n'est pas sur la liste blanche des comptes gratuits. Aucun SMS n'a été
+envoyé ni tenté ; `APP_SMS_BUDGET_PATH` et la configuration Cooms restent non
+installés. Tant que ce domaine n'est pas autorisé, l'OTP réel (DOD-09) et la
+connexion d'un téléphone à l'API en ligne sont impossibles sur cet hébergement ;
+décision à prendre par le titulaire.
+
 ## Mise à jour du 13 novembre 2026 — `01c078f` → `5afa105`
 
 Procédure reproductible : skill projet `.claude/skills/deploy-carnetapi`.
