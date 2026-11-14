@@ -6,6 +6,7 @@ from drf_spectacular.utils import extend_schema_field
 from rest_framework import serializers
 
 from common.api.fields import ExactIntegerField, StrictBoolean, StrictSerializer
+from common.services.device_clock import DEVICE_CLOCK_TOLERANCE
 from catalogue.models import Product, ProductPack, ProductPhoto
 from catalogue.api.photo_metadata import PhotoMetadataSerializer, photo_metadata
 from catalogue.api.price_conflicts import PublicPriceConflictSerializer,public_price_conflict
@@ -56,7 +57,8 @@ class OpeningStockSerializer(StrictSerializer):
         return super().to_internal_value(data)
 
     def validate_occurred_at(self, value):
-        if value > timezone.now():
+        # The opening is dated by the phone that recorded it, in UTC.
+        if value > timezone.now() + DEVICE_CLOCK_TOLERANCE:
             raise serializers.ValidationError("Le stock initial ne peut pas être daté dans le futur.")
         return value
 

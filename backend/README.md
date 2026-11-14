@@ -1,3 +1,40 @@
+# Backend — continuation du 14 novembre 2026
+
+Reconnexion sur la même installation (décision du titulaire du 14 novembre,
+US-02/US-07) : `POST /api/v1/auth/otp/verify/` accepte un `installation_id`
+facultatif. Pour un compte existant (`new_device`), le serveur ouvre la session
+sur cette installation si elle appartient au compte et n'est pas retirée, et
+révoque ses anciennes sessions. Sinon `403 otp_installation_refused`, sans
+consommer le code. L'inscription n'accepte jamais d'installation existante.
+Tests : `identity.tests.test_otp_login` (3 nouveaux).
+
+Horloge des téléphones : la date du stock initial d'un produit accepte la même
+tolérance de 5 minutes d'avance que l'heure d'une vente hors connexion
+(`common/services/device_clock.py`). Constaté sur SM-A207F : téléphone en
+avance de 13 s sur le serveur, en UTC des deux côtés ; le produit était refusé
+comme daté dans le futur. Test : `catalogue.tests.test_catalogue`.
+
+# Backend — continuation du 13 novembre 2026
+
+Flux `changes` (G6/G7, US-48) : chaque mouvement de stock créé, sauf
+l'ouverture, ajoute dans la même transaction une entrée `product_stock` sur le
+produit concerné. Sa charge utile est la représentation courante du produit,
+comme `product_created`, filtrée selon les droits du lecteur ; les vendeurs la
+reçoivent (stock disponible). Sans elle, un téléphone ayant déjà lu un produit
+gardait un stock périmé après les ventes d'un autre téléphone. L'ouverture est
+écrite avec la création du produit, dont l'entrée donne déjà le stock courant.
+Un rejeu de vente n'ajoute aucune entrée.
+
+Côté téléphone, un mouvement local s'ajoute au stock serveur tant que le flux
+n'a pas renvoyé l'écho de son opération ; l'écho couvre aussi la réponse perdue.
+Preuve locale : `sync.tests.test_change_feed_stock` (3 tests) et deux téléphones
+contre un Django local avec faux transport SMS (G4, jamais preuve DOD-09) :
+inscription, boutique, vente sur A, réponses perdues puis renvoi, réception sur
+B, rejeux sans doublon. Suite Django complète : 1 842 tests, dont 3 en erreur
+d'import seulement sous `manage.py test` (`test_sms_budget`, `test_message_build`) ;
+ces 13 tests passent avec pytest depuis la racine. Ni qualification
+PythonAnywhere ni appareil réel.
+
 # Backend — continuation du 8 novembre 2026
 
 Les nouveaux reçus d'enregistrement et de résolution des conflits de prix,

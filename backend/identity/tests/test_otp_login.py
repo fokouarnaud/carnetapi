@@ -36,10 +36,11 @@ class OtpLoginTests(TestCase):
             "operation_id": str(operation_id or uuid.uuid4()), "phone": phone, "purpose": purpose,
         }, format="json")
 
-    def verify(self, challenge_id, code, label="Tecno A"):
-        return self.client.post("/api/v1/auth/otp/verify/", {
-            "challenge_id": str(challenge_id), "code": code, "installation_label": label,
-        }, format="json")
+    def verify(self, challenge_id, code, label="Tecno A", installation_id=None):
+        body = {"challenge_id": str(challenge_id), "code": code, "installation_label": label}
+        if installation_id is not None:
+            body["installation_id"] = str(installation_id)
+        return self.client.post("/api/v1/auth/otp/verify/", body, format="json")
 
     def last_code(self):
         return otp.fake_outbox[-1]["message"].split(":")[1].strip()[:6]
@@ -83,6 +84,45 @@ class OtpLoginTests(TestCase):
         self.assertEqual(first["user_id"], second["user_id"])
         self.assertNotEqual(first["installation_id"], second["installation_id"])
         self.assertEqual(User.objects.filter(phone=PHONE).count(), 1)
+
+    def test_reconnect_reopens_the_same_installation_and_ends_its_old_sessions(self):
+        # Decision of 14 November 2026: forgotten PIN or expired session on the same phone.
+        first = self.verify(self.request_code().data["challenge_id"], self.last_code()).data
+        old_session = DeviceSession.objects.get(id=AccessToken(first["access"])["session_id"])
+        again = self.request_code(purpose="new_device")
+        response = self.verify(again.data["challenge_id"], self.last_code(),
+                               installation_id=first["installation_id"])
+        self.assertEqual(response.status_code, 200, response.data)
+        self.assertEqual(response.data["installation_id"], first["installation_id"])
+        self.assertEqual(Installation.objects.filter(user__phone=PHONE).count(), 1)
+        new_session = DeviceSession.objects.get(id=AccessToken(response.data["access"])["session_id"])
+        self.assertEqual(str(new_session.installation_id), first["installation_id"])
+        old_session.refresh_from_db()
+        self.assertIsNotNone(old_session.revoked_at)
+        self.assertIsNone(new_session.revoked_at)
+        self.client.credentials(HTTP_AUTHORIZATION=f"Bearer {first['access']}")
+        self.assertEqual(self.client.get("/api/v1/shops/").status_code, 401)
+
+    def test_reconnect_refuses_another_account_or_a_withdrawn_installation(self):
+        mine = self.verify(self.request_code().data["challenge_id"], self.last_code()).data
+        other = self.verify(self.request_code(phone="+237670000002").data["challenge_id"],
+                            self.last_code()).data
+        challenge = self.request_code(purpose="new_device").data["challenge_id"]
+        code = self.last_code()
+        refused = self.verify(challenge, code, installation_id=other["installation_id"])
+        self.assertEqual(refused.status_code, 403, refused.data)
+        self.assertEqual(refused.data["code"], "otp_installation_refused")
+        # A refusal does not consume the code: the same code still works.
+        Installation.objects.filter(id=mine["installation_id"]).update(revoked_at=timezone.now())
+        self.assertEqual(self.verify(challenge, code, installation_id=mine["installation_id"]).status_code, 403)
+        self.assertEqual(self.verify(challenge, code, installation_id=uuid.uuid4()).status_code, 403)
+        self.assertEqual(self.verify(challenge, code).status_code, 200)
+
+    def test_signup_never_reuses_an_installation(self):
+        mine = self.verify(self.request_code().data["challenge_id"], self.last_code()).data
+        challenge = self.request_code(phone="+237670000002").data["challenge_id"]
+        refused = self.verify(challenge, self.last_code(), installation_id=mine["installation_id"])
+        self.assertEqual(refused.status_code, 403, refused.data)
 
     def test_purpose_mismatch_is_refused_before_spending_an_sms(self):
         self.assertEqual(self.request_code(purpose="new_device").status_code, 404)

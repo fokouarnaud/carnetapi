@@ -1,5 +1,17 @@
 # Réplication YemX — cadrage et incertitudes
 
+### Décision complémentaire US-02/US-07 — reconnexion sur la même installation, 14 novembre 2026
+
+Pour un PIN oublié ou une session expirée sur le même téléphone, le titulaire
+retient que la reconnexion par OTP rouvre une session sur **l'installation
+existante** au lieu d'en créer une nouvelle. Le téléphone transmet son
+identifiant d'installation avec la vérification OTP ; le serveur l'accepte
+seulement si elle appartient au même compte et n'est pas retirée. Les
+opérations en attente partent ensuite normalement et les reçus gardent le même
+code téléphone (G26). Une installation retirée ou d'un autre compte ne donne
+aucune session. L'OTP reste soumis au plafond de 10 envois par jour. La
+réalisation et sa qualification restent à démontrer.
+
 ### Décision complémentaire US-05/US-17 — date d'une vente hors connexion, 13 novembre 2026
 
 Le titulaire retient que le serveur accepte l'heure enregistrée par le téléphone

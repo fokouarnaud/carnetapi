@@ -138,6 +138,16 @@ class CatalogueTests(TestCase):
             self.assertEqual(self.create(data).status_code, 400)
         self.assertEqual(Activity.objects.count(), 0)
 
+    def test_opening_tolerates_a_phone_clock_slightly_ahead_in_utc(self):
+        # Decision of 13 November 2026: device clocks may run up to 5 minutes
+        # ahead of the server; both instants are UTC.
+        ahead = self.payload()
+        ahead["opening"]["occurred_at"] = (timezone.now() + timedelta(seconds=30)).isoformat()
+        self.assertEqual(self.create(ahead).status_code, 201)
+        too_far = self.payload(name="Trop tôt")
+        too_far["opening"]["occurred_at"] = (timezone.now() + timedelta(minutes=6)).isoformat()
+        self.assertEqual(self.create(too_far).status_code, 400)
+
     def test_pagination_is_bounded_and_shop_filtered(self):
         for index in range(3):
             self.assertEqual(self.create(self.payload(name=f"Produit {index}")).status_code, 201)

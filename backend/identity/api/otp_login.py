@@ -20,6 +20,7 @@ REQUEST_ERRORS = {
     "sms_transport_unavailable": status.HTTP_503_SERVICE_UNAVAILABLE,
     "otp_recovery_unknown": status.HTTP_404_NOT_FOUND,
     "otp_phone_taken": status.HTTP_409_CONFLICT,
+    "otp_installation_refused": status.HTTP_403_FORBIDDEN,
 }
 VERIFY_ERRORS = {
     "otp_code_malformed": status.HTTP_400_BAD_REQUEST,
@@ -28,6 +29,7 @@ VERIFY_ERRORS = {
     "otp_account_exists": status.HTTP_409_CONFLICT,
     "otp_account_unknown": status.HTTP_404_NOT_FOUND,
     "otp_phone_taken": status.HTTP_409_CONFLICT,
+    "otp_installation_refused": status.HTTP_403_FORBIDDEN,
 }
 
 
@@ -50,6 +52,8 @@ class OtpVerifyInput(StrictSerializer):
     challenge_id = serializers.UUIDField()
     code = serializers.CharField(max_length=6)
     installation_label = serializers.CharField(max_length=120, required=False, allow_blank=True, default="")
+    # Decision of 14 November 2026: reopen this phone's installation (forgotten PIN, expired session).
+    installation_id = serializers.UUIDField(required=False, allow_null=True, default=None)
 
 
 class OtpVerifyOutput(serializers.Serializer):

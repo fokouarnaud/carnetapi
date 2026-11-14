@@ -4,6 +4,7 @@ from django.utils import timezone
 from django.utils.translation import gettext_lazy
 
 from common.api.fields import ExactIntegerField, StrictSerializer
+from common.services.device_clock import DEVICE_CLOCK_TOLERANCE
 from customers.api.debts import CustomerDebtSerializer
 from customers.models import CustomerCredit
 from sales.models import Sale, SaleLine, SalePayment, SaleCancellation
@@ -61,7 +62,6 @@ class CreateSalePaymentSerializer(DeclaredPaymentSerializer):
 
 
 OFFLINE_LEASE = timedelta(days=7)
-DEVICE_CLOCK_TOLERANCE = timedelta(minutes=5)
 
 
 class CreateSaleSerializer(StrictSerializer):

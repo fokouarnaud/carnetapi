@@ -23315,6 +23315,10 @@ components:
           type: string
           default: ''
           maxLength: 120
+        installation_id:
+          type: string
+          format: uuid
+          nullable: true
       required:
       - challenge_id
       - code

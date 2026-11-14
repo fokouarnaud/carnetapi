@@ -211,7 +211,24 @@ def _recover(challenge, now):
     return account
 
 
-def _activate(challenge, installation_label, now):
+def _installation_for(user, installation_label, installation_id, purpose, now):
+    """A new installation, or this phone's own one when it asks to be reopened.
+
+    Decision of 14 November 2026: the installation must belong to the account
+    and not be withdrawn; its earlier sessions end so their tokens stop working.
+    """
+    if installation_id is None:
+        return Installation.objects.create(user=user, label=installation_label[:120])
+    installation = (Installation.objects.select_for_update()
+                    .filter(id=installation_id, user=user, revoked_at__isnull=True).first())
+    if purpose != "new_device" or installation is None:
+        raise OtpError("otp_installation_refused")
+    DeviceSession.objects.filter(installation=installation, revoked_at__isnull=True).update(
+        revoked_at=now, updated_at=now)
+    return installation
+
+
+def _activate(challenge, installation_label, now, installation_id=None):
     if challenge.purpose == "recovery":
         user = _recover(challenge, now)
     elif challenge.purpose == "signup":
@@ -224,7 +241,7 @@ def _activate(challenge, installation_label, now):
         user = User.objects.filter(phone=challenge.phone, is_active=True).first()
         if user is None:
             raise OtpError("otp_account_unknown")
-    installation = Installation.objects.create(user=user, label=installation_label[:120])
+    installation = _installation_for(user, installation_label, installation_id, challenge.purpose, now)
     refresh = RefreshToken.for_user(user)
     session = DeviceSession.objects.create(
         installation=installation, expires_at=datetime.fromtimestamp(refresh["exp"], tz=dt_timezone.utc),
@@ -235,8 +252,11 @@ def _activate(challenge, installation_label, now):
     return Activation(user, installation, str(refresh.access_token), str(refresh))
 
 
-def verify_code(*, challenge_id, code, installation_label=""):
-    """A correct live code creates or reuses the account and activates a NEW installation."""
+def verify_code(*, challenge_id, code, installation_label="", installation_id=None):
+    """A correct live code creates or reuses the account and activates an installation.
+
+    A new one, unless the phone asks to reopen its own (see _installation_for).
+    """
     if not isinstance(code, str) or not re.fullmatch(r"[0-9]{6}", code, flags=re.ASCII):
         raise OtpError("otp_code_malformed")
     failure = None
@@ -250,7 +270,7 @@ def verify_code(*, challenge_id, code, installation_label=""):
         if hmac.compare_digest(challenge.code_hash, _code_hash(challenge.id, code)):
             challenge.consumed_at = now
             challenge.save(update_fields=["consumed_at", "updated_at"])
-            return _activate(challenge, installation_label or "", now)
+            return _activate(challenge, installation_label or "", now, installation_id)
         # The failed attempt must commit, so the error is raised after the block.
         challenge.attempts += 1
         challenge.save(update_fields=["attempts", "updated_at"])
