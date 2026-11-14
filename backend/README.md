@@ -1,5 +1,14 @@
 # Backend — continuation du 14 novembre 2026
 
+Unité modifiable avant tout mouvement (décision du titulaire du 14 novembre) :
+`PATCH /shops/{id}/products/{id}/` accepte `unit_kind` (et `unit_label`
+facultatif, libellé par défaut sinon) tant que le produit n'a que son stock
+initial. Sinon `409 product_unit_locked`. Le passage à `piece` avec un stock
+initial ou un seuil décimal est refusé (400). Chaque produit sérialisé porte
+`unit_editable`, calculé par une seule expression SQL (`EXISTS`) partagée avec
+le contrôle du service (`catalogue_queries.unit_lock_expression`). Tests :
+`catalogue.tests.test_product_changes` (4 nouveaux).
+
 Reconnexion sur la même installation (décision du titulaire du 14 novembre,
 US-02/US-07) : `POST /api/v1/auth/otp/verify/` accepte un `installation_id`
 facultatif. Pour un compte existant (`new_device`), le serveur ouvre la session

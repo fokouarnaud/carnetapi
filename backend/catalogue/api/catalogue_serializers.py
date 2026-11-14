@@ -34,9 +34,13 @@ class UpdateProductSerializer(StrictSerializer):
     purchase_price_fcfa = ExactIntegerField(min_value=0, max_value=9223372036854775807, required=False, allow_null=True)
     stock_threshold_milli = ExactIntegerField(min_value=0, max_value=9223372036854775807, required=False, allow_null=True)
     is_active = StrictBoolean(required=False)
+    # Decision of 14 November 2026: editable only before any movement.
+    unit_kind = serializers.ChoiceField(choices=Product.UnitKind.choices, required=False)
+    unit_label = serializers.CharField(max_length=40, allow_blank=False, required=False)
 
     def validate(self, data):
-        if not set(data).intersection({"name", "sale_price_fcfa", "purchase_price_fcfa", "is_active", "category_id", "stock_threshold_milli"}):
+        if not set(data).intersection({"name", "sale_price_fcfa", "purchase_price_fcfa", "is_active", "category_id",
+                                       "stock_threshold_milli", "unit_kind", "unit_label"}):
             raise serializers.ValidationError("Aucun changement de catalogue proposé.")
         return data
 
@@ -100,6 +104,7 @@ class PublicProductSerializer(serializers.ModelSerializer):
     is_stock_low = serializers.SerializerMethodField()
     stock_provisional = serializers.BooleanField(default=True, read_only=True)
     stock_as_of = serializers.SerializerMethodField()
+    unit_editable = serializers.SerializerMethodField()
 
     @extend_schema_field(PublicPriceConflictSerializer(allow_null=True))
     def get_price_conflict(self,product):
@@ -120,6 +125,16 @@ class PublicProductSerializer(serializers.ModelSerializer):
         return (product.is_active and product.stock_threshold_milli is not None
                 and self.get_stock_available_milli(product) <= product.stock_threshold_milli)
 
+    @extend_schema_field(serializers.BooleanField())
+    def get_unit_editable(self, product):
+        """Whether the unit may still be corrected: no movement but the opening (14 Nov 2026)."""
+        locked = getattr(product, "unit_locked", None)
+        if locked is None:
+            from catalogue.api.catalogue_queries import unit_lock_expression
+            locked = type(product).objects.filter(pk=product.pk).annotate(
+                locked=unit_lock_expression()).values_list("locked", flat=True).get()
+        return not locked
+
     def get_stock_as_of(self, product) -> str:
         return self.context.get("stock_as_of", timezone.now()).isoformat()
 
@@ -127,7 +142,7 @@ class PublicProductSerializer(serializers.ModelSerializer):
         model = Product
         fields = ["id", "shop_id", "category_id", "name", "unit_kind", "unit_label", "sale_price_fcfa",
                   "is_active", "version", "price_conflict", "photo", "barcode", "barcode_version", "stock_threshold_milli", "stock_validated_milli", "stock_reserved_milli", "stock_pending_reserved_milli", "stock_rejected_reserved_milli", "stock_available_milli",
-                  "is_stock_low", "stock_provisional", "stock_as_of", "created_at", "updated_at"]
+                  "is_stock_low", "stock_provisional", "stock_as_of", "unit_editable", "created_at", "updated_at"]
         read_only_fields = fields
 
 

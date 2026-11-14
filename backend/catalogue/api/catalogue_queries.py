@@ -1,7 +1,26 @@
 """Bounded SQL projections of optional unit and pack codes for local catalogues."""
-from django.db.models import BigIntegerField, BooleanField, CharField, F, Func, OuterRef, Subquery, Value
+from django.db.models import (BigIntegerField, BooleanField, CharField, Exists, ExpressionWrapper, F, Func,
+                              OuterRef, Q, Subquery, Value)
 from django.db.models.functions import Coalesce
 from catalogue.models import Barcode
+
+
+# Everything below expresses quantities in the product unit: once one exists,
+# changing the unit would change the meaning of recorded facts (14 Nov 2026).
+UNIT_LOCKING_RELATIONS = ("packs", "stock_reservations", "losses", "stock_counts", "shortage_reviews",
+                          "valuation_adjustments", "cost_revaluations", "transfer_departures",
+                          "transfer_arrivals", "sale_lines", "purchaseline_set", "pack_price_conflicts")
+
+
+def unit_lock_expression():
+    """True once the product has any movement but its opening, or any fact in its unit."""
+    from catalogue.models import Product
+    from stock.models import StockMovement
+    locked = Q(Exists(StockMovement.objects.filter(product_id=OuterRef("pk")).exclude(kind="opening")))
+    for relation in Product._meta.related_objects:
+        if relation.get_accessor_name() in UNIT_LOCKING_RELATIONS:
+            locked |= Q(Exists(relation.related_model._default_manager.filter(**{relation.field.name: OuterRef("pk")})))
+    return ExpressionWrapper(locked, output_field=BooleanField())
 
 
 def with_codes(queryset, pack=False):
@@ -10,6 +29,8 @@ def with_codes(queryset, pack=False):
                                        shop_id=OuterRef("product__shop_id"))
     else:
         codes = Barcode.objects.filter(product_id=OuterRef("pk"), pack__isnull=True, shop_id=OuterRef("shop_id"))
+    if not pack:
+        queryset = queryset.annotate(unit_locked=unit_lock_expression())
     return queryset.annotate(
         barcode=Subquery(codes.values("code")[:1], output_field=CharField()),
         barcode_version=Coalesce(Subquery(codes.values("version")[:1]), Value(0), output_field=BigIntegerField()),

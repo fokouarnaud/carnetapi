@@ -14,13 +14,45 @@ from stock.models import StockMovement
 from catalogue.api.barcodes import register_created_code
 from common.services.errors import OperationConflict
 from stock.services.stock_queries import with_stock
-from catalogue.api.catalogue_queries import with_codes
+from catalogue.api.catalogue_queries import unit_lock_expression, with_codes
 
 
 class ProductVersionConflict(APIException):
     status_code = 409
     default_detail = _("Le produit a été modifié. Relire sa version avant correction.")
     default_code = "product_version_conflict"
+
+
+class ProductUnitLocked(APIException):
+    status_code = 409
+    default_detail = _("L'unité ne change plus après le premier mouvement du produit. Archiver et recréer le produit.")
+    default_code = "product_unit_locked"
+
+
+DEFAULT_UNIT_LABELS = {"piece": "pièce", "weight": "kg", "volume": "L"}
+
+
+def _check_unit_change(product, data):
+    """Decision of 14 November 2026: the unit corrects a creation mistake only.
+
+    It may change while the product has no movement but its opening stock;
+    a piece stays whole, so a fractional opening or threshold refuses it.
+    """
+    new_kind = data.get("unit_kind", product.unit_kind)
+    if new_kind != product.unit_kind and "unit_label" not in data:
+        data["unit_label"] = DEFAULT_UNIT_LABELS[new_kind]
+    if new_kind == product.unit_kind and data.get("unit_label", product.unit_label) == product.unit_label:
+        data.pop("unit_kind", None)
+        data.pop("unit_label", None)
+        return
+    if Product.objects.filter(pk=product.pk).annotate(locked=unit_lock_expression()).values_list(
+            "locked", flat=True).get():
+        raise ProductUnitLocked()
+    if new_kind == Product.UnitKind.PIECE:
+        threshold = data.get("stock_threshold_milli", product.stock_threshold_milli)
+        openings = StockMovement.objects.filter(product=product, kind="opening").values_list("quantity_milli", flat=True)
+        if (threshold is not None and threshold % 1000) or any(quantity % 1000 for quantity in openings):
+            raise ValidationError({"unit_kind": _("Une pièce doit avoir une quantité entière.")})
 
 
 @transaction.atomic
@@ -41,10 +73,13 @@ def update_product(shop_id, product_id, actor, installation, validated_data, ses
     if product.version != data.pop("base_version"):
         raise ProductVersionConflict()
     reason = data.pop("reason")
+    if "unit_kind" in data or "unit_label" in data:
+        _check_unit_change(product, data)
     if data.get("category_id") is not None:
         get_object_or_404(Category, shop=shop, id=data["category_id"])
     threshold = data.get("stock_threshold_milli")
-    if threshold is not None and product.unit_kind == Product.UnitKind.PIECE and threshold % 1000:
+    unit_kind = data.get("unit_kind", product.unit_kind)
+    if threshold is not None and unit_kind == Product.UnitKind.PIECE and threshold % 1000:
         raise ValidationError({"stock_threshold_milli": _("Une pièce doit avoir une quantité entière.")})
     before = json_value(CostProductSerializer(product).data)
     for name, value in data.items():

@@ -110,7 +110,7 @@ class ProductChangeTests(TestCase):
         for changes in [{}, {"reason": " "}, {"name": " "}, {"sale_price_fcfa": True},
                         {"sale_price_fcfa": 249.5}, {"purchase_price_fcfa": -1},
                         {"sale_price_fcfa": 9223372036854775808}, {"is_active": "false"},
-                        {"unit_kind": "weight"}, {"stock_validated_milli": 9000},
+                        {"unit_kind": "box"}, {"stock_validated_milli": 9000},
                         {"id": str(uuid.uuid4())}, {"base_version": 1.0, "name": "Test"}]:
             with self.subTest(changes=changes):
                 self.assertEqual(self.change(self.payload(**changes)).status_code, 400)
@@ -131,3 +131,49 @@ class ProductChangeTests(TestCase):
         self.assertEqual(self.change(data).status_code, 404)
         self.authenticate(self.seller)
         self.assertEqual(self.client.get(self.url() + "history/").status_code, 403)
+
+    # Decision of 14 November 2026: the unit corrects a creation mistake only,
+    # while the product has no movement but its opening stock.
+    def test_unit_changes_before_any_movement_and_keeps_the_opening_quantity(self):
+        response = self.change(self.payload(unit_kind="weight", unit_label="kg"))
+        self.assertEqual(response.status_code, 200, response.data)
+        self.assertEqual((response.data["unit_kind"], response.data["unit_label"]), ("weight", "kg"))
+        self.assertEqual(response.data["version"], 2)
+        self.assertEqual(response.data["stock_validated_milli"], 10000)
+        # Without a label the server gives the default label of the unit.
+        again = self.change(self.payload(base_version=2, unit_kind="volume"))
+        self.assertEqual((again.data["unit_kind"], again.data["unit_label"]), ("volume", "L"))
+
+    def test_a_fractional_opening_or_threshold_cannot_become_pieces(self):
+        weighed = {**self.creation, "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()),
+                   "unit_kind": "weight", "unit_label": "kg",
+                   "opening": {**self.creation["opening"], "quantity_milli": 2500}}
+        self.assertEqual(self.client.post(self.base(), weighed, format="json").status_code, 201)
+        refused = self.client.patch(self.base() + weighed["id"] + "/", self.payload(unit_kind="piece"), format="json")
+        self.assertEqual(refused.status_code, 400, refused.data)
+        self.assertEqual(self.client.get(self.base() + weighed["id"] + "/").data["unit_kind"], "weight")
+
+    def test_unit_is_locked_once_a_pack_or_another_movement_exists(self):
+        self.assertTrue(self.client.get(self.url()).data["unit_editable"])
+        pack = self.client.post(self.url() + "packs/", {
+            "id": str(uuid.uuid4()), "operation_id": str(uuid.uuid4()), "name": "Carton",
+            "base_quantity_milli": 24000, "sale_price_fcfa": 4800,
+        }, format="json")
+        self.assertEqual(pack.status_code, 201, pack.data)
+        locked = self.change(self.payload(unit_kind="weight"))
+        self.assertEqual(locked.status_code, 409, locked.data)
+        self.assertEqual(locked.data["code"], "product_unit_locked")
+        self.assertEqual(self.client.get(self.url()).data["unit_kind"], "piece")
+        # Phones learn the lock from the product itself, list and detail alike.
+        self.assertFalse(self.client.get(self.url()).data["unit_editable"])
+        self.assertFalse(self.client.get(self.base()).data["results"][0]["unit_editable"])
+
+    def test_unit_is_locked_after_a_stock_movement_other_than_the_opening(self):
+        opening = StockMovement.objects.get()
+        StockMovement.objects.create(
+            product_id=opening.product_id, operation=Activity.objects.create(
+                shop=self.shop, actor=self.owner, action="stock_loss", target_id=opening.product_id),
+            kind="loss", quantity_milli=-1000, occurred_at=timezone.now(), actor=self.owner)
+        locked = self.change(self.payload(unit_kind="weight"))
+        self.assertEqual(locked.status_code, 409, locked.data)
+

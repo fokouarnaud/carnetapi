@@ -1,5 +1,17 @@
 # Réplication YemX — cadrage et incertitudes
 
+### Décision complémentaire US-09/US-10 — unité modifiable avant tout mouvement, 14 novembre 2026
+
+Le titulaire demande que l'unité d'un produit (pièce, kg, L) soit modifiable et
+retient qu'elle ne change **que tant que le produit n'a aucun mouvement autre
+que son stock initial** : ni vente, achat, réception, transfert, perte,
+inventaire, réservation, conditionnement ni réévaluation de coût. Il s'agit de
+corriger une erreur de saisie ; ensuite l'unité est figée, et le produit est
+archivé puis recréé. Le stock initial garde sa valeur numérique ; le passage à
+« pièce » est refusé si le stock initial ou le seuil est décimal. Les prix de
+la fiche s'entendent toujours **par unité de base**, jamais pour une quantité
+totale. Réalisation locale qualifiée sur SM-A207F ; non déployée.
+
 ### Décision complémentaire US-01/DOD-09 — OTP en ligne reporté, 14 novembre 2026
 
 Le titulaire avait retenu l'envoi du SMS Cooms unique de qualification (G4)

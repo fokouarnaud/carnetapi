@@ -26162,6 +26162,12 @@ components:
           minimum: 0
         is_active:
           type: boolean
+        unit_kind:
+          $ref: '#/components/schemas/UnitKindEnum'
+        unit_label:
+          type: string
+          minLength: 1
+          maxLength: 40
     Payment:
       type: object
       properties:
