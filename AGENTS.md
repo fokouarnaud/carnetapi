@@ -1,5 +1,15 @@
 # Réplication YemX — cadrage et incertitudes
 
+### Décision complémentaire US-01/DOD-09 — OTP en ligne reporté, 14 novembre 2026
+
+Le titulaire avait retenu l'envoi du SMS Cooms unique de qualification (G4)
+pour activer un téléphone sur carnetapi. Le proxy de l'hébergement gratuit
+refuse `gw-89.cooms.app` (403 après CONNECT) : aucun SMS ne peut partir. Le
+titulaire choisit de **continuer en local** ; la connexion des téléphones à
+l'API en ligne et la preuve DOD-09 sont reportées. Aucune activation sans OTP,
+aucune montée en gamme payante et aucune demande de liste blanche ne sont
+engagées par cette décision.
+
 ### Décision complémentaire US-02/US-07 — reconnexion sur la même installation, 14 novembre 2026
 
 Pour un PIN oublié ou une session expirée sur le même téléphone, le titulaire
