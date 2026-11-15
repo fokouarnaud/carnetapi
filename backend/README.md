@@ -1,3 +1,12 @@
+# Backend — continuation du 15 novembre 2026
+
+Conditionnements dans le flux `changes` (US-10, G6/G7) : les entrées `pack_*`
+portent désormais la représentation courante du conditionnement, sérialisée
+comme l'API des conditionnements (`PackSerializer`). Les vendeurs les reçoivent
+(données de catalogue partagées). Une entrée `pack_*` dont l'objet n'est pas un
+conditionnement (conflit de prix) reste sans données. Tests :
+`sync.tests.test_change_feed_packs` (3). Suite complète : 1 877 tests passés.
+
 # Backend — continuation du 14 novembre 2026
 
 Unité modifiable avant tout mouvement (décision du titulaire du 14 novembre) :

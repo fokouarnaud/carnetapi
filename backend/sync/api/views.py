@@ -40,6 +40,22 @@ def product_payloads(shop, entries, can_read_cost, context):
     return {product.id: serializer(product, context=context).data for product in products.select_related("photo_record")}
 
 
+def pack_payloads(shop, entries):
+    """Current packs of the shop, serialized like the packs API (US-10, G6).
+
+    Packs are shared catalogue data: sellers receive them to sell by the bag.
+    Entries whose object is not a pack (e.g. a pack price conflict) get none.
+    """
+    from catalogue.api.catalogue_queries import with_codes
+    from catalogue.api.catalogue_serializers import PackSerializer
+    from catalogue.models import ProductPack
+    ids = {entry.object_id for entry in entries if entry.object_type.startswith("pack_")}
+    if not ids:
+        return {}
+    packs = with_codes(ProductPack.objects.filter(product__shop=shop, id__in=ids).select_related("product"), pack=True)
+    return {pack.id: PackSerializer(pack).data for pack in packs}
+
+
 def customer_payloads(shop, entries):
     """Current customer records of the shop; customers are shared reference data for sellers (G7)."""
     from customers.api.client_serializers import ClientSerializer
@@ -91,6 +107,7 @@ class ChangeFeedView(APIView):
             row for row in scanned if visible_to_seller(row, request.user.id, permissions["can_read_debt"])]
         results = ChangeEntrySerializer(visible, many=True).data
         payloads = {"product_": product_payloads(shop, visible, permissions["can_read_cost"], {"request": request}),
+                    "pack_": pack_payloads(shop, visible),
                     "client_": customer_payloads(shop, visible),
                     "sale_": sale_payloads(shop, visible, permissions["can_read_debt"]),
                     "customer_debt_": debt_payloads(shop, visible)}
