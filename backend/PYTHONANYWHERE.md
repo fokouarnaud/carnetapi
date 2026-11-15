@@ -1,5 +1,26 @@
 # Exploitation PythonAnywhere
 
+## Mise à jour du 15 novembre 2026 (2) — `af9c151` → `6fed86f`
+
+- Contenu : état des dettes dans le flux `changes` (`f6fa076`, gate 1 880
+  tests passés) ; reprise des dettes antérieures dans le flux et paiements de
+  dettes avec leur montant (`6fed86f`, gate 1 882 tests passés). Requirements
+  inchangés.
+- Migration appliquée : `sync.0002_backfill_debt_states` (RunPython, ajoute une
+  entrée `customer_debt_state` par dette encore absente du flux, aucune table
+  modifiée). Répétée d'abord sur une copie de l'instantané : OK, rien en attente.
+- Instantané avant déploiement : `~/app-data/pre-deploy-20261115T154907Z.sqlite3`,
+  `integrity_check` ok, aucune violation de clé étrangère, 179 migrations,
+  3 678 208 octets. À supprimer après confirmation avec ceux du 14 et du
+  15 novembre (`pre-deploy-20261114T052224Z.sqlite3`,
+  `pre-deploy-20261115T011455Z.sqlite3`), pour le budget disque.
+- Webapp désactivée 15:51–15:53 UTC, `git pull --ff-only`, `migrate` (la seule
+  migration ci-dessus), `collectstatic` sans changement, `check --deploy` à
+  2 avertissements (W005/W021).
+- Contrôles HTTP : HTTPS 302, login admin 200, API/schéma/docs 401, flux
+  `changes` 401 sans authentification, statiques 200. Désactivation du site
+  affichée au 5 décembre 2026. OTP réel toujours impossible (Cooms bloqué).
+
 ## Mise à jour du 15 novembre 2026 — `682b318` → `af9c151`
 
 - Contenu : unité modifiable avant tout mouvement (`a48398a`, gate 1 861 tests
