@@ -67,6 +67,16 @@ class CashCountTests(TestCase):
         self.assertEqual(CashMovement.objects.count(), 1)
         self.assertEqual(CashMovement.objects.get().amount_fcfa, 50000)
 
+    def test_a_phone_clock_slightly_ahead_counts_at_the_present(self):
+        from datetime import timedelta
+        from django.utils import timezone
+        ahead = (timezone.now() + timedelta(seconds=20)).isoformat()
+        response = self.client.post(self.url(), self.payload(counted_at=ahead), format="json")
+        self.assertEqual(response.status_code, 201, response.data)
+        self.assertLessEqual(parse_datetime(response.data["counted_at"]), timezone.now())
+        far = (timezone.now() + timedelta(minutes=10)).isoformat()
+        self.assertEqual(self.client.post(self.url(), self.payload(counted_at=far), format="json").status_code, 400)
+
     def test_late_prior_movement_revises_expected_but_never_physical_or_original_receipt(self):
         self.cash(50000)
         data = self.payload()

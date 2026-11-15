@@ -3,6 +3,7 @@ from django.db import transaction
 from django.db.models import Case, CharField, F, When
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema
+from common.services.device_clock import DEVICE_CLOCK_TOLERANCE
 from rest_framework import serializers, viewsets
 from rest_framework.exceptions import PermissionDenied
 from rest_framework.response import Response
@@ -34,9 +35,11 @@ class CreateCashSerializer(DeclaredPaymentSerializer):
     revises_count_id = serializers.UUIDField(required=False)  # G15: explicit revision of a validated count
 
     def validate_occurred_at(self, value):
-        if value > timezone.now():
+        # Decision of 13 November 2026: up to five minutes ahead is the present.
+        now = timezone.now()
+        if value > now + DEVICE_CLOCK_TOLERANCE:
             raise serializers.ValidationError("Date future non autorisée.")
-        return value
+        return min(value, now)
 
     def validate(self, data):
         data = super().validate(data)

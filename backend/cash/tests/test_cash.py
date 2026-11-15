@@ -113,6 +113,19 @@ class CashTests(TestCase):
                 self.assertEqual(self.create(self.payload(**changes)).status_code, 400)
         self.assertFalse(CashMovement.objects.exists())
 
+    def test_a_phone_clock_slightly_ahead_records_the_movement_at_the_present(self):
+        # Decision of 13 November 2026: up to five minutes ahead is the present.
+        ahead = (timezone.now() + timedelta(seconds=20)).isoformat()
+        data =self.payload(occurred_at=ahead)
+        data.pop("backdate_reason")
+        response = self.create(data)
+        self.assertEqual(response.status_code, 201, response.data)
+        self.assertLessEqual(CashMovement.objects.get().occurred_at, timezone.now())
+        far = self.payload(occurred_at=(timezone.now() + timedelta(minutes=10)).isoformat())
+        far.pop("backdate_reason")
+        self.assertEqual(self.create(far).status_code, 400)
+        self.assertEqual(CashMovement.objects.count(), 1)
+
     def test_named_other_payment_methods_are_not_combined_into_one_cash_balance(self):
         for name, amount in [("Mobile A", 1000), ("Mobile B", 2000)]:
             self.assertEqual(self.create(self.payload(method="other", other_name=name, amount_fcfa=amount)).status_code, 201)

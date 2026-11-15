@@ -3,6 +3,7 @@ from django.db import transaction
 from django.db.models import Case, CharField, F, When
 from django.utils import timezone
 from drf_spectacular.utils import extend_schema
+from common.services.device_clock import DEVICE_CLOCK_TOLERANCE
 from rest_framework import mixins, serializers, viewsets
 from rest_framework.response import Response
 
@@ -46,9 +47,12 @@ class CreateCashCountSerializer(StrictSerializer):
         return data
 
     def validate_counted_at(self, value):
-        if value > timezone.now():
+        # Decision of 13 November 2026: a phone's clock may run up to five
+        # minutes ahead; such an instant is the present, not the future.
+        now = timezone.now()
+        if value > now + DEVICE_CLOCK_TOLERANCE:
             raise serializers.ValidationError("Comptage futur non autorisé.")
-        return value
+        return min(value, now)
 
 
 class CashCountSerializer(serializers.ModelSerializer):
