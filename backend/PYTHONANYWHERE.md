@@ -1,5 +1,23 @@
 # Exploitation PythonAnywhere
 
+## Mise à jour du 15 novembre 2026 (3) — `6fed86f` → `f3986c5`
+
+- Contenu : fournisseurs et état de leurs dettes dans le flux `changes`
+  (responsables seulement), dette d'une facture nommée
+  `uuid5(facture, "supplier-debt")`, tolérance d'horloge de 5 minutes sur les
+  événements d'achat (gate 1 887 tests passés). Requirements inchangés.
+- Migration appliquée : `sync.0003_backfill_supplier_debt_states` (RunPython,
+  aucune table modifiée), répétée d'abord sur une copie : OK, rien en attente.
+- Instantané avant déploiement : `~/app-data/pre-deploy-20261115T183144Z.sqlite3`,
+  `integrity_check` ok, aucune violation de clé étrangère, 180 migrations,
+  3 678 208 octets ; conservé jusqu'à confirmation, avec celui de 15:49
+  (`pre-deploy-20261115T154907Z.sqlite3`) à supprimer ensuite.
+- Webapp désactivée 18:33–18:35 UTC, `git pull --ff-only`, `migrate`,
+  `collectstatic` sans changement, `check --deploy` à 2 avertissements
+  (W005/W021).
+- Contrôles HTTP : HTTPS 302, login admin 200, API/schéma/docs 401,
+  fournisseurs 401 sans authentification, statiques 200.
+
 ## Mise à jour du 15 novembre 2026 (2) — `af9c151` → `6fed86f`
 
 - Contenu : état des dettes dans le flux `changes` (`f6fa076`, gate 1 880
