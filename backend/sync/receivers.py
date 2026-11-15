@@ -21,3 +21,15 @@ def append_stock_effect_to_feed(sender, instance, created, raw=False, **kwargs):
     """
     if created and not raw and instance.kind != "opening":
         record_change(instance.product.shop, "product_stock", instance.product_id, "upsert", actor=instance.actor)
+
+
+@receiver(post_save, sender="customers.CustomerDebt", dispatch_uid="sync_customer_debt_change_feed")
+def append_debt_state_to_feed(sender, instance, created, raw=False, **kwargs):
+    """US-19/US-21, G6/G7: phones allowed to read debts learn every remaining amount.
+
+    A credit sale creates a debt and a payment, return or regularization lowers
+    it, without any debt-specific journal entry; without this, other phones would
+    keep a stale balance and a later credit sale could not confirm it.
+    """
+    if not raw:
+        record_change(instance.shop, "customer_debt_state", instance.id, "upsert", actor=instance.actor)
