@@ -1,5 +1,22 @@
 # Exploitation PythonAnywhere
 
+## Mise à jour du 15 novembre 2026 — `682b318` → `af9c151`
+
+- Contenu : unité modifiable avant tout mouvement (`a48398a`, gate 1 861 tests
+  passés et 13 tests de préparation de restauration verts à la relance après un
+  délai dépassé pendant la veille du poste) et conditionnements dans le flux
+  `changes` (`af9c151`, gate 1 877 tests passés). Aucune migration nouvelle,
+  requirements inchangés : pas de répétition sur copie.
+- Instantané avant déploiement : `~/app-data/pre-deploy-20261115T011455Z.sqlite3`,
+  `integrity_check` ok, aucune violation de clé étrangère, 179 migrations,
+  3 678 208 octets. À supprimer après confirmation, comme celui du 14 novembre
+  (`pre-deploy-20261114T052224Z.sqlite3`), pour le budget disque.
+- Webapp désactivée 01:15–01:18 UTC, `git pull --ff-only`, `migrate` sans
+  migration à appliquer, `collectstatic` sans changement, `check --deploy` à
+  2 avertissements (W005/W021).
+- Contrôles HTTP : HTTPS 302, login admin 200, API/schéma/docs 401, statiques 200.
+  OTP réel toujours impossible (Cooms bloqué par le proxy, voir ci-dessous).
+
 ## Mise à jour du 14 novembre 2026 — `5afa105` → `682b318`
 
 - Gate locale : suite complète pytest **1 870 tests passés** (sortie 0, 1 h 05),
