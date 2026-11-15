@@ -1,7 +1,7 @@
 {
   "format": "app-x-sqlite-schema-reference",
   "format_version": 1,
-  "migration_code_sha256": "f49c3cd03a5bb56927b27e3a408057d831e907220b58d1e224b20fd9b65060f2",
+  "migration_code_sha256": "79401c582446126d6a24fc6f46ae6b66744ac007b4120e87f98b0ba0f0fb2976",
   "migrations": [
     [
       "admin",
@@ -670,6 +670,10 @@
     [
       "sync",
       "0001_initial"
+    ],
+    [
+      "sync",
+      "0002_backfill_debt_states"
     ],
     [
       "token_blacklist",

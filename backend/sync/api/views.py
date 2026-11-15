@@ -66,6 +66,19 @@ def customer_payloads(shop, entries):
     return {customer.id: ClientSerializer(customer).data for customer in Customer.objects.filter(shop=shop, id__in=ids)}
 
 
+def payment_payloads(shop, entries):
+    """Debt payments, serialized like the payment list; a seller gets only his own (G7, OWN_PREFIXES)."""
+    from common.services.origins import with_public_origin
+    from customers.api.payment_serializers import CustomerPaymentSerializer
+    from customers.models import CustomerPayment
+    ids = {entry.object_id for entry in entries if entry.object_type.startswith("customer_payment_")}
+    if not ids:
+        return {}
+    payments = with_public_origin(CustomerPayment.objects.filter(shop=shop, id__in=ids)).prefetch_related(
+        "parts", "allocations")
+    return {payment.id: CustomerPaymentSerializer(payment, context={}).data for payment in payments}
+
+
 def sale_payloads(shop, entries, can_read_debt):
     """Sales serialized like the sales list; credit sales only for readers allowed to see debts (G7)."""
     from common.services.origins import with_public_origin
@@ -110,7 +123,8 @@ class ChangeFeedView(APIView):
                     "pack_": pack_payloads(shop, visible),
                     "client_": customer_payloads(shop, visible),
                     "sale_": sale_payloads(shop, visible, permissions["can_read_debt"]),
-                    "customer_debt_": debt_payloads(shop, visible)}
+                    "customer_debt_": debt_payloads(shop, visible),
+                    "customer_payment_": payment_payloads(shop, visible)}
         for result, entry in zip(results, visible):
             prefix = next((key for key in payloads if entry.object_type.startswith(key)), None)
             result["data"] = payloads[prefix].get(entry.object_id) if prefix else None

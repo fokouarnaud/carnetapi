@@ -78,3 +78,41 @@ class DebtFeedTests(TestCase):
         self.membership.can_read_debt = True
         self.membership.save(update_fields=["can_read_debt"])
         self.assertEqual(len(self.debts(self.as_user(self.seller))), 1)
+
+    def test_debts_older_than_the_receiver_are_backfilled_once(self):
+        import importlib
+
+        from django.apps import apps
+
+        from sync.models import ChangeFeedEntry, ShopChangeSequence
+        backfill = importlib.import_module("sync.migrations.0002_backfill_debt_states").backfill
+        # As before f6fa076: the debt exists, but the feed never mentioned it.
+        ChangeFeedEntry.objects.filter(object_type="customer_debt_state").delete()
+        last = ShopChangeSequence.objects.get(shop=self.shop).last_seq
+        backfill(apps, None)
+        rows = self.debts(self.client)
+        self.assertEqual(len(rows), 1)
+        self.assertEqual(rows[0]["seq"], last + 1)
+        self.assertEqual(rows[0]["data"]["remaining_fcfa"], 1000)
+        backfill(apps, None)  # running it again adds nothing
+        self.assertEqual(ChangeFeedEntry.objects.filter(object_type="customer_debt_state").count(), 1)
+
+    def test_a_payment_reaches_its_author_and_managers_with_its_amount(self):
+        debt = self.debts(self.client)[0]["data"]
+        payment_id = str(uuid.uuid4())
+        response = self.client.post(f"{self.base}/clients/{self.customer_id}/payments/", {
+            "id": payment_id, "operation_id": str(uuid.uuid4()),
+            "parts": [{"id": str(uuid.uuid4()), "method": "cash", "amount_fcfa": 400}],
+            "allocations": [{"id": str(uuid.uuid4()), "debt_id": debt["id"], "amount_fcfa": 400}],
+        }, format="json")
+        self.assertEqual(response.status_code, 201, response.data)
+        page = self.client.get(f"{self.base}/changes/?after=0").data["results"]
+        rows = [row for row in page if row["object_type"].startswith("customer_payment_")]
+        self.assertEqual(len(rows), 1)
+        data = rows[0]["data"]
+        self.assertEqual((data["id"], data["customer_id"], data["amount_fcfa"]),
+                         (payment_id, self.customer_id, 400))
+        self.assertIn("occurred_at", data)
+        # G7: a seller does not receive another member's payment.
+        seller_page = self.as_user(self.seller).get(f"{self.base}/changes/?after=0").data["results"]
+        self.assertFalse([row for row in seller_page if row["object_type"].startswith("customer_payment_")])
