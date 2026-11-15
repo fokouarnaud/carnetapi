@@ -11,9 +11,9 @@
   modifiée). Répétée d'abord sur une copie de l'instantané : OK, rien en attente.
 - Instantané avant déploiement : `~/app-data/pre-deploy-20261115T154907Z.sqlite3`,
   `integrity_check` ok, aucune violation de clé étrangère, 179 migrations,
-  3 678 208 octets. À supprimer après confirmation avec ceux du 14 et du
-  15 novembre (`pre-deploy-20261114T052224Z.sqlite3`,
-  `pre-deploy-20261115T011455Z.sqlite3`), pour le budget disque.
+  3 678 208 octets, conservé jusqu'à confirmation de cette version. Sur accord
+  du titulaire, les instantanés des 13, 14 et 15 novembre (01:14) ont été
+  supprimés : répertoire personnel à 125 300 367 octets après nettoyage.
 - Webapp désactivée 15:51–15:53 UTC, `git pull --ff-only`, `migrate` (la seule
   migration ci-dessus), `collectstatic` sans changement, `check --deploy` à
   2 avertissements (W005/W021).
