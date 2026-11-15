@@ -66,6 +66,28 @@ def customer_payloads(shop, entries):
     return {customer.id: ClientSerializer(customer).data for customer in Customer.objects.filter(shop=shop, id__in=ids)}
 
 
+def supplier_payloads(shop, entries):
+    """Supplier records for managers; sellers never receive supplier entries (G7)."""
+    from purchasing.api.suppliers import SupplierSerializer
+    from purchasing.models import Supplier
+    ids = {entry.object_id for entry in entries
+           if entry.object_type.startswith("supplier_") and not entry.object_type.startswith("supplier_debt_")}
+    if not ids:
+        return {}
+    return {supplier.id: SupplierSerializer(supplier).data for supplier in Supplier.objects.filter(shop=shop, id__in=ids)}
+
+
+def supplier_debt_payloads(shop, entries):
+    """What each supplier is owed, debt by debt, with its supplier and invoice (US-27/US-29)."""
+    from purchasing.api.purchases import SupplierDebtSerializer
+    from purchasing.models import SupplierDebt
+    ids = {entry.object_id for entry in entries if entry.object_type.startswith("supplier_debt_")}
+    if not ids:
+        return {}
+    return {debt.id: {**SupplierDebtSerializer(debt).data, "supplier_id": str(debt.supplier_id)}
+            for debt in SupplierDebt.objects.filter(shop=shop, id__in=ids)}
+
+
 def payment_payloads(shop, entries):
     """Debt payments, serialized like the payment list; a seller gets only his own (G7, OWN_PREFIXES)."""
     from common.services.origins import with_public_origin
@@ -124,7 +146,10 @@ class ChangeFeedView(APIView):
                     "client_": customer_payloads(shop, visible),
                     "sale_": sale_payloads(shop, visible, permissions["can_read_debt"]),
                     "customer_debt_": debt_payloads(shop, visible),
-                    "customer_payment_": payment_payloads(shop, visible)}
+                    "customer_payment_": payment_payloads(shop, visible),
+                    # Longest prefix first: the lookup takes the first match.
+                    "supplier_debt_": supplier_debt_payloads(shop, visible),
+                    "supplier_": supplier_payloads(shop, visible)}
         for result, entry in zip(results, visible):
             prefix = next((key for key in payloads if entry.object_type.startswith(key)), None)
             result["data"] = payloads[prefix].get(entry.object_id) if prefix else None

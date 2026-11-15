@@ -22,6 +22,7 @@ from sales.services.pricing import MAX_FCFA
 from purchasing.api.suppliers import supplier_shop
 from purchasing.api.purchase_receipt_serializers import ReceiptLineSerializer, ReceiptSerializer
 from purchasing.services.receipts import _persist_purchase_receipt
+from common.services.device_clock import DEVICE_CLOCK_TOLERANCE
 
 
 class EventSerializer(StrictSerializer):
@@ -32,9 +33,12 @@ class EventSerializer(StrictSerializer):
     backdate_reason = serializers.CharField(max_length=2000, allow_blank=False, required=False)  # G15
 
     def validate_occurred_at(self, value):
-        if value > timezone.now():
+        # Decision of 13 November 2026: a phone's clock may run up to five
+        # minutes ahead; such an instant is the present, not the future.
+        now = timezone.now()
+        if value > now + DEVICE_CLOCK_TOLERANCE:
             raise serializers.ValidationError("Date future interdite.")
-        return value
+        return min(value, now)
 
 
 class PurchaseLineInput(StrictSerializer):
@@ -165,7 +169,11 @@ def _persist_purchase_document(*,shop,supplier,actor,installation,kind,data,cano
                                                occurred_at=data["occurred_at"], external_reference=data["external_reference"], total_fcfa=total)
     PurchaseLine.objects.bulk_create([PurchaseLine(document=document, **line) for line in snapshots])
     if kind == "invoice":
-        identity={'id':source_snapshot['debt']['id']} if origin_capture is not None else {}
+        # Recovery keeps the original identity; otherwise the debt is named
+        # after its invoice, so a phone can pay it before the server echoes
+        # it (US-29), as a credit sale's debt is named after the sale.
+        identity={'id':source_snapshot['debt']['id'] if origin_capture is not None
+                  else uuid.uuid5(document.id, 'supplier-debt')}
         SupplierDebt.objects.create(shop=shop, supplier=supplier, document=document, operation=event,
                                     installation=installation, occurred_at=data["occurred_at"],
                                     amount_fcfa=total, remaining_fcfa=total,**identity)

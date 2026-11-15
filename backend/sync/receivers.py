@@ -33,3 +33,14 @@ def append_debt_state_to_feed(sender, instance, created, raw=False, **kwargs):
     """
     if not raw:
         record_change(instance.shop, "customer_debt_state", instance.id, "upsert", actor=instance.actor)
+
+
+@receiver(post_save, sender="purchasing.SupplierDebt", dispatch_uid="sync_supplier_debt_change_feed")
+def append_supplier_debt_state_to_feed(sender, instance, created, raw=False, **kwargs):
+    """US-27/US-29, G6/G7: managers' phones learn what each supplier is owed.
+
+    An invoice creates the debt and a payment or credit lowers it; sellers never
+    receive these entries (purchases and suppliers stay manager-only).
+    """
+    if not raw:
+        record_change(instance.shop, "supplier_debt_state", instance.id, "upsert")
