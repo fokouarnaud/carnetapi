@@ -10,8 +10,9 @@
   aucune table modifiée), répétée d'abord sur une copie : OK, rien en attente.
 - Instantané avant déploiement : `~/app-data/pre-deploy-20261115T183144Z.sqlite3`,
   `integrity_check` ok, aucune violation de clé étrangère, 180 migrations,
-  3 678 208 octets ; conservé jusqu'à confirmation, avec celui de 15:49
-  (`pre-deploy-20261115T154907Z.sqlite3`) à supprimer ensuite.
+  3 678 208 octets ; conservé jusqu'à confirmation. Celui de 15:49
+  (`pre-deploy-20261115T154907Z.sqlite3`) a été supprimé sur accord du
+  titulaire.
 - Webapp désactivée 18:33–18:35 UTC, `git pull --ff-only`, `migrate`,
   `collectstatic` sans changement, `check --deploy` à 2 avertissements
   (W005/W021).
