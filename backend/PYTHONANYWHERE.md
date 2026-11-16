@@ -1,5 +1,23 @@
 # Exploitation PythonAnywhere
 
+## Mise à jour du 16 novembre 2026 — `f3986c5` → `3d758f7`
+
+- Contenu : tolérance d'horloge de 5 minutes sur les mouvements de caisse
+  (`occurred_at`) et les comptages de caisse (`counted_at`) envoyés par le
+  téléphone, enregistrés au présent (gate 1 876 tests passés ; 13 erreurs de
+  préparation de restauration dues à des contrôles de manifeste lancés en
+  parallèle, 13/13 réussis en relance isolée). Requirements inchangés.
+- Aucune migration ; répétition sur copie : rien à appliquer.
+- Instantané avant déploiement : `~/app-data/pre-deploy-20261115T235920Z.sqlite3`,
+  `integrity_check` ok, aucune violation de clé étrangère, 181 migrations,
+  3 678 208 octets ; conservé jusqu'à confirmation.
+- Webapp désactivée 00:01–00:03 UTC, `git pull --ff-only`, `migrate` (rien),
+  `collectstatic` sans changement, `check --deploy` à 2 avertissements
+  (W005/W021).
+- Contrôles HTTP : HTTPS 302, login admin 200, API/schéma/docs 401, caisse
+  401 sans authentification, statiques 200. Désactivation du site affichée au
+  5 décembre 2026.
+
 ## Mise à jour du 15 novembre 2026 (3) — `6fed86f` → `f3986c5`
 
 - Contenu : fournisseurs et état de leurs dettes dans le flux `changes`
