@@ -113,6 +113,28 @@ class CashTests(TestCase):
                 self.assertEqual(self.create(self.payload(**changes)).status_code, 400)
         self.assertFalse(CashMovement.objects.exists())
 
+    def test_the_opening_fund_is_recorded_once_per_till(self):
+        # Q99: one initialization per till; corrections go through explicit movements.
+        first = self.payload()
+        self.assertEqual(self.create(first).status_code, 201)
+        self.assertEqual(self.create(first).status_code, 200)  # same operation replayed: same receipt
+        second = self.create(self.payload(amount_fcfa=1000))
+        self.assertEqual(second.status_code, 400)
+        self.assertIn("Fonds initial", str(second.data["kind"]))
+        self.assertEqual(self.create(self.payload(method="orange")).status_code, 201)  # another till
+        self.assertEqual(CashMovement.objects.filter(manual_kind="opening").count(), 2)
+
+    def test_ledger_reports_whether_the_opening_fund_is_recorded(self):
+        empty = self.client.get(self.url())
+        self.assertEqual((empty.data["opening_fund_recorded"], empty.data["first_cash_movement_at"]), (False, None))
+        self.assertEqual(self.create(self.payload(kind="addition", occurred_at="2026-01-03T00:00:00Z")).status_code, 201)
+        self.assertEqual(self.create(self.payload(kind="addition", occurred_at="2026-01-02T00:00:00Z")).status_code, 201)
+        ledger = self.client.get(self.url())
+        self.assertFalse(ledger.data["opening_fund_recorded"])
+        self.assertEqual(ledger.data["first_cash_movement_at"], "2026-01-02T00:00:00Z")
+        self.assertEqual(self.create(self.payload(occurred_at="2026-01-01T00:00:00Z")).status_code, 201)
+        self.assertTrue(self.client.get(self.url()).data["opening_fund_recorded"])
+
     def test_a_phone_clock_slightly_ahead_records_the_movement_at_the_present(self):
         # Decision of 13 November 2026: up to five minutes ahead is the present.
         ahead = (timezone.now() + timedelta(seconds=20)).isoformat()
@@ -134,11 +156,11 @@ class CashTests(TestCase):
         self.assertEqual(ledger.data["totals_by_method_fcfa"], {"other:Mobile A": 1000, "other:Mobile B": 2000})
 
     def test_snapshot_keeps_totals_and_pages_stable_after_a_late_backdated_movement(self):
-        for amount in [1000, 2000]:
-            self.assertEqual(self.create(self.payload(amount_fcfa=amount)).status_code, 201)
+        for amount in [1000, 2000]:  # Q99: contributions, the opening fund being recorded once
+            self.assertEqual(self.create(self.payload(kind="addition", amount_fcfa=amount)).status_code, 201)
         first = self.client.get(self.url(), {"page_size": 1})
         self.assertEqual(first.status_code, 200)
-        self.assertEqual(self.create(self.payload(amount_fcfa=4000)).status_code, 201)
+        self.assertEqual(self.create(self.payload(kind="addition", amount_fcfa=4000)).status_code, 201)
         second = self.client.get(first.data["next"])
         self.assertEqual(second.status_code, 200)
         self.assertEqual(second.data["count"], 2)
@@ -184,8 +206,8 @@ class CashTests(TestCase):
         self.assertEqual(CashMovement.objects.get().amount_fcfa, 50000)
 
     def test_exact_total_can_exceed_single_sqlite_integer_without_overflow(self):
-        for _ in range(2):
-            self.assertEqual(self.create(self.payload(amount_fcfa=9223372036854775807)).status_code, 201)
+        for _ in range(2):  # Q99: contributions, the opening fund being recorded once
+            self.assertEqual(self.create(self.payload(kind="addition", amount_fcfa=9223372036854775807)).status_code, 201)
         ledger = self.client.get(self.url(), {"page_size": 1})
         self.assertEqual(ledger.status_code, 200)
         self.assertEqual(ledger.data["totals_by_method_fcfa"], {"cash": 18446744073709551614})

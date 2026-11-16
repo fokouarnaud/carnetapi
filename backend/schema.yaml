@@ -17675,6 +17675,12 @@ components:
           type: object
           additionalProperties:
             type: integer
+        opening_fund_recorded:
+          type: boolean
+        first_cash_movement_at:
+          type: string
+          format: date-time
+          nullable: true
         provisional:
           type: boolean
         results:
@@ -17684,7 +17690,9 @@ components:
       required:
       - as_of
       - count
+      - first_cash_movement_at
       - next
+      - opening_fund_recorded
       - previous
       - provisional
       - restoration
@@ -18421,6 +18429,9 @@ components:
         stock_as_of:
           type: string
           readOnly: true
+        unit_editable:
+          type: boolean
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -18455,6 +18466,7 @@ components:
       - stock_reserved_milli
       - stock_threshold_milli
       - stock_validated_milli
+      - unit_editable
       - unit_kind
       - unit_label
       - updated_at
@@ -18542,6 +18554,9 @@ components:
           default: true
         stock_as_of:
           type: string
+          readOnly: true
+        unit_editable:
+          type: boolean
           readOnly: true
         created_at:
           type: string
@@ -18667,6 +18682,7 @@ components:
       - stock_reserved_milli
       - stock_threshold_milli
       - stock_validated_milli
+      - unit_editable
       - unit_kind
       - unit_label
       - updated_at
@@ -27230,6 +27246,9 @@ components:
         stock_as_of:
           type: string
           readOnly: true
+        unit_editable:
+          type: boolean
+          readOnly: true
         created_at:
           type: string
           format: date-time
@@ -27259,6 +27278,7 @@ components:
       - stock_reserved_milli
       - stock_threshold_milli
       - stock_validated_milli
+      - unit_editable
       - unit_kind
       - unit_label
       - updated_at
@@ -27346,6 +27366,9 @@ components:
           default: true
         stock_as_of:
           type: string
+          readOnly: true
+        unit_editable:
+          type: boolean
           readOnly: true
         created_at:
           type: string
@@ -27466,6 +27489,7 @@ components:
       - stock_reserved_milli
       - stock_threshold_milli
       - stock_validated_milli
+      - unit_editable
       - unit_kind
       - unit_label
       - updated_at

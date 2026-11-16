@@ -124,6 +124,10 @@ class CashLedgerSerializer(RecoveryReportSerializer):
     as_of = serializers.DateTimeField()
     scope = serializers.CharField()
     totals_by_method_fcfa = serializers.DictField(child=serializers.IntegerField())
+    # Decision of 16 November 2026 (G23 revised): without an opening fund the cash till starts
+    # at 0; the phone offers to enter it, dated by default before the first cash movement.
+    opening_fund_recorded = serializers.BooleanField()
+    first_cash_movement_at = serializers.DateTimeField(allow_null=True)
     provisional = serializers.BooleanField()
     results = CashSerializer(many=True)
 
@@ -144,6 +148,11 @@ def create_cash(shop_id, actor, installation, session_id, data):
                                                "désigner explicitement le dernier comptage révisé."})
     if original is not None:
         return original, False
+    if data["kind"] == "opening" and CashMovement.objects.filter(
+            shop=shop, manual_kind="opening", method=data["method"], other_name=data["other_name"]).exists():
+        # Q99: one initialization per till; later corrections are explicit movements.
+        raise serializers.ValidationError({"kind": serializers.ErrorDetail(
+            "Fonds initial déjà renseigné pour cette caisse.", code="opening_already_recorded")})
     if CashMovement.objects.filter(id=data["id"]).exists():
         raise OperationConflict()
     event = Activity.objects.create(id=data["operation_id"], shop=shop, actor=actor,
@@ -202,13 +211,18 @@ class CashViewSet(viewsets.GenericViewSet):
             totals[key] = totals.get(key, 0) + amount
         page = self.paginate_queryset(rows.select_related("operation", "sale_payment", "customer_payment_part", "customer_refund", "supplier_payment_part", "supplier_refund", "sale_return_refund")
                                       .order_by("occurred_at", "operation__created_at", "id"))
+        till = CashMovement.objects.filter(shop=shop, method="cash", operation__created_at__lte=cutoff)
+        opening_recorded = till.filter(manual_kind="opening").exists()
+        first = rows.filter(method="cash").order_by("occurred_at", "operation__created_at", "id").values_list(
+            "occurred_at", flat=True).first()
         stamp = serializers.DateTimeField().to_representation(cutoff)
         next_link, previous_link = self.paginator.get_next_link(), self.paginator.get_previous_link()
         def snapshot_link(link):
             return replace_query_param(replace_query_param(link, "as_of", stamp), "scope", scope) if link else None
         return Response(CashLedgerSerializer({
             "count": self.paginator.page.paginator.count, "next": snapshot_link(next_link), "previous": snapshot_link(previous_link),
-            "as_of": cutoff, "scope": scope, "totals_by_method_fcfa": totals, "provisional": True, "results": page,
+            "as_of": cutoff, "scope": scope, "totals_by_method_fcfa": totals,
+            "opening_fund_recorded": opening_recorded, "first_cash_movement_at": first, "provisional": True, "results": page,
         },context={"shop":shop}).data)
 
     @extend_schema(request=CreateCashSerializer, responses={200: CashSerializer, 201: CashSerializer})

@@ -77,6 +77,24 @@ class CashCountTests(TestCase):
         far = (timezone.now() + timedelta(minutes=10)).isoformat()
         self.assertEqual(self.client.post(self.url(), self.payload(counted_at=far), format="json").status_code, 400)
 
+    def test_missing_opening_counts_from_zero_then_a_dated_opening_revises_past_counts(self):
+        # Decision of 16 November 2026 (G23 revised): without an opening fund the till starts at 0
+        # and the difference is computed; the fund, entered later at its real instant, revises
+        # what was expected, never what was counted.
+        self.cash(5000, at="2026-01-01T10:00:00Z", kind="addition")
+        count = self.client.post(self.url(), self.payload(physical_fcfa=25000), format="json")
+        self.assertEqual(count.status_code, 201)
+        self.assertEqual((count.data["expected_fcfa"], count.data["difference_fcfa"]), (5000, 20000))
+        ledger = self.client.get(f"/api/v1/shops/{self.shop.id}/cash/")
+        self.assertFalse(ledger.data["opening_fund_recorded"])
+        self.assertEqual(parse_datetime(ledger.data["first_cash_movement_at"]), parse_datetime("2026-01-01T10:00:00Z"))
+        self.cash(20000, at="2026-01-01T08:00:00Z")  # no count revision needed for the opening fund
+        revised = self.client.get(f"{self.url()}{count.data['id']}/")
+        self.assertEqual((revised.data["expected_fcfa"], revised.data["difference_fcfa"]), (25000, 0))
+        self.assertEqual((revised.data["physical_fcfa"], revised.data["expected_at_creation_fcfa"]), (25000, 5000))
+        self.assertTrue(revised.data["expected_revised"])
+        self.assertTrue(self.client.get(f"/api/v1/shops/{self.shop.id}/cash/").data["opening_fund_recorded"])
+
     def test_late_prior_movement_revises_expected_but_never_physical_or_original_receipt(self):
         self.cash(50000)
         data = self.payload()
@@ -101,8 +119,8 @@ class CashCountTests(TestCase):
         self.assertFalse(CashMovement.objects.exists())
 
     def test_database_preserves_integer_expected_balance_even_beyond_int64(self):
-        for _ in range(2):
-            self.cash(9223372036854775807)
+        for _ in range(2):  # Q99: contributions, the opening fund being recorded once
+            self.cash(9223372036854775807, kind="addition")
         response = self.client.post(self.url(), self.payload(), format="json")
         self.assertEqual(response.status_code, 201)
         self.assertEqual(response.data["expected_at_creation_fcfa"], 18446744073709551614)
