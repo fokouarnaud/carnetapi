@@ -1,5 +1,13 @@
 [
   [
+    "accounting",
+    "0001_initial"
+  ],
+  [
+    "accounting",
+    "0002_seed_account_suggestions"
+  ],
+  [
     "admin",
     "0001_initial"
   ],

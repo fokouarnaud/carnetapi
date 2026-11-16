@@ -1,8 +1,16 @@
 {
   "format": "app-x-sqlite-schema-reference",
   "format_version": 1,
-  "migration_code_sha256": "fcfa184723897be36a137dc89888431619cd18f49c885ca8e4e0522f018199af",
+  "migration_code_sha256": "415841f00955d584b7244065c199ad4d5ad04eb9e8a526e291fb44e9cb28c7bd",
   "migrations": [
+    [
+      "accounting",
+      "0001_initial"
+    ],
+    [
+      "accounting",
+      "0002_seed_account_suggestions"
+    ],
     [
       "admin",
       "0001_initial"
@@ -2615,6 +2623,18 @@
         "type": "index"
       },
       {
+        "name": "sqlite_autoindex_accounting_accountsuggestion_1",
+        "sql_sha256": null,
+        "table": "accounting_accountsuggestion",
+        "type": "index"
+      },
+      {
+        "name": "sqlite_autoindex_accounting_accountsuggestion_2",
+        "sql_sha256": null,
+        "table": "accounting_accountsuggestion",
+        "type": "index"
+      },
+      {
         "name": "sqlite_autoindex_auth_group_1",
         "sql_sha256": null,
         "table": "auth_group",
@@ -4541,6 +4561,12 @@
         "type": "index"
       },
       {
+        "name": "accounting_accountsuggestion",
+        "sql_sha256": "ed51b89c49e133fa56deb73612838d152d525a22564134545ea97701d78b067a",
+        "table": "accounting_accountsuggestion",
+        "type": "table"
+      },
+      {
         "name": "auth_group",
         "sql_sha256": "c548030a8f02364ba09afea4565daff8dad2de78b580c74a4c7df3ad794ded4d",
         "table": "auth_group",
@@ -5441,7 +5467,7 @@
         "type": "trigger"
       }
     ],
-    "sha256": "156f7252a28bf2279fefbe20854141f5805dbe4cb792238009d1827df6e95125"
+    "sha256": "f8569b9b1948d55d7fe7b158f27be7d1b1067a382921ff2d3ba34de1392b19a6"
   },
   "worker_sha256": "a56c927e06d4c087977682bf68483c0307523f15c438f978ef28c84d1202f6c1"
 }

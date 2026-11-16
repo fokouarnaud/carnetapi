@@ -2440,6 +2440,319 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/accounting/balances/:
+    get:
+      operationId: shops_accounting_balances_list
+      description: 'Accountant export (16 November 2026): what each customer owes,
+        or each supplier is owed, at the end of a local closing day, with credits
+        and advances apart and pending operations apart, plus suggested SYSCOHADA
+        accounts to be validated by the accountant. Parties with nothing open are
+        left out; totals cover the whole filter. Managers only.'
+      parameters:
+      - in: query
+        name: as_of
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: date
+        schema:
+          type: string
+          format: date
+        required: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: party
+        schema:
+          enum:
+          - customers
+          - suppliers
+          type: string
+          minLength: 1
+        description: |-
+          * `customers` - customers
+          * `suppliers` - suppliers
+        required: true
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedBalancesList'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/accounting/cash-journal/:
+    get:
+      operationId: shops_accounting_cash_journal_list
+      description: 'Accountant export (16 November 2026): real money movements of
+        the shop between two local days, both included, with opening balance, in/out
+        totals and closing balance per means of payment over the whole period, and
+        a suggested SYSCOHADA account per side, to be validated by the accountant.
+        Till counts of the period and their current gaps are listed apart. Managers
+        only; SQL pages share the same as_of snapshot.'
+      parameters:
+      - in: query
+        name: as_of
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+        required: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedCashJournalList'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/accounting/sales-purchases-journal/:
+    get:
+      operationId: shops_accounting_sales_purchases_journal_list
+      description: 'Accountant export (16 November 2026): sales, customer returns,
+        validated supplier invoices and accepted supplier credits between two local
+        days, both included, in date order, with totals over the whole period and
+        suggested SYSCOHADA accounts to be validated by the accountant. Payments belong
+        to the cash journal; orders stay out. Managers only; SQL pages share the same
+        as_of snapshot.'
+      parameters:
+      - in: query
+        name: as_of
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+        required: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedSalesPurchasesJournalList'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
+  /api/v1/shops/{shop_id}/accounting/stock/:
+    get:
+      operationId: shops_accounting_stock_list
+      description: 'Accountant export (16 November 2026): each product with stock
+        history, valued at moving average cost at the end of the last local day; unknown
+        costs stay null and are counted, provisional values are flagged. Losses of
+        the period are listed apart with their frozen cost. Suggested SYSCOHADA accounts
+        are to be validated by the accountant. Totals cover every product. Managers
+        only.'
+      parameters:
+      - in: query
+        name: as_of
+        schema:
+          type: string
+          format: date-time
+      - in: query
+        name: end
+        schema:
+          type: string
+          format: date
+        required: true
+      - in: query
+        name: page
+        schema:
+          type: integer
+          minimum: 1
+      - in: query
+        name: page_size
+        schema:
+          type: integer
+          minimum: 1
+      - in: path
+        name: shop_id
+        schema:
+          type: string
+          format: uuid
+        required: true
+      - in: query
+        name: start
+        schema:
+          type: string
+          format: date
+        required: true
+      tags:
+      - shops
+      security:
+      - deviceJWT: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaginatedStockExportList'
+          description: ''
+        '503':
+          description: 'FR : Service temporairement indisponible avant authentification
+            : maintenance ou contrôle externe indisponible. Aucun traitement métier.
+            Réessayer après le délai indiqué, en conservant l''UUID de l''opération.
+            EN: Temporarily unavailable before authentication: maintenance or unavailable
+            external gate. No business processing. Retry after the indicated delay,
+            keeping the operation UUID.'
+          headers:
+            Retry-After:
+              description: Délai en secondes / Delay in seconds
+              schema:
+                type: integer
+                minimum: 0
+              example: 30
+            Cache-Control:
+              schema:
+                type: string
+                enum:
+                - no-store
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ServiceUnavailable'
   /api/v1/shops/{shop_id}/barcode-conflicts/{id}/resolve/:
     post:
       operationId: shops_barcode_conflicts_resolve_create
@@ -17291,6 +17604,103 @@ components:
       description: |-
         * `advance` - advance
         * `credit` - credit
+    BalanceRow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        debt_fcfa:
+          type: integer
+          description: What the party still owes (customer) or is owed (supplier).
+        credit_fcfa:
+          type: integer
+          description: Customer credit, or supplier advance plus credit.
+        pending_fcfa:
+          type: integer
+          description: Effect of operations still awaiting validation.
+        account:
+          type: string
+          nullable: true
+        account_label:
+          type: string
+          nullable: true
+        credit_account:
+          type: string
+          nullable: true
+        credit_account_label:
+          type: string
+          nullable: true
+      required:
+      - account
+      - account_label
+      - credit_account
+      - credit_account_label
+      - credit_fcfa
+      - debt_fcfa
+      - id
+      - name
+      - pending_fcfa
+    BalanceTotals:
+      type: object
+      properties:
+        debt_fcfa:
+          type: integer
+        credit_fcfa:
+          type: integer
+        pending_fcfa:
+          type: integer
+      required:
+      - credit_fcfa
+      - debt_fcfa
+      - pending_fcfa
+    Balances:
+      type: object
+      properties:
+        shop_name:
+          type: string
+        party:
+          type: string
+        date:
+          type: string
+          format: date
+        timezone:
+          type: string
+        as_of:
+          type: string
+          format: date-time
+        accounts_note:
+          type: string
+        totals:
+          $ref: '#/components/schemas/BalanceTotals'
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceRow'
+      required:
+      - accounts_note
+      - as_of
+      - count
+      - date
+      - next
+      - party
+      - previous
+      - results
+      - shop_name
+      - timezone
+      - totals
     Barcode:
       type: object
       properties:
@@ -17559,6 +17969,61 @@ components:
       - reason
       - recorded_at
       - requires_regularization
+    CashJournal:
+      type: object
+      properties:
+        shop_name:
+          type: string
+        period:
+          $ref: '#/components/schemas/Period'
+        as_of:
+          type: string
+          format: date-time
+        accounts_note:
+          type: string
+        opening_balance_by_method:
+          type: object
+          additionalProperties:
+            type: integer
+        totals_by_method:
+          type: object
+          additionalProperties:
+            $ref: '#/components/schemas/InOut'
+        closing_balance_by_method:
+          type: object
+          additionalProperties:
+            type: integer
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalLine'
+        cash_counts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CountGap'
+      required:
+      - accounts_note
+      - as_of
+      - cash_counts
+      - closing_balance_by_method
+      - count
+      - next
+      - opening_balance_by_method
+      - period
+      - previous
+      - results
+      - shop_name
+      - totals_by_method
     CashLedger:
       type: object
       description: |-
@@ -18701,6 +19166,41 @@ components:
       - provisional_lines
       - total_nanos_fcfa
       - unknown_lines
+    CountGap:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        counted_at:
+          type: string
+          format: date-time
+        local_date:
+          type: string
+        method:
+          type: string
+        expected_fcfa:
+          type: integer
+        physical_fcfa:
+          type: integer
+        difference_fcfa:
+          type: integer
+        account:
+          type: string
+          nullable: true
+        account_label:
+          type: string
+          nullable: true
+      required:
+      - account
+      - account_label
+      - counted_at
+      - difference_fcfa
+      - expected_fcfa
+      - id
+      - local_date
+      - method
+      - physical_fcfa
     CountHistory:
       type: object
       properties:
@@ -22255,6 +22755,17 @@ components:
       required:
       - file
       - id
+    InOut:
+      type: object
+      properties:
+        in_:
+          type: integer
+          title: 'In '
+        out:
+          type: integer
+      required:
+      - in_
+      - out
     InstalledBudgetStateEnum:
       enum:
       - unknown
@@ -22323,6 +22834,129 @@ components:
       - reason
       - session_id
       - shop_id
+    JournalEntry:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        occurred_at:
+          type: string
+          format: date-time
+        local_date:
+          type: string
+        journal:
+          $ref: '#/components/schemas/JournalEnum'
+        kind:
+          $ref: '#/components/schemas/JournalEntryKindEnum'
+        amount_fcfa:
+          type: integer
+        gross_fcfa:
+          type: integer
+        discount_fcfa:
+          type: integer
+        party_name:
+          type: string
+        reference:
+          type: string
+        account:
+          type: string
+          nullable: true
+        account_label:
+          type: string
+          nullable: true
+        party_account:
+          type: string
+          nullable: true
+        party_account_label:
+          type: string
+          nullable: true
+      required:
+      - account
+      - account_label
+      - amount_fcfa
+      - discount_fcfa
+      - gross_fcfa
+      - id
+      - journal
+      - kind
+      - local_date
+      - occurred_at
+      - party_account
+      - party_account_label
+      - party_name
+      - reference
+    JournalEntryKindEnum:
+      enum:
+      - sale_cash
+      - sale_credit
+      - sale_return
+      - purchase_invoice
+      - supplier_credit
+      type: string
+      description: |-
+        * `sale_cash` - sale_cash
+        * `sale_credit` - sale_credit
+        * `sale_return` - sale_return
+        * `purchase_invoice` - purchase_invoice
+        * `supplier_credit` - supplier_credit
+    JournalEnum:
+      enum:
+      - sales
+      - purchases
+      type: string
+      description: |-
+        * `sales` - sales
+        * `purchases` - purchases
+    JournalLine:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        occurred_at:
+          type: string
+          format: date-time
+        local_date:
+          type: string
+        kind:
+          type: string
+        method:
+          type: string
+        reason:
+          type: string
+        external_reference:
+          type: string
+        amount_in:
+          type: integer
+        amount_out:
+          type: integer
+        account:
+          type: string
+          nullable: true
+        account_label:
+          type: string
+          nullable: true
+        counter_account:
+          type: string
+          nullable: true
+        counter_label:
+          type: string
+          nullable: true
+      required:
+      - account
+      - account_label
+      - amount_in
+      - amount_out
+      - counter_account
+      - counter_label
+      - external_reference
+      - id
+      - kind
+      - local_date
+      - method
+      - occurred_at
+      - reason
     JournalOperationInputRequest:
       type: object
       properties:
@@ -22475,6 +23109,28 @@ components:
       - shop_id
       - submitted_by
       - submitted_installation_id
+    JournalTotals:
+      type: object
+      properties:
+        sales:
+          type: integer
+        sale_returns:
+          type: integer
+        net_sales:
+          type: integer
+        purchases:
+          type: integer
+        supplier_credits:
+          type: integer
+        net_purchases:
+          type: integer
+      required:
+      - net_purchases
+      - net_sales
+      - purchases
+      - sale_returns
+      - sales
+      - supplier_credits
     LanguageEnum:
       enum:
       - fr
@@ -22630,6 +23286,42 @@ components:
       - operation_id
       - quantity_milli
       - reason
+    LossRow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        occurred_at:
+          type: string
+          format: date-time
+        local_date:
+          type: string
+        name:
+          type: string
+        quantity_milli:
+          type: string
+        value_fcfa:
+          type: integer
+          nullable: true
+        reason:
+          type: string
+        account:
+          type: string
+          nullable: true
+        account_label:
+          type: string
+          nullable: true
+      required:
+      - account
+      - account_label
+      - id
+      - local_date
+      - name
+      - occurred_at
+      - quantity_milli
+      - reason
+      - value_fcfa
     Membership:
       type: object
       properties:
@@ -23854,6 +24546,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/BackupJob'
+    PaginatedBalancesList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/Balances'
     PaginatedCapturedOperationList:
       type: object
       required:
@@ -23989,6 +24704,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CashCount'
+    PaginatedCashJournalList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashJournal'
     PaginatedCategoryList:
       type: object
       required:
@@ -25670,6 +26408,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/SaleReturn'
+    PaginatedSalesPurchasesJournalList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/SalesPurchasesJournal'
     PaginatedSendAttemptList:
       type: object
       required:
@@ -25808,6 +26569,29 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/StockCount'
+    PaginatedStockExportList:
+      type: object
+      required:
+      - count
+      - results
+      properties:
+        count:
+          type: integer
+          example: 123
+        next:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=4
+        previous:
+          type: string
+          nullable: true
+          format: uri
+          example: http://api.example.org/accounts/?page=2
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/StockExport'
     PaginatedSupplierDebtList:
       type: object
       required:
@@ -26396,6 +27180,29 @@ components:
       description: |-
         * `allocation` - Affectation
         * `refund` - Remboursement
+    Period:
+      type: object
+      properties:
+        start:
+          type: string
+          format: date
+        end:
+          type: string
+          format: date
+        timezone:
+          type: string
+        start_utc:
+          type: string
+          format: date-time
+        end_utc:
+          type: string
+          format: date-time
+      required:
+      - end
+      - end_utc
+      - start
+      - start_utc
+      - timezone
     PhotoMetadata:
       type: object
       properties:
@@ -30914,6 +31721,44 @@ components:
       - quantity_milli
       - sale_line_id
       - unit_kind
+    SalesPurchasesJournal:
+      type: object
+      properties:
+        shop_name:
+          type: string
+        period:
+          $ref: '#/components/schemas/Period'
+        as_of:
+          type: string
+          format: date-time
+        accounts_note:
+          type: string
+        totals:
+          $ref: '#/components/schemas/JournalTotals'
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/JournalEntry'
+      required:
+      - accounts_note
+      - as_of
+      - count
+      - next
+      - period
+      - previous
+      - results
+      - shop_name
+      - totals
     SchemaVersionEnum:
       enum:
       - 1
@@ -31815,6 +32660,103 @@ components:
       - recorded_at
       - unit_kind
       - unit_label
+    StockExport:
+      type: object
+      properties:
+        shop_name:
+          type: string
+        period:
+          $ref: '#/components/schemas/Period'
+        valued_at:
+          type: string
+          format: date-time
+        accounts_note:
+          type: string
+        totals:
+          $ref: '#/components/schemas/StockTotals'
+        count:
+          type: integer
+        next:
+          type: string
+          format: uri
+          nullable: true
+        previous:
+          type: string
+          format: uri
+          nullable: true
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/StockRow'
+        losses:
+          type: array
+          items:
+            $ref: '#/components/schemas/LossRow'
+      required:
+      - accounts_note
+      - count
+      - losses
+      - next
+      - period
+      - previous
+      - results
+      - shop_name
+      - totals
+      - valued_at
+    StockRow:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+        unit_label:
+          type: string
+        quantity_milli:
+          type: string
+        value_fcfa:
+          type: integer
+          nullable: true
+        value_state:
+          $ref: '#/components/schemas/ExactCostStateEnum'
+        requires_regularization:
+          type: boolean
+        account:
+          type: string
+          nullable: true
+        account_label:
+          type: string
+          nullable: true
+      required:
+      - account
+      - account_label
+      - id
+      - name
+      - quantity_milli
+      - requires_regularization
+      - unit_label
+      - value_fcfa
+      - value_state
+    StockTotals:
+      type: object
+      properties:
+        known_value_fcfa:
+          type: integer
+        provisional_count:
+          type: integer
+        unknown_count:
+          type: integer
+        losses_value_fcfa:
+          type: integer
+        losses_unknown_count:
+          type: integer
+      required:
+      - known_value_fcfa
+      - losses_unknown_count
+      - losses_value_fcfa
+      - provisional_count
+      - unknown_count
     Supplier:
       type: object
       properties:

@@ -4,4 +4,5 @@ INSTALLED_APPLICATIONS = [
     "django.contrib.sessions", "django.contrib.messages", "django.contrib.staticfiles",
     "rest_framework", "rest_framework_simplejwt.token_blacklist", "drf_spectacular",
     "core", "identity", "catalogue", "stock", "sales", "customers", "purchasing", "cash", "backups", "sync",
+    "accounting",
 ]
