@@ -53,6 +53,15 @@ jamais le montant compté. Un seul fonds initial par caisse (Q99) : le serveur
 refuse le second. Réalisation qualifiée sur SM-A207F contre le serveur local ;
 non déployée.
 
+Le même jour, après essai sur téléphone, le titulaire retire le bandeau et le
+formulaire « Fonds initial » : le fonds de caisse se saisit comme un **Apport**
+avec le motif « fonds de caisse », daté du jour de sa saisie. Il assume qu'un tel
+apport ne corrige pas les écarts des comptages antérieurs ; dans les exports
+comptables, apport et fonds initial portent le même compte suggéré (108). La
+caisse part toujours de 0 tant que rien n'est saisi. Le serveur garde le type
+« fonds initial » (unique par caisse) et les champs `opening_fund_recorded` /
+`first_cash_movement_at` du grand livre, que le téléphone n'utilise plus.
+
 ### Décision complémentaire US-09/US-10 — unité modifiable avant tout mouvement, 14 novembre 2026
 
 Le titulaire demande que l'unité d'un produit (pièce, kg, L) soit modifiable et
@@ -207,7 +216,7 @@ Elle ne remplace ni les décisions détaillées ci-dessous ni `analysis/scope-v1
      - Un achat peut avoir plusieurs factures ; la dette ne vient que des factures validées.
      - Le reliquat non reçu est clôturé explicitement par le responsable, sans effet sur la dette.
    - **Caisse :** caisse commune, moyens de paiement, fonds initial, apports, retraits, dépenses, monnaie due et comptages physiques, sans remise à zéro quotidienne ni mouvements financiers fictifs.
-     - Tant que le fonds initial manque, la caisse part de 0 : l'attendu et l'écart sont calculés sur cette base, et un bandeau « Fonds initial non renseigné » invite le responsable à le saisir. La saisie ultérieure du fonds, datée de son instant réel, recalcule l'attendu et l'écart des comptages passés, jamais le montant compté (révision du 16 novembre 2026).
+     - Tant que rien n'est saisi, la caisse part de 0 : l'attendu et l'écart sont calculés sur cette base. Le fonds de caisse se saisit comme un **Apport** avec le motif « fonds de caisse », daté du jour de sa saisie ; il ne révise pas les comptages antérieurs (révision du titulaire, 16 novembre 2026).
      - Catégories de dépenses fixes, traduites fr/en : transport, loyer, salaires, fournitures, factures, autre + libellé (G23).
    - **Rappels :** préparation des rappels WhatsApp après synchronisation, pour envoi manuel par l'utilisateur, selon ses permissions.
 5. **Préserver les opérations réelles et rendre les conflits visibles.**
@@ -444,7 +453,7 @@ Les identifiants US servent à la traçabilité jusqu'aux preuves DoD. Chaque li
 | US-28 | En tant que responsable, je veux confirmer les réceptions partielles d'un achat. | Achat/réception/paiement réservés au responsable ; vendeur peut signaler. 10 cartons commandés/6 reçus : seul équivalent de 6 au stock, 4 attendus. Achat déjà reçu saisissable avec confirmation ; reprise même réception sans double stock, facteurs historiques conservés. Réception au-delà de la commande permise après confirmation explicite, commande prévisionnelle ; plusieurs factures par achat, dette fondée sur les seules factures validées ; reliquat non reçu clôturé explicitement par le responsable, sans effet sur la dette (G17). |
 | US-29 | En tant que responsable, je veux enregistrer avances, paiements et leurs affectations. | Paiement avant facture = avance distincte ; 30 000 affectés à facture 100 000 laissent 70 000 dus sans seconde sortie d'argent. Historique paiement conservé ; avances/avoirs distincts de dette et du cash. |
 | US-30 | En tant que responsable, je veux distinguer retour fournisseur, avoir et remboursement. | Départ physique réduit stock, avoir réellement accepté réduit dette, argent reçu crée remboursement, chacun distinct. Retours partiels motivés ; avoir différent de référence conserve les deux valeurs et motif. Dette 3 000/avoir 5 000 laisse crédit fournisseur 2 000, non argent reçu, sans affectation automatique ailleurs. |
-| US-31 | En tant que responsable, je veux suivre une caisse commune continue et les mouvements non commerciaux. | Fonds initial/apport/retrait/dépense avec date/auteur/appareil/motif, hors CA ; pas de remise à zéro quotidienne. Ventilation par moyen et vue personnelle vendeur ; solde global uniquement sur permission. Un paiement fournisseur/remboursement ne devient pas seconde dépense manuelle. Fonds initial absent : caisse partant de 0, attendu et écart calculés, bandeau invitant à le saisir ; saisie ultérieure datée de son instant réel recalcule attendu et écart des comptages passés, jamais le compté ; fonds initial unique par caisse (révision du 16 novembre 2026). Catégories de dépenses fixes traduites fr/en : transport, loyer, salaires, fournitures, factures, autre + libellé (G23). |
+| US-31 | En tant que responsable, je veux suivre une caisse commune continue et les mouvements non commerciaux. | Fonds initial/apport/retrait/dépense avec date/auteur/appareil/motif, hors CA ; pas de remise à zéro quotidienne. Ventilation par moyen et vue personnelle vendeur ; solde global uniquement sur permission. Un paiement fournisseur/remboursement ne devient pas seconde dépense manuelle. Fonds initial absent : caisse partant de 0, attendu et écart calculés ; le fonds se saisit comme un Apport avec le motif « fonds de caisse », daté de sa saisie, sans révision des comptages antérieurs (révision du titulaire, 16 novembre 2026). Catégories de dépenses fixes traduites fr/en : transport, loyer, salaires, fournitures, factures, autre + libellé (G23). |
 | US-32 | En tant que responsable, je veux rapprocher mon comptage de caisse. | Conserver attendu, physique, date et écart ; 50 000 attendus/48 000 comptés → écart −2 000, sans correction automatique. Appareils non synchronisés signalés ; opérations antérieures tardives révisent attendu/écart, jamais le physique, confirmation requise pour régulariser. |
 | US-33 | En tant que responsable, je veux une marge estimée qui explique ses limites. | Ventes nettes de remises/retours moins coût moyen pondéré mobile, encaissements et dépenses séparés ; 10 unités à 1 000 +10 à 1 200 donnent coût 1 100. Coût vente figé, inconnu signalé jamais zéro ; vente au-delà stock avec dernier coût connu provisoire. Retour vendable valorisé au coût d'origine, non coût courant. |
 | US-34 | En tant que responsable, je veux incorporer les frais directs et tracer leurs corrections. | Frais répartis au prorata valeur nette d'achat, prévisualisation, ajustement motivé conservant total ; valeurs nulles/inconnues exigent allocation explicite. Frais déjà payés ne créent second cash. Frais tardifs révisent coûts/marges liés avec avant/après/auteur/date ; ventes, dettes et encaissements inchangés, propagation aux transferts/retours/pertes tracée. |
@@ -554,7 +563,7 @@ Les attributs ci-dessous sont le minimum logique requis ; ils ne prescrivent pas
 | SupplierReturn / SupplierCredit / SupplierRefund | Lignes et départ physique, référence historique, avoir accepté/écart motivé, remboursement reçu. | Trois faits séparés ; surplus avoir reste crédit fournisseur avant affectation explicite. |
 | PurchaseExpense / CostAllocation | Frais directs, paiement existant lié si applicable, distribution par ligne/réception, valeur et motif ajustement. | Somme allocations=frais ; pas seconde dette/caisse par simple coût ajouté. |
 | CostRevision / CostDependency | Produit/événement coût, ancienne/nouvelle valeur/état, cause, auteur/date et liens vers vente/retour/transfert/perte. | Révisions auditables, propagation sans modifier montants facturés/cash/PDF passés. |
-| PaymentMethod / Caisse | Moyens par boutique ; caisse espèces commune continue, fonds initial référencé. | Espèces/MTN/Orange/virement/autre séparés ; fonds initial appliqué une fois. Fonds initial « non renseigné » : caisse partant de 0 et bandeau jusqu'à sa saisie datée, qui révise les attendus passés (G23 révisé le 16 novembre 2026). |
+| PaymentMethod / Caisse | Moyens par boutique ; caisse espèces commune continue, fonds initial référencé. | Espèces/MTN/Orange/virement/autre séparés ; fonds initial appliqué une fois. Sans fonds saisi, caisse partant de 0 ; le fonds se saisit comme Apport motivé « fonds de caisse » (G23 révisé le 16 novembre 2026). |
 | CashMovement | Moyen, type/sens/montant net, événement réel source, bénéficiaire/motif. | Un effet de cash par source/composante ; apport/dépense/retrait hors CA ; pas compensation silencieuse. Dépense : catégorie fixe (transport, loyer, salaires, fournitures, factures, autre + libellé) (G23) ; date effective antidatable selon G15. |
 | CashCount / CashReconciliation | Instant, physique, attendu, écart, complétude/appareils manquants, versions et décision. | Physique conservé ; régularisation distincte liée, réserves et historique de révision. |
 
@@ -704,7 +713,7 @@ Questions posées une à une ; chaque réponse a été acceptée par le titulair
 | G20 | Quelles clés de correspondance pour le CSV ? | Colonne `ref_import`, UTF-8, `;` ou `,`, dates JJ/MM/AAAA, 5 000 lignes et 2 Mo maximum. |
 | G21 | Quel critère de fidélité visuelle ? | Parité de parcours validée manuellement, sans seuil au pixel. |
 | G22 | Quelles preuves pour la récupération exceptionnelle ? | Identité vérifiée, 3 faits du compte, confirmation d'un membre actif, puis délai de 72 h. |
-| G23 | Fonds de caisse absent et catégories de dépenses ? | Fonds marqué « non renseigné », attendu incomplet ; catégories fixes traduites. **Révisé le 16 novembre 2026 : caisse partant de 0 avec bandeau, fonds saisi plus tard à son instant réel qui révise les attendus passés.** |
+| G23 | Fonds de caisse absent et catégories de dépenses ? | Fonds marqué « non renseigné », attendu incomplet ; catégories fixes traduites. **Révisé le 16 novembre 2026 : caisse partant de 0 ; fonds saisi comme Apport motivé « fonds de caisse », sans bandeau ni révision des comptages antérieurs.** |
 | G24 | Transfert de propriété d'une boutique ? | Superadministrateur seulement, avec les preuves G22. |
 | G25 | Notifications avec l'application fermée ? | WorkManager périodique et notification locale, sans FCM. |
 | G26 | Références de reçu après réinstallation ? | Code d'installation attribué par le serveur et jamais réutilisé ; séries V et P distinctes. |
